@@ -1,0 +1,177 @@
+<section id="clubs" class="py-20 bg-gray-100">
+  <div class="container mx-auto px-4 text-center">
+    <!-- Section Title -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">
+      {{ "clubs.title" | transloco }}
+    </h2>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-8">
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+      ></div>
+      <span class="ml-3 text-gray-600">
+        {{ "membership.loadingAssociations" | transloco }}
+      </span>
+    </div>
+
+    <!-- Error State -->
+    <div
+      *ngIf="error && !loading"
+      class="error-container bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-8"
+    >
+      <p>{{ error }}</p>
+      <button
+        (click)="loadAssociations()"
+        class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+      >
+        {{ "membership.tryAgain" | transloco }}
+      </button>
+    </div>
+
+    <!-- Scrollable Clubs Container -->
+    <div
+      *ngIf="!loading && associations.length > 0"
+      class="relative clubs-container-wrapper"
+    >
+      <!-- Navigation Arrows -->
+      <button
+        (click)="scrollLeft()"
+        [class.hidden]="!canScrollLeft()"
+        class="nav-arrow nav-arrow-left"
+        aria-label="Scroll left"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <button
+        (click)="scrollRight()"
+        [class.hidden]="!canScrollRight()"
+        class="nav-arrow nav-arrow-right"
+        aria-label="Scroll right"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <!-- Slider -->
+      <div
+        #slider
+        class="clubs-slider"
+        (mouseenter)="isHovered = true"
+        (mouseleave)="isHovered = false"
+        (scroll)="onScroll()"
+      >
+        <div class="clubs-track">
+          <div *ngFor="let association of associations" class="slide">
+            <div
+              class="association-card bg-white rounded-xl shadow-md p-6 cursor-pointer transition-all duration-300 hover:-translate-y-2 group"
+              [style.border-left]="'4px solid ' + association.primaryColor"
+              (click)="visitAssociation(association)"
+            >
+              <!-- Logo -->
+              <div
+                class="logo-container w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0"
+              >
+                <img
+                  [src]="getLogoUrl(association.logoPath)"
+                  [alt]="association.name"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  (error)="onImageError($event)"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+
+              <!-- Name -->
+              <h3
+                class="association-name text-lg mb-2 font-bold flex-shrink-0"
+                [style.color]="association.primaryColor"
+              >
+                {{ association.name }}
+              </h3>
+
+              <!-- Amharic Name -->
+              <p
+                *ngIf="association.amharicName"
+                class="text-sm text-gray-600 mb-3 flex-shrink-0"
+              >
+                {{ association.amharicName }}
+              </p>
+
+              <!-- Description -->
+              <p
+                *ngIf="association.description"
+                class="text-xs text-gray-500 mb-4 line-clamp-2 flex-grow"
+              >
+                {{ association.description }}
+              </p>
+
+              <!-- Spacer to push actions to bottom -->
+              <div class="flex-grow"></div>
+
+              <!-- Actions -->
+              <div class="flex flex-col gap-2 flex-shrink-0">
+                <button
+                  class="join-button text-sm text-white px-3 py-2 rounded font-medium transition-all duration-300 hover:shadow-md z-10 relative"
+                  [style.background]="
+                    'linear-gradient(135deg, ' +
+                    association.primaryColor +
+                    ', ' +
+                    association.secondaryColor +
+                    ')'
+                  "
+                  (click)="
+                    joinAssociation(association.id); $event.stopPropagation()
+                  "
+                >
+                  {{ "clubs.joinClub" | transloco }}
+                </button>
+
+                <a
+                  *ngIf="
+                    association.websiteLink && association.websiteLink !== '#'
+                  "
+                  [href]="association.websiteLink"
+                  target="_blank"
+                  class="text-xs px-3 py-2 rounded text-center transition-all duration-300 hover:shadow-md z-10 relative"
+                  [style.background]="association.secondaryColor + '15'"
+                  [style.color]="association.primaryColor"
+                  [style.border]="'1px solid ' + association.primaryColor"
+                  (click)="$event.stopPropagation()"
+                >
+                  Visit Website
+                </a>
+              </div>
+
+              <!-- Contact -->
+              <div
+                *ngIf="association.phoneNumbers?.length"
+                class="mt-3 text-xs text-gray-500 flex-shrink-0"
+              >
+                <i class="fas fa-phone mr-1"></i>
+                {{ association.phoneNumbers[0] }}
+              </div>
+
+              <!-- Hover Overlay -->
+              <div
+                class="absolute inset-0 bg-blue-600 bg-opacity-0 group-hover:bg-opacity-5 transition-all duration-300 rounded-xl pointer-events-none"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data -->
+    <div
+      *ngIf="!loading && associations.length === 0 && !error"
+      class="no-data-container text-center py-8"
+    >
+      <div class="text-gray-500 mb-4">
+        <i class="fas fa-users text-4xl mb-4"></i>
+        <p class="text-lg">{{ "membership.noAssociations" | transloco }}</p>
+        <p class="text-sm">{{ "membership.noAssociationsText" | transloco }}</p>
+      </div>
+    </div>
+  </div>
+</section>

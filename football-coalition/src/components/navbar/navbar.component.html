@@ -1,0 +1,39 @@
+<nav class="bg-black text-white fixed top-0 left-0 w-full z-50 shadow-md">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <!-- Logo & Title -->
+        <div class="flex items-center gap-4" routerLink="/" style="cursor: pointer;">
+            <img src="assets/images/logos/logo-remove.jpg" alt="Logo" class="w-16 h-18" />
+            <span class="text-lg font-semibold text-yellow-400">EPLFFC</span>
+        </div>
+
+        <!-- Menu Links -->
+        <ul class="hidden md:flex gap-8 text-sm font-medium">
+            <li><a (click)="associationId ? null : scrollToSection('clubs')" [routerLink]="getLink('home')"
+                    class="hover:text-yellow-400 transition cursor-pointer">{{ 'common.home' | transloco }}</a></li>
+            <li><a (click)="scrollToSection('about')" class="hover:text-yellow-400 transition cursor-pointer">{{
+                    'common.about' | transloco }}</a></li>
+            <li><a (click)="scrollToSection('contact')" class="hover:text-yellow-400 transition cursor-pointer">{{
+                    'common.contact' | transloco }}</a></li>
+            <li><a [routerLink]="getLink('donation')"
+                    [queryParams]="associationId ? {associationId: associationId} : {}"
+                    class="hover:text-yellow-400 transition bg-red-600 px-3 py-1 rounded-lg cursor-pointer">{{
+                    'donations.title' | transloco }}</a></li>
+            <li><a [routerLink]="getLink('jersey')" [queryParams]="associationId ? {associationId: associationId} : {}"
+                    class="hover:text-yellow-400 transition cursor-pointer">{{ 'jerseys.title' | transloco }}</a></li>
+            <li><a [routerLink]="getLink('tickets')" [queryParams]="associationId ? {associationId: associationId} : {}"
+                    class="hover:text-yellow-400 transition cursor-pointer">{{ 'tickets.title' | transloco }}</a></li>
+        </ul>
+
+        <!-- Language Switcher -->
+        <div class="flex items-center gap-2 text-sm">
+            <button (click)="switchLanguage('am')" class="hover:text-yellow-400 transition"
+                [class.text-yellow-400]="currentLang === 'am'">
+                🇪🇹 Am
+            </button> |
+            <button (click)="switchLanguage('en')" class="hover:text-yellow-400 transition"
+                [class.text-yellow-400]="currentLang === 'en'">
+                🇺🇸 En
+            </button>
+        </div>
+    </div>
+</nav>

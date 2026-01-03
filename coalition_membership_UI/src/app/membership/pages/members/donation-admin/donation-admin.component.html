@@ -1,0 +1,69 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _> Donation </a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            Donation Events
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="container mt-4">
+        <div class="row mt-2">
+            <div class="col-12 text-end" *ngIf="userView.role.includes('SuperAdmin')">
+                <button class="btn btn-sm btn-outline-primary text-end" (click)="addDonationEvent()">
+                    <i class="bi bi-plust"></i> Add Message </button>
+            </div>
+        </div>
+
+
+        <table class="custom-table mt-4">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Subtitle</th>
+                    <th>Description</th>
+                    <th>Is Donation</th>
+                    <th>Amount</th>
+                    <th>Amount Collected</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let event of donationEvents">
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.subTitle }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.isDonation ? 'Yes' : 'No' }}</td>
+                    <td>{{ event.amount | currency:'ETB ':'symbol-narrow' }}</td>
+                    <td>{{ event.amountCollected | currency:'ETB ':'symbol-narrow' }}</td>
+                    <td>
+                        <button class="btn btn-outline-warning btn-sm me-2" (click)="updateMessage(event)">
+                            <i class="ti ti-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm  me-2" (click)="remove(event.id)">
+
+                            <i class="ti ti-trash"></i>
+                        </button>
+                       
+                            <button class="btn btn-outline-primary btn-sm me-2" (click)="copyMembershipId(event.id)">
+                                <i class="ti ti-copy"></i> </button>
+                          
+                     
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<div class="auth-main">
+  <div class="auth-wrapper v3 row justify-content-between align-items-center">
+    <!-- Registration Form Section -->
+    <div class="auth-form col-lg-7 col-md-7 col-sm-12 col-12">
+      <div class="card my-3 shadow-lg border-0 rounded-lg" style="max-width: 800px;">
+        <div class="card-body p-5">
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <h2 *ngIf="!selectedAssociationName" class="text-primary mb-3 display-6"><strong> EPLFFC Coalition </strong>
+            </h2>
+
+            <div *ngIf="selectedAssociationName" class="selected-association-card">
+              <div class="selected-association-content">
+                <div class="association-logo-container">
+                  <img *ngIf="selectedAssociationImagePath" [src]="getCurrentLogoPath()" alt="Association Logo"
+                    class="association-logo" appImageError>
+                  <div class="check-badge">
+                    <i class="ti ti-check"></i>
+                  </div>
+                </div>
+                <div class="association-info">
+                  <h6 class="association-label">Selected Association</h6>
+                  <h5 class="association-name">{{ selectedAssociationName }}</h5>
+                  <p class="association-description">You're joining this amazing community!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Amharic Text - Always visible after logo/association -->
+            <div class="amharic-text-container">
+              <p class="amharic-text">
+                የደጋፊ ማህበር አባል ስሆን አለም አቀፍ የእግር ኳስ መርሆችን ለማክበር ቅድሚያ ለስፖርታዊ ጨዋነት ለምስጠት ተስማምቻለሁ።
+              </p>
+              <p class="amharic-text">
+                "እግር ኳስን በእግር ኳስ ቋንቋ ብቻ እንደግፋለን"
+              </p>
+            </div>
+
+            <p class="fs-5 text-muted">{{'Fill_Information_Below'|translate}}</p>
+            <hr />
+          </div>
+
+          <!-- Registration Form -->
+          <form [formGroup]="registerForm" (ngSubmit)="register()">
+            <div class="row mb-3">
+              <div class="col-md-4 mt-2">
+                <div class="form-floating">
+                  <input type="text" class="form-control " id="firstName" formControlName="firstName"
+                    placeholder="First Name" />
+                  <label for="firstName">{{'First_Name'|translate}}</label>
+                </div>
+              </div>
+              <div class="col-md-4 mt-2">
+                <div class="form-floating">
+                  <input type="text" class="form-control " id="lastName" formControlName="lastName"
+                    placeholder="Last Name" />
+                  <label for="lastName">{{'Last_Name'|translate}}</label>
+                </div>
+              </div>
+              <div class="col-md-4 mt-2">
+                <div class="form-floating">
+                  <select class="form-control" formControlName="gender">
+                    <option value=""></option>
+                    <option value="Male">{{'Male'|translate}}</option>
+                    <option value="Female">{{'Female'|translate}}</option>
+                  </select>
+                  <label for="gender">{{'Gender'|translate}}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6 mt-2">
+                <div class="form-floating">
+                  <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="['et']"
+                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                    [searchCountryField]="[
+                    SearchCountryField.Iso2,
+                    SearchCountryField.Name
+                  ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Ethiopia" [maxLength]="15"
+                    [phoneValidation]="true" [separateDialCode]="true" [numberFormat]="PhoneNumberFormat.National"
+                    (change)="checkIfPhoneNumberExist()" (countryChange)="onCountryChange($event)"
+                    formControlName="phoneNumber">
+                  </ngx-intl-tel-input>
+
+                  <!-- Validation Messages -->
+                  <div
+                    *ngIf="registerForm.controls['phoneNumber'].invalid && (registerForm.controls['phoneNumber'].touched || registerForm.controls['phoneNumber'].dirty)"
+                    class="text-danger mt-2">
+                    <small *ngIf="registerForm.controls['phoneNumber'].hasError('required')">
+                      {{'Phone_Number_Required'|translate}}
+                    </small>
+                    <small *ngIf="registerForm.controls['phoneNumber'].hasError('validatePhoneNumber')">
+                      {{'Enter_Valid_Phone'|translate}}
+                    </small>
+                    <small *ngIf="registerForm.controls['phoneNumber'].hasError('maxlength')">
+                      {{'Phone_Max_Length'|translate}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-floating">
+                  <select class="form-control " id="region" formControlName="RegionId">
+                    <option value="00000000-0000-0000-0000-000000000000"></option>
+                    <option *ngFor="let item of regions" [value]="item.id">{{ item.name }}</option>
+                  </select>
+                  <label for="region">{{ (countryType === 'ETHIOPIAN' ? 'Regions' : 'Country' ) |translate }} </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6 mt-2">
+                <div class="form-floating mb-3">
+                  <select class="form-control" formControlName="associationId" (change)="onAssociationChange($event)">
+                    <option value=""></option>
+                    <option *ngFor="let item of associations" [value]="item.id">{{ item.name }}</option>
+                  </select>
+                  <label for="associationId">Fans Associations</label>
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-floating">
+                  <select class="form-control " formControlName="membershipType">
+                    <option></option>
+                    <option *ngFor="let item of memberships" [value]="item.id">{{ item.name }}</option>
+                  </select>
+                  <label for="membershipType">{{'Membership_Type'|translate}}</label>
+                </div>
+                <!-- Availability notice for foreign users -->
+                <div *ngIf="countryType === 'FOREIGN' && memberships.length === 0" class="text-warning mt-1">
+                  <small><i class="fas fa-info-circle me-1"></i> Membership type for foreign countries isn't available
+                    yet</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected Association Display -->
+
+
+            <div class="d-grid mt-4 register-button-container">
+              <button type="submit" [disabled]="!registerForm.valid"
+                class="btn btn-primary btn-lg shadow-lg register-btn">{{'Register'|translate}}</button>
+            </div>
+            <hr />
+            <div class="text-left">
+              <p>{{'Already_Have_Account'|translate}}? <button type="button" class="btn btn-link text-primary fw-bold"
+                  (click)="loginasMember()">{{'Login'|translate}}</button></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar - Desktop Only -->
+    <div class="col-lg-4 col-md-5 col-sm-12 col-12 d-none d-lg-block">
+      <div class="member-info text-center p-4 bg-light rounded-lg shadow-lg">
+        <div class="sidebar-logo-container">
+          <img [src]="getCurrentLogoPath()" alt="Association Logo" class="sidebar-logo" appImageError>
+          <div class="logo-glow"></div>
+        </div>
+        <h4 class="animated-heading text-primary">{{'Welcome_Message'|translate}}</h4>
+        <p class="animated-paragraph text-muted mt-3">
+          {{'Fans_Association_Benefits'|translate}}
+        </p>
+        <div class="partner-logo mt-4 text-end">
+          <img src="assets/arifpay.svg" alt="Partner Logo" class="w-32 h-auto" appImageError>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

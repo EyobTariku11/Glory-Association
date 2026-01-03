@@ -1,0 +1,244 @@
+<div class="board-members-container">
+  <div class="header">
+    <h2>Board Members Management</h2>
+    <button class="btn btn-primary" (click)="showAddBoardMemberForm()">
+      <i class="fas fa-plus"></i> Add Board Member
+    </button>
+  </div>
+
+  <!-- Error Display -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading board members...</p>
+  </div>
+
+  <!-- Board Members List -->
+  <div *ngIf="!isLoading && boardMembers.length > 0" class="board-members-list">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of boardMembers">
+            <td>
+              <img 
+                [src]="member.photoUrl || getDefaultPhotoUrl()" 
+                [alt]="member.fullName"
+                class="member-photo"
+                (error)="$event.target.src = getDefaultPhotoUrl()">
+            </td>
+            <td>{{ member.fullName }}</td>
+            <td>{{ member.position }}</td>
+            <td>{{ member.description || 'No description' }}</td>
+            <td>{{ getFormattedDate(member.startDate) }}</td>
+            <td>
+              <span class="badge" [class.badge-success]="member.isActive" [class.badge-secondary]="!member.isActive">
+                {{ member.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group" role="group">
+                <button class="btn btn-sm btn-outline-primary" (click)="showEditBoardMemberForm(member)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-warning" (click)="toggleBoardMemberStatus(member.id!)">
+                  <i class="fas fa-toggle-on" *ngIf="member.isActive"></i>
+                  <i class="fas fa-toggle-off" *ngIf="!member.isActive"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteBoardMember(member.id!)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- No Board Members State -->
+  <div *ngIf="!isLoading && boardMembers.length === 0" class="no-members">
+    <div class="text-center">
+      <i class="fas fa-users fa-3x text-muted"></i>
+      <h4>No Board Members Found</h4>
+      <p>Start by adding your first board member.</p>
+    </div>
+  </div>
+
+  <!-- Add Board Member Form -->
+  <div *ngIf="showAddForm" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Add New Board Member</h5>
+        <button type="button" class="btn-close" (click)="cancelForms()"></button>
+      </div>
+      <form [formGroup]="addForm" (ngSubmit)="addBoardMember()" class="modal-body">
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="fullName" 
+            formControlName="fullName"
+            [class.is-invalid]="addForm.get('fullName')?.invalid && addForm.get('fullName')?.touched">
+          <div class="invalid-feedback" *ngIf="addForm.get('fullName')?.invalid && addForm.get('fullName')?.touched">
+            Full name is required and must be at least 2 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="position" class="form-label">Position *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="position" 
+            formControlName="position"
+            [class.is-invalid]="addForm.get('position')?.invalid && addForm.get('position')?.touched">
+          <div class="invalid-feedback" *ngIf="addForm.get('position')?.invalid && addForm.get('position')?.touched">
+            Position is required and must be at least 2 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="startDate" class="form-label">Start Date *</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="startDate" 
+            formControlName="startDate"
+            [class.is-invalid]="addForm.get('startDate')?.invalid && addForm.get('startDate')?.touched">
+          <div class="invalid-feedback" *ngIf="addForm.get('startDate')?.invalid && addForm.get('startDate')?.touched">
+            Start date is required.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea 
+            class="form-control" 
+            id="description" 
+            rows="3" 
+            formControlName="description"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="photoUrl" class="form-label">Photo URL</label>
+          <input 
+            type="url" 
+            class="form-control" 
+            id="photoUrl" 
+            formControlName="photoUrl"
+            placeholder="https://example.com/photo.jpg">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelForms()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid">Add Board Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Board Member Form -->
+  <div *ngIf="showEditForm" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Edit Board Member</h5>
+        <button type="button" class="btn-close" (click)="cancelForms()"></button>
+      </div>
+      <form [formGroup]="editForm" (ngSubmit)="updateBoardMember()" class="modal-body">
+        <div class="mb-3">
+          <label for="editFullName" class="form-label">Full Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="editFullName" 
+            formControlName="fullName"
+            [class.is-invalid]="editForm.get('fullName')?.invalid && editForm.get('fullName')?.touched">
+          <div class="invalid-feedback" *ngIf="editForm.get('fullName')?.invalid && editForm.get('fullName')?.touched">
+            Full name is required and must be at least 2 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="editPosition" class="form-label">Position *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="editPosition" 
+            formControlName="position"
+            [class.is-invalid]="editForm.get('position')?.invalid && editForm.get('position')?.touched">
+          <div class="invalid-feedback" *ngIf="editForm.get('position')?.invalid && editForm.get('position')?.touched">
+            Position is required and must be at least 2 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="editStartDate" class="form-label">Start Date *</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="editStartDate" 
+            formControlName="startDate"
+            [class.is-invalid]="editForm.get('startDate')?.invalid && editForm.get('startDate')?.touched">
+          <div class="invalid-feedback" *ngIf="editForm.get('startDate')?.invalid && editForm.get('startDate')?.touched">
+            Start date is required.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="editDescription" class="form-label">Description</label>
+          <textarea 
+            class="form-control" 
+            id="editDescription" 
+            rows="3" 
+            formControlName="description"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="editPhotoUrl" class="form-label">Photo URL</label>
+          <input 
+            type="url" 
+            class="form-control" 
+            id="editPhotoUrl" 
+            formControlName="photoUrl"
+            placeholder="https://example.com/photo.jpg">
+        </div>
+
+        <div class="mb-3">
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              id="editIsActive" 
+              formControlName="isActive">
+            <label class="form-check-label" for="editIsActive">
+              Active
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelForms()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Update Board Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

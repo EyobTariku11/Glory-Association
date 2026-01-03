@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPLFFC - Ethiopian Premier League Football Federation Coalition</title>
+    <meta name="description" content="Verify EPLFFC membership status and access member information">
+    <meta name="keywords" content="EPLFFC, football, coalition, membership, verification, Ethiopia">
+    <meta name="author" content="EPLFFC">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="EPLFFC - Member Verification">
+    <meta property="og:description" content="Verify EPLFFC membership status and access member information">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eplffc.et">
+    <meta property="og:image" content="assets/images/eplffc-logo.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EPLFFC - Member Verification">
+    <meta name="twitter:description" content="Verify EPLFFC membership status and access member information">
+    <meta name="twitter:image" content="assets/images/eplffc-logo.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/eplffc-logo.png">
+    
+    <!-- Redirect to Angular app -->
+    <script>
+        // Redirect to the football coalition landing page
+        window.location.href = '/football-coalition';
+    </script>
+    
+    <!-- Fallback content -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .loading-container {
+            max-width: 600px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 2rem;
+            display: block;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 0 0 1rem 0;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin: 0 0 2rem 0;
+            opacity: 0.9;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .redirect-text {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .manual-link {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid white;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .manual-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <img src="assets/images/eplffc-logo.png" alt="EPLFFC Logo" class="logo" onerror="this.style.display='none'">
+        <h1>EPLFFC</h1>
+        <p class="subtitle">Ethiopian Premier League Football Federation Coalition</p>
+        
+        <div class="spinner"></div>
+        <p class="redirect-text">Redirecting to member verification...</p>
+        
+        <a href="/football-coalition" class="manual-link">
+            Click here if not redirected automatically
+        </a>
+    </div>
+</body>
+</html> 

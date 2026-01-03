@@ -1,0 +1,37 @@
+<div class="modal-content shadow-lg rounded-3 border-0">
+
+    <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Membership Details</h5>
+        <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="closeModal()"></button>
+    </div>
+
+    <div class="card border-0">
+        <div class="modal-body p-4">
+            <!-- User Details -->
+            <div class="mb-4">
+                <p><strong>Full Name:</strong> {{ fullName }}</p>
+                <p><strong>Membership ID:</strong> {{ membershipId }}</p>
+                <p><strong>Membership Type:</strong> {{ membershipType }}</p>
+            </div>
+        
+            <!-- Telegram Connection Section -->
+            <div class="mb-4 text-center">
+                <p class="mb-2">Be a Telegram member to receive notifications.</p>
+                <button class="btn btn-primary" (click)="connectTelegram()">
+                    Connect with Telegram
+                </button>
+            </div>
+        
+            <!-- Copy Membership ID Section -->
+            <div class="d-flex align-items-center justify-content-between">
+                <button class="btn btn-outline-primary me-3" (click)="copyMembershipId()">Copy Membership ID</button>
+                <span class="text-success" *ngIf="copied">Copied!</span>
+            </div>
+        </div>
+        
+
+        <div class="modal-footer bg-light border-top-0">
+            <button type="button" class="btn btn-success w-100" (click)="closeModal()">Continue</button>
+        </div>
+    </div>
+</div>

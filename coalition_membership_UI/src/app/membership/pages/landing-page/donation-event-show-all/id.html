@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #E0F7FA, #E8F5E9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .id-card {
+            width: 600px;
+            height: 380px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 4px solid #006400;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #006400, #008000);
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header img {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .header h2 span {
+            display: block;
+            font-size: 14px;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #006400;
+        }
+
+        .id-card__details {
+            padding: 20px;
+            display: flex;
+        }
+
+        .details-left {
+            width: 65%;
+        }
+
+        .details-right {
+            width: 35%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .id-card__detail {
+            margin-bottom: 8px;
+        }
+
+        .id-card__detail-label {
+            font-weight: bold;
+            color: #006400;
+        }
+
+        .id-card__detail-value {
+            margin-left: 10px;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: rgba(0, 100, 0, 0.1);
+            transform: rotate(-30deg);
+            pointer-events: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 5px;
+            background-color: #F1F8E9;
+            font-weight: bold;
+            font-size: 14px;
+            color: #006400;
+            border-top: 2px solid #006400;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Front Side -->
+<div class="id-card">
+    <div class="header">
+        <img src="logo.jpg" alt="Organization Logo" appImageError>
+        <h2>EPLFFC Development Organization<br><span>አቢ-ዝዕር የማህበረሰብ ልማት ድርጅት</span></h2>
+    </div>
+
+    <div class="id-card__details">
+        <div class="details-right">
+            <img src="profile.jpg" alt="Member Photo" class="profile-pic" appImageError>
+        </div>
+        <div class="details-left">
+            <div class="id-card__detail">
+                <span class="id-card__detail-label">ID Number</span>
+                <span class="id-card__detail-value" id="id-card-ID">{{member.memberId}}</span>
+            </div>
+            <div class="id-card__detail">
+                <span class="id-card__detail-label">Name</span>
+                <span class="id-card__detail-value" id="id-card-name">{{member.fullName}}</span>
+            </div>
+            <div class="id-card__detail">
+                <span class="id-card__detail-label">Membership Type</span>
+                <span class="id-card__detail-value" id="id-card-membership-type">{{member.membershipType}}</span>
+            </div>
+            <div class="id-card__detail">
+                <span class="id-card__detail-label">Mobile Number</span>
+                <span class="id-card__detail-value">{{member.phoneNumber}}</span>
+            </div>
+            <div class="id-card__detail">
+                <span class="id-card__detail-label">Issued Date</span>
+                <span class="id-card__detail-value">{{member.lastPaid|date:"dd MMM yyyy"}}</span>
+            </div>
+            <div class="id-card__detail">
+                <span class="id-card__detail-label">Expired Date</span>
+                <span class="id-card__detail-value">{{expiryDate|date:"dd MMM yyyy"}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="watermark">EPLFFC</div>
+    <div class="footer">Authorized by EPLFFC Development Organization</div>
+</div>
+
+<!-- Back Side -->
+<div class="id-card" style="margin-left: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <img src="qr-code.png" alt="QR Code" style="width: 150px; height: 150px; margin-bottom: 20px;" appImageError>
+    <p><strong>Address:</strong> Bisrate Gebriel, in front of Zambia Embassy</p>
+    <p><strong>Email:</strong> abizeerfamily&#64;gmail.com</p>
+    <p><strong>Authorized Signature:</strong></p>
+    <img src="signature.png" alt="Signature" style="width: 150px;" appImageError>
+    <img src="stamp.png" alt="Stamp" style="width: 120px; margin-top: 10px;" appImageError>
+</div>
+
+</body>
+</html>

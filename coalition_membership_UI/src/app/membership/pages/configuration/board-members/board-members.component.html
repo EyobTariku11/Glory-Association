@@ -1,0 +1,252 @@
+<div class="container-fluid">
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Configuration</a></li>
+            <li class="breadcrumb-item" aria-current="page">Board Members Management</li>
+          </ul>
+        </div>
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h2 class="mb-0">Board Members Management</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] end -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="card-title">Board Members</h4>
+          <button 
+            class="btn btn-primary" 
+            (click)="showAddBoardMemberForm()"
+            [disabled]="showAddForm || showEditForm">
+            <i class="fas fa-plus"></i> Add New Board Member
+          </button>
+        </div>
+        <div class="card-body">
+          
+          <!-- Board Members List -->
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>Photo</th>
+                  <th>Full Name</th>
+                  <th>Position</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of boardMembers">
+                  <td>
+                    <img 
+                      [src]="getPhotoUrl(member)" 
+                      [alt]="member.fullName"
+                      class="member-photo"
+                      (error)="onImageError($event)">
+                  </td>
+                  <td>{{ member.fullName }}</td>
+                  <td>{{ member.position }}</td>
+                  <td>{{ member.description || 'No description' }}</td>
+                  <td>{{ getFormattedDate(member.startDate) }}</td>
+                  <td>
+                    <span class="badge" [class.badge-success]="member.isActive" [class.badge-secondary]="!member.isActive">
+                      {{ member.isActive ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-sm btn-outline-primary" (click)="showEditBoardMemberForm(member)">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-warning" (click)="toggleBoardMemberStatus(member.id!)">
+                        <i class="fas fa-toggle-on" *ngIf="member.isActive"></i>
+                        <i class="fas fa-toggle-off" *ngIf="!member.isActive"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteBoardMember(member.id!)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading board members...</p>
+          </div>
+
+          <!-- Error State -->
+          <div *ngIf="error && !isLoading" class="alert alert-danger">
+            <h5>Error Loading Board Members</h5>
+            <p>{{ error }}</p>
+            <button class="btn btn-outline-danger" (click)="loadBoardMembers()">
+              <i class="fas fa-redo"></i> Try Again
+            </button>
+          </div>
+
+          <!-- No Board Members State -->
+          <div *ngIf="!isLoading && boardMembers.length === 0 && !error" class="text-center py-4">
+            <i class="fas fa-users fa-3x text-muted"></i>
+            <h4>No Board Members Found</h4>
+            <p>Start by adding your first board member.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<!-- Create/Edit Board Member Modal -->
+<div class="modal fade" 
+     id="boardMemberModal" 
+     tabindex="-1" 
+     aria-labelledby="boardMemberModalLabel" 
+     aria-hidden="true"
+     [class.show]="showAddForm || showEditForm"
+     [style.display]="(showAddForm || showEditForm) ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="boardMemberModalLabel">
+          {{ showEditForm ? 'Edit Board Member' : 'Add New Board Member' }}
+        </h5>
+        <button type="button" 
+                class="btn-close" 
+                (click)="cancelForms()" 
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="showAddForm ? addForm : editForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="fullName" 
+                  formControlName="fullName"
+                  [class.is-invalid]="(showAddForm ? addForm : editForm).get('fullName')?.invalid && (showAddForm ? addForm : editForm).get('fullName')?.touched">
+                <div class="invalid-feedback" *ngIf="(showAddForm ? addForm : editForm).get('fullName')?.invalid && (showAddForm ? addForm : editForm).get('fullName')?.touched">
+                  Full name is required and must be at least 2 characters.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="position" class="form-label">Position *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="position" 
+                  formControlName="position"
+                  [class.is-invalid]="(showAddForm ? addForm : editForm).get('position')?.invalid && (showAddForm ? addForm : editForm).get('position')?.touched">
+                <div class="invalid-feedback" *ngIf="(showAddForm ? addForm : editForm).get('position')?.invalid && (showAddForm ? addForm : editForm).get('position')?.touched">
+                  Position is required and must be at least 2 characters.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date *</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  id="startDate" 
+                  formControlName="startDate"
+                  [class.is-invalid]="(showAddForm ? addForm : editForm).get('startDate')?.invalid && (showAddForm ? addForm : editForm).get('startDate')?.touched">
+                <div class="invalid-feedback" *ngIf="(showAddForm ? addForm : editForm).get('startDate')?.invalid && (showAddForm ? addForm : editForm).get('startDate')?.touched">
+                  Start date is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="showEditForm">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    id="isActive" 
+                    formControlName="isActive">
+                  <label class="form-check-label" for="isActive">
+                    Active
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea 
+                  class="form-control" 
+                  id="description" 
+                  rows="3" 
+                  formControlName="description"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="photo" class="form-label">Photo</label>
+                <input 
+                  type="file" 
+                  class="form-control" 
+                  id="photo" 
+                  (change)="onPhotoSelected($event)" 
+                  accept="image/*">
+                <div class="mt-2" *ngIf="photoPreview">
+                  <img [src]="photoPreview" alt="Photo Preview" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelForms()">Cancel</button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="showAddForm ? addBoardMember() : updateBoardMember()"
+          [disabled]="(showAddForm ? addForm : editForm).invalid">
+          {{ showEditForm ? 'Update Board Member' : 'Add Board Member' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade" 
+     [class.show]="showAddForm || showEditForm"
+     [style.display]="(showAddForm || showEditForm) ? 'block' : 'none'"
+     (click)="cancelForms()"></div>

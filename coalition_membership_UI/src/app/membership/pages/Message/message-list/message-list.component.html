@@ -1,0 +1,139 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Message Management</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _>Messages </a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            Message List
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+
+
+    <div class="col-md-12 p-4 ">
+        <div class="row mt-2">
+            <div class="col-12 text-end" *ngIf="isAssociation || isCoalition">
+                <button class="btn btn-sm btn-outline-primary text-end" (click)="addMessage()">
+                    <i class="bi bi-plus"></i> Add Message </button>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Search messages..." 
+                        [(ngModel)]="searchTerm"
+                        (input)="onSearchChange()">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" [(ngModel)]="isApproved" (change)="getMessages()">
+                    <option [value]="false">Pending Approval</option>
+                    <option [value]="true">Approved</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+                    <i class="fas fa-times"></i> Clear
+                </button>
+            </div>
+        </div>
+
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Message Content</th>
+                    <th>Message Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of filteredMessages">
+                    <td>
+                        <div class="message-content">
+                            <strong>{{item.content}}</strong>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="message-content">{{item.messageTypeGet}}</span>
+                    </td>
+                    <td>
+                        <span *ngIf="item.isApproved" class="badge bg-success rounded-pill">
+                            <i class="fas fa-check"></i> Approved
+                        </span>
+                        <span *ngIf="!item.isApproved" class="badge bg-warning rounded-pill">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </td>
+                    <td>
+                        <!-- Association users can edit their own messages -->
+                        <div *ngIf="isAssociation && !item.isApproved">
+                            <button type="button" class="btn btn-outline-warning btn-sm me-1"
+                                (click)="updateMessage(item)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+
+                        <!-- Coalition users can approve/reject messages -->
+                        <div *ngIf="isCoalition && !item.isApproved">
+                            <button type="button" class="btn btn-success btn-sm me-1"
+                                (click)="approveMessage(item)">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm me-1"
+                                (click)="rejectMessage(item)">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+
+                        <!-- View approved messages -->
+                        <div *ngIf="item.isApproved">
+                            <button type="button" class="btn btn-outline-primary btn-sm me-1"
+                                (click)="detailMessage(item)">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- No Search Results -->
+        <div *ngIf="eventMessages.length > 0 && filteredMessages.length === 0" class="text-center py-4">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No messages match your search</h5>
+            <p class="text-muted">Try adjusting your search criteria or clear the filters.</p>
+            <button class="btn btn-outline-primary" (click)="clearFilters()">
+                <i class="fas fa-times"></i> Clear Filters
+            </button>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="eventMessages.length === 0" class="text-center py-4">
+            <i class="fas fa-envelope fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No messages found</h5>
+            <p class="text-muted">There are no messages to display at the moment.</p>
+        </div>
+     
+    </div>
+
+</div>

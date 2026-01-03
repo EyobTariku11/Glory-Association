@@ -1,0 +1,36 @@
+<section class="bg-black py-16 px-4">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-4xl font-extrabold text-yellow-400 uppercase tracking-widest mb-12">
+      {{ 'sponsors.title' | transloco }}
+    </h2>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+    </div>
+
+    <!-- Sponsors Grid -->
+    <div *ngIf="!loading && sponsors.length > 0" 
+         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 items-center justify-center">
+      <div *ngFor="let sponsor of sponsors" 
+           class="sponsor-item cursor-pointer transform hover:scale-105 transition-transform duration-300"
+           (click)="openSponsorWebsite(sponsor)">
+        <img [src]="getSponsorImage(sponsor)" 
+             [alt]="sponsor.name"
+             class="h-16 object-contain mx-auto grayscale hover:grayscale-0 transition duration-300" />
+        <!-- <p class="text-white text-sm mt-2 opacity-75">{{ sponsor.name }}</p> -->
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && sponsors.length === 0" class="text-center py-12">
+      <p class="text-gray-400 text-lg">
+        {{ 'sponsors.noSponsors' | transloco }}
+      </p>
+    </div>
+
+    <p class="text-gray-400 mt-10 text-sm sm:text-base max-w-3xl mx-auto">
+      {{ 'sponsors.collaborationText' | transloco }}
+    </p>
+  </div>
+</section>

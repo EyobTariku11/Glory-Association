@@ -1,0 +1,294 @@
+
+
+
+<div class="pc-container">
+  <div class="pc-content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center min-h-screen">
+      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+      <p class="ml-4 text-lg text-gray-600 flex items-center">
+        <i class="fas fa-newspaper mr-2"></i>
+        Loading article...
+      </p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="flex flex-col items-center justify-center min-h-screen">
+      <div class="text-red-600 text-2xl mb-4">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="text-red-600 text-lg mb-4">{{ 'common.failedToLoad' | transloco }}</div>
+      <button (click)="loadNewsDetail(news?.id || '')" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition mb-4 flex items-center">
+        <i class="fas fa-redo mr-2"></i>
+        {{ 'common.tryAgain' | transloco }}
+      </button>
+      <button (click)="goBack()" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition flex items-center">
+        <i class="fas fa-chevron-left mr-2"></i>
+        {{ 'common.goBack' | transloco }}
+      </button>
+    </div>
+
+    <!-- News Detail Content -->
+    <div *ngIf="!loading && !error && news" class="max-w-7xl mx-auto px-4 py-8">
+      <!-- Back Button -->
+      <button (click)="goBack()" class="flex items-center text-gray-600 hover:text-gray-800 mb-6 transition group">
+        <i class="fas fa-chevron-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+        {{ 'common.goBack' | transloco }}
+      </button>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+          <!-- News Article -->
+          <article class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Featured Image -->
+            <div *ngIf="news.imagePath" class="relative h-96 overflow-hidden">
+              <img [src]="getNewsImage(news.imagePath)"
+                   [alt]="news.title"
+                   class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              
+              <!-- Status Badges Overlay -->
+              <div class="absolute top-4 left-4 flex gap-2">
+                <span *ngIf="news.isBreakingNews" class="bg-red-600 text-white px-4 py-2 text-sm font-bold rounded-full animate-pulse">
+                  <i class="fas fa-bolt mr-1"></i>
+                  {{ 'common.breaking' | transloco }}
+                </span>
+                <span *ngIf="news.isFeatured" class="bg-yellow-500 text-black px-4 py-2 text-sm font-bold rounded-full">
+                  <i class="fas fa-star mr-1"></i>
+                  {{ 'common.featured' | transloco }}
+                </span>
+                <span *ngIf="news.category" class="bg-blue-600 text-white px-4 py-2 text-sm font-bold rounded-full">
+                  {{ news.category }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Article Header -->
+            <div class="p-8">
+              <!-- Title -->
+              <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                {{ news.title }}
+              </h1>
+
+              <!-- Subtitle -->
+              <p *ngIf="news.subTitle" class="text-xl text-gray-600 mb-8 leading-relaxed">
+                {{ news.subTitle }}
+              </p>
+
+              <!-- Meta Information -->
+              <div class="flex flex-wrap items-center justify-between text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
+                <div class="flex items-center space-x-6">
+                  <div class="flex items-center">
+                    <img *ngIf="news.associationLogoPath"
+                         [src]="getNewsImage(news.associationLogoPath)"
+                         [alt]="news.associationName"
+                         class="w-10 h-10 rounded-full mr-3 border-2 border-gray-200">
+                    <div>
+                      <span class="font-semibold text-gray-700 flex items-center">
+                        <i class="fas fa-building mr-2 text-blue-500"></i>
+                        {{ news.associationName }}
+                      </span>
+                      <div class="text-xs text-gray-400 flex items-center">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        {{ getNewsDate(news.createdDate) }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="flex items-center">
+                    <i class="fas fa-eye mr-2 text-blue-500"></i>
+                    <span class="font-semibold">{{ news.viewCount }} {{ 'common.views' | transloco }}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <i class="fas fa-clock mr-2 text-green-500"></i>
+                    <span>{{ getNewsDate(news.createdDate) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tags -->
+              <div *ngIf="getNewsTags(news).length > 0" class="flex flex-wrap gap-2 mb-8">
+                <span *ngFor="let tag of getNewsTags(news)"
+                      class="bg-gray-100 text-gray-700 px-4 py-2 text-sm rounded-full hover:bg-gray-200 transition cursor-pointer flex items-center">
+                  <i class="fas fa-hashtag mr-1 text-blue-500"></i>
+                  {{ tag }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Video Section -->
+            <div *ngIf="news.videoUrl" class="px-8 pb-8">
+              <div class="bg-gray-900 rounded-xl overflow-hidden">
+                <iframe [src]="getVideoUrl(news.videoUrl) | safe"
+                        frameborder="0"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; loop"
+                        class="w-full h-96"
+                        (load)="onVideoLoad($event)">
+                </iframe>
+                
+                <!-- Video Controls -->
+                <div class="bg-gray-800 p-4 flex items-center justify-between">
+                  <div class="flex items-center space-x-4">
+                    <button 
+                      (click)="replayVideo()"
+                      class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+                      <i class="fas fa-redo mr-2"></i>
+                      Watch Again
+                    </button>
+                    <button 
+                      (click)="toggleVideoLoop()"
+                      [class]="isVideoLooping ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'"
+                      class="text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+                      <i class="fas" [class]="isVideoLooping ? 'fa-check' : 'fa-repeat'"></i>
+                      <span class="ml-2">{{ isVideoLooping ? 'Looping' : 'Enable Loop' }}</span>
+                    </button>
+                  </div>
+                  <div class="text-white text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Video will automatically loop when enabled
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Article Content -->
+            <div class="px-8 pb-8">
+              <div class="prose prose-lg max-w-none">
+                <div [innerHTML]="formatContent(news.content)" class="text-gray-800 leading-relaxed text-lg"></div>
+              </div>
+            </div>
+
+            <!-- Share Section -->
+            <div class="px-8 py-6 bg-gray-50 border-t border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-share-nodes mr-2 text-blue-500"></i>
+                {{ 'common.share' | transloco }}
+              </h3>
+              <div class="flex flex-wrap gap-3">
+                <button (click)="shareOnFacebook()" 
+                        class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center shadow-md hover:shadow-lg">
+                  <i class="fab fa-facebook-f mr-2 text-lg"></i>
+                  Facebook
+                </button>
+                <button (click)="shareOnTwitter()" 
+                        class="bg-blue-400 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition flex items-center shadow-md hover:shadow-lg">
+                  <i class="fab fa-twitter mr-2 text-lg"></i>
+                  Twitter
+                </button>
+                <button (click)="shareOnWhatsApp()" 
+                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition flex items-center shadow-md hover:shadow-lg">
+                  <i class="fab fa-whatsapp mr-2 text-lg"></i>
+                  WhatsApp
+                </button>
+                <button (click)="copyLink()" 
+                        class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition flex items-center shadow-md hover:shadow-lg">
+                  <i class="fas fa-link mr-2 text-lg"></i>
+                  Copy Link
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <!-- Related News Section -->
+          <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+              <i class="fas fa-newspaper mr-3 text-red-500"></i>
+              Related News
+            </h3>
+            
+            <!-- Loading Related News -->
+            <div *ngIf="loadingRelated" class="flex justify-center py-8">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+            </div>
+
+            <!-- Related News List -->
+            <div *ngIf="!loadingRelated && relatedNews.length > 0" class="space-y-4">
+              <div *ngFor="let related of relatedNews" 
+                   (click)="viewNewsDetail(related)"
+                   class="group cursor-pointer hover:bg-gray-50 rounded-lg p-4 transition-all duration-200 border border-gray-100 hover:border-gray-200 hover:shadow-md">
+                
+                <!-- Related News Image -->
+                <div class="relative h-32 mb-3 rounded-lg overflow-hidden">
+                  <img [src]="getNewsImage(related.imagePath)"
+                       [alt]="related.title"
+                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                  
+                  <!-- Status Badges -->
+                  <div class="absolute top-2 left-2 flex gap-1">
+                    <span *ngIf="related.isBreakingNews" class="bg-red-600 text-white px-2 py-1 text-xs font-bold rounded">
+                      <i class="fas fa-bolt mr-1"></i>
+                      {{ 'common.breaking' | transloco }}
+                    </span>
+                    <span *ngIf="related.isFeatured" class="bg-yellow-500 text-black px-2 py-1 text-xs font-bold rounded">
+                      <i class="fas fa-star mr-1"></i>
+                      {{ 'common.featured' | transloco }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Related News Content -->
+                <div>
+                  <h4 class="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition">
+                    {{ related.title }}
+                  </h4>
+                  <p *ngIf="related.subTitle" class="text-sm text-gray-600 mb-2 line-clamp-2">
+                    {{ related.subTitle }}
+                  </p>
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span><i class="fas fa-calendar-alt mr-1"></i>{{ getNewsDate(related.createdDate) }}</span>
+                    <div class="flex items-center">
+                      <i class="fas fa-eye mr-1"></i>
+                      <span>{{ related.viewCount }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Related News -->
+            <div *ngIf="!loadingRelated && relatedNews.length === 0" class="text-center py-8">
+              <i class="fas fa-newspaper text-4xl text-gray-300 mb-4"></i>
+              <p class="text-gray-500 flex items-center justify-center">
+                <i class="fas fa-info-circle mr-2"></i>
+                No related news available
+              </p>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-xl p-6 text-white">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-chart-line mr-2"></i>
+              Article Stats
+            </h3>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span><i class="fas fa-eye mr-2"></i>Views</span>
+                <span class="font-bold text-xl">{{ news.viewCount }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span><i class="fas fa-calendar-check mr-2"></i>Published</span>
+                <span class="font-semibold">{{ getNewsDate(news.createdDate) }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span><i class="fas fa-tag mr-2"></i>Category</span>
+                <span class="font-semibold">{{ news.category || 'General' }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span><i class="fas fa-hashtag mr-2"></i>Tags</span>
+                <span class="font-semibold">{{ getNewsTags(news).length }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

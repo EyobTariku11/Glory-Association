@@ -1,0 +1,299 @@
+<div class="container-fluid">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+              <li class="breadcrumb-item"><a href="javascript: void(0);">News Management</a></li>
+              <li class="breadcrumb-item" aria-current="page">My News</li>
+            </ul>
+          </div>
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h2 class="mb-0">My News</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+
+    <div class="row">
+      <!-- Create/Edit News Form -->
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5>{{ editingNews ? 'Edit News Article' : 'Create New Article' }}</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="newsForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Title *</label>
+                    <input type="text" class="form-control" formControlName="title" placeholder="Enter news title">
+                    <div *ngIf="newsForm.get('title')?.invalid && newsForm.get('title')?.touched" class="text-danger small">
+                      Title is required and must be at least 10 characters
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Subtitle</label>
+                    <input type="text" class="form-control" formControlName="subTitle" placeholder="Enter subtitle (optional)">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Content *</label>
+                    <textarea class="form-control" formControlName="content" rows="6" placeholder="Enter news content"></textarea>
+                    <div *ngIf="newsForm.get('content')?.invalid && newsForm.get('content')?.touched" class="text-danger small">
+                      Content is required and must be at least 50 characters
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" formControlName="category">
+                      <option value="">Select Category</option>
+                      <option value="Match Report">Match Report</option>
+                      <option value="Transfer News">Transfer News</option>
+                      <option value="Club News">Club News</option>
+                      <option value="League News">League News</option>
+                      <option value="Player News">Player News</option>
+                      <option value="Coach News">Coach News</option>
+                      <option value="General">General</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Tags</label>
+                    <input type="text" class="form-control" formControlName="tags" placeholder="Enter tags separated by commas">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Video URL</label>
+                    <input type="url" class="form-control" formControlName="videoUrl" placeholder="Enter YouTube or video URL (optional)">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Featured Image</label>
+                    <input type="file" id="imageInput" class="form-control" accept="image/*" (change)="onFileSelected($event)">
+                    
+                    <!-- Image Preview -->
+                    <div *ngIf="previewUrl" class="mt-3 position-relative">
+                      <img [src]="previewUrl" alt="Preview" class="img-fluid rounded" style="max-height: 200px;">
+                      <button type="button" (click)="removeImage()" class="btn btn-danger btn-sm position-absolute" style="top: 5px; right: 5px;">
+                        <i class="ti ti-x"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="isBreakingNews" id="breakingNews">
+                    <label class="form-check-label" for="breakingNews">
+                      Breaking News
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="isFeatured" id="featured">
+                    <label class="form-check-label" for="featured">
+                      Featured Article
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Meta Title (SEO)</label>
+                    <input type="text" class="form-control" formControlName="metaTitle" placeholder="Enter meta title for SEO">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-label">Meta Description (SEO)</label>
+                    <textarea class="form-control" formControlName="metaDescription" rows="3" placeholder="Enter meta description for SEO"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="d-flex gap-2">
+                    <button type="submit" [disabled]="submitting || newsForm.invalid" class="btn btn-primary">
+                      <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+                      {{ editingNews ? 'Update News' : 'Create News' }}
+                    </button>
+                    <button *ngIf="editingNews" type="button" (click)="cancelEdit()" class="btn btn-secondary">
+                      Cancel Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- My News List -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5>My News Articles</h5>
+          </div>
+          <div class="card-body">
+            <!-- Loading State -->
+            <div *ngIf="loading" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <!-- News List -->
+            <div *ngIf="!loading" class="news-list">
+              <div *ngFor="let news of myNews" class="news-item border-bottom pb-3 mb-3">
+                <div class="d-flex align-items-start">
+                  <img [src]="getNewsImage(news)" [alt]="news.title" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">{{ news.title }}</h6>
+                    <p class="text-muted small mb-2">{{ news.subTitle || news.content | slice:0:100 }}...</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span [class]="getStatusBadge(news).class">{{ getStatusBadge(news).text }}</span>
+                      <small class="text-muted">{{ getNewsDate(news.createdDate) }}</small>
+                    </div>
+                    <div class="mt-2">
+                      <button (click)="viewFullNews(news)" class="btn btn-sm btn-outline-info me-2">
+                        <i class="ti ti-eye"></i> View Full
+                      </button>
+                      <button (click)="editNews(news)" class="btn btn-sm btn-outline-primary me-2">
+                        <i class="ti ti-edit"></i> Edit
+                      </button>
+                      <button (click)="deleteNews(news.id)" class="btn btn-sm btn-outline-danger">
+                        <i class="ti ti-trash"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- No News State -->
+              <div *ngIf="myNews.length === 0" class="text-center py-4">
+                <i class="ti ti-news text-muted" style="font-size: 3rem;"></i>
+                <p class="text-muted mt-2">No news articles yet. Create your first article!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+</div>
+
+<!-- View Full News Modal -->
+<div *ngIf="selectedNewsForView" class="modal fade show" style="display: block; z-index: 99999; background-color: rgba(0, 0, 0, 0.5);" tabindex="-1" (click)="onModalBackdropClick($event)">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-newspaper me-2 text-primary"></i>
+          View News Article
+        </h5>
+        <button type="button" class="btn-close" (click)="closeViewModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="mb-3">{{ selectedNewsForView.title }}</h4>
+            <p *ngIf="selectedNewsForView.subTitle" class="text-muted mb-3">{{ selectedNewsForView.subTitle }}</p>
+            
+            <div class="mb-3">
+              <span *ngIf="selectedNewsForView.isBreakingNews" class="badge bg-danger me-2">
+                <i class="fas fa-bolt me-1"></i>BREAKING
+              </span>
+              <span *ngIf="selectedNewsForView.isFeatured" class="badge bg-warning me-2">
+                <i class="fas fa-star me-1"></i>FEATURED
+              </span>
+              <span *ngIf="selectedNewsForView.category" class="badge bg-info me-2">{{ selectedNewsForView.category }}</span>
+              <span [class]="getStatusBadge(selectedNewsForView).class">
+                <i class="fas fa-check-circle me-1"></i>{{ getStatusBadge(selectedNewsForView).text }}
+              </span>
+            </div>
+
+            <div class="mb-3">
+              <img *ngIf="selectedNewsForView.imagePath" 
+                   [src]="getNewsImage(selectedNewsForView)" 
+                   [alt]="selectedNewsForView.title"
+                   class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover;">
+            </div>
+
+            <div class="mb-3 p-3 bg-light rounded">
+              <p class="text-muted mb-1">
+                <i class="fas fa-building me-2 text-primary"></i>
+                <strong>Association:</strong> {{ selectedNewsForView.associationName }}
+              </p>
+              <p class="text-muted mb-1">
+                <i class="fas fa-calendar-alt me-2 text-success"></i>
+                <strong>Created:</strong> {{ getNewsDate(selectedNewsForView.createdDate) }}
+              </p>
+              <p class="text-muted mb-0">
+                <i class="fas fa-eye me-2 text-info"></i>
+                <strong>Views:</strong> {{ selectedNewsForView.viewCount }}
+              </p>
+            </div>
+
+            <div *ngIf="getNewsTags(selectedNewsForView).length > 0" class="mb-3">
+              <strong><i class="fas fa-tags me-2 text-warning"></i>Tags:</strong>
+              <div class="mt-2">
+                <span *ngFor="let tag of getNewsTags(selectedNewsForView)" class="badge bg-light text-dark me-1">
+                  <i class="fas fa-hashtag me-1"></i>{{ tag }}
+                </span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <strong><i class="fas fa-file-text me-2 text-primary"></i>Content:</strong>
+              <div class="mt-2 p-3 bg-light rounded border">
+                <div [innerHTML]="formatContent(selectedNewsForView.content)"></div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedNewsForView.videoUrl" class="mb-3">
+              <strong><i class="fas fa-video me-2 text-danger"></i>Video:</strong>
+              <div class="mt-2">
+                <div class="ratio ratio-16x9">
+                  <iframe [src]="getVideoUrl(selectedNewsForView.videoUrl) | safe" 
+                          frameborder="0" 
+                          allowfullscreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          class="rounded shadow-sm">
+                  </iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeViewModal()">
+          <i class="fas fa-times me-2"></i>Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

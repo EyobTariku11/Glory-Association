@@ -1,0 +1,78 @@
+// Custom styles for Quill editor in company profile
+::ng-deep .ql-editor {
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+::ng-deep .ql-toolbar.ql-snow {
+  border: 1px solid #dee2e6;
+  border-radius: 4px 4px 0 0;
+  background-color: #f8f9fa;
+}
+
+::ng-deep .ql-container.ql-snow {
+  border: 1px solid #dee2e6;
+  border-radius: 0 0 4px 4px;
+  border-top: none;
+}
+
+::ng-deep .ql-editor.ql-blank::before {
+  color: #6c757d;
+  font-style: italic;
+}
+
+// Form styling
+.form-floating {
+  margin-bottom: 1.5rem;
+}
+
+.form-floating label {
+  font-weight: 600;
+  color: #495057;
+}
+
+// Social media input styling
+input[formControlName="facebook"],
+input[formControlName="telegram"],
+input[formControlName="tiktok"] {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[formControlName="facebook"]:focus,
+input[formControlName="telegram"]:focus,
+input[formControlName="tiktok"]:focus {
+  border-color: #09653a;
+  box-shadow: 0 0 0 0.2rem rgba(9, 101, 58, 0.25);
+}
+
+// Image upload styling
+.upload-section {
+  text-align: center;
+  padding: 1rem;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.upload-section:hover {
+  border-color: #09653a;
+  background-color: #f0f8f0;
+}
+
+// Card styling
+.card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border-radius: 0.5rem;
+}
+
+.card .card-body {
+  padding: 2rem;
+}

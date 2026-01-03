@@ -1,0 +1,144 @@
+<header class="fixed-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="assets/logo-transparent.png" height="60" alt=" Logo" appImageError>
+                <span class="ms-2 text-primary fw-bold fs-4"> {{ 'EPLFFC_COMMUNITY' | translate }}</span>
+            </a>
+            <button class="navbar-toggler" (click)="toggleNavbar()" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" [ngClass]="{'show': isNavbarCollapsed}" id="navbarNav">
+
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium hover-effect" href="/">{{ 'Home' | translate }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium hover-effect" href="/#about">{{ 'About_Us' | translate
+                            }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium hover-effect" href="/#donation">{{ 'Events' | translate
+                            }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium hover-effect" href="/#services">{{ 'Services' | translate
+                            }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium hover-effect" href="/#membership">{{ 'Membership' |
+                            translate }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium hover-effect" href="/#contact">{{ 'Contact' | translate
+                            }}</a>
+                    </li>
+
+                    <!-- Action Buttons -->
+                    <li class="nav-item d-flex align-items-center">
+                        <button class="btn btn-primary ms-2 rounded-pill shadow-sm" (click)="navigateToRegister()">
+                            {{ 'Be_a_Member' | translate }}
+                        </button>
+                        <a href="/auth/membership-login" class="btn btn-outline-primary ms-3 rounded-pill">
+
+                            {{ 'Login' | translate }}
+                        </a>
+                    </li>
+
+                    <!-- Language Switcher -->
+                    <li class="nav-item d-flex align-items-center justify-content-center mt-2">
+                        <div class="language-switcher">
+                            <i class="ti ti-globe me-2"></i>
+                            <a (click)="switchLanguage('en')" class="lang-link me-2">English</a>
+                            <span class="separator">|</span>
+                            <a (click)="switchLanguage('am')" class="lang-link ms-2">አማርኛ</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+
+        <section id="donation-box" class="section-padding bg-light shadow rounded" 
+        style="margin-top: 60px; background: linear-gradient(135deg, #f9f9f9, #e0f7fa); padding: 50px 0;"
+        >
+          <div class="container">
+            <div class="section-header text-center mb-5">
+              <h2 class="fw-bold text-primary display-5">
+                <i class="fas fa-hand-holding-heart me-2"></i> {{ 'Make_a_Donation' | translate }}
+              </h2>
+              <p class="text-muted fs-5">{{ 'Select an amount or enter your own.' | translate }}</p>
+              <hr class="divider mx-auto" style="width: 60px; border-top: 3px solid #007bff;">
+            </div>
+      
+            <div class="donation-options text-center">
+              <div class="amount-boxes d-flex justify-content-center flex-wrap gap-3">
+                <button class="amount-box btn btn-outline-primary btn-lg px-4 py-2 rounded-pill shadow-sm"
+                  *ngFor="let amount of presetAmounts" (click)="selectAmount(amount)"
+                  [class.selected]="selectedAmount === amount">
+                  {{ amount | currency:'ETB':'symbol-narrow' }}
+                </button>
+              </div>
+      
+              <div class="custom-amount my-4">
+                <label for="customAmount" class="form-label fw-semibold">
+                  {{ 'Enter a Custom Amount' | translate }}
+                </label>
+                <input type="number" id="customAmount" class="form-control form-control-lg text-center rounded-pill"
+                  placeholder="{{ 'Enter amount in Ethiopian Birr' | translate }}" [(ngModel)]="customAmount"
+                  (input)="clearSelectedAmount()" />
+              </div>
+      
+              <button class="btn btn-success btn-lg mt-3 px-5 py-2 rounded-pill shadow-lg"
+                [disabled]="!isDonationValid()" (click)="donate()">
+                <i class="fas fa-donate me-2"></i> {{ 'Donate' | translate }}
+              </button>
+            </div>
+          </div>
+        </section>
+    
+</main>
+
+
+<footer class="footer bg-primary text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="assets/logo.jpg" style="border-radius: 50%;" height="100" alt=" Logo" class="mb-3" appImageError>
+                <p>{{'Empowering_professionals_through_collaboration_and_growth'|translate}}</p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="text-white">{{'Quick_Links'|translate}}</h5>
+                <ul class="footer-links list-unstyled">
+                    <li><a href="#home" class="text-white">{{'Home'|translate}}</a></li>
+                    <li><a href="#about" class="text-white">{{'About_Us'|translate}}</a></li>
+                    <li><a href="#services" class="text-white">{{'Services'|translate}}</a></li>
+                    <li><a href="#membership" class="text-white">{{'Membership'|translate}}</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="text-white">{{'Contact_Info'|translate}}</h5>
+                <ul class="footer-contact list-unstyled">
+                    <li><fa-icon [icon]="faMapMarkerAlt"></fa-icon> Bisrate Gebriel Addis Ababa, Ethiopia</li>
+                    <li><fa-icon [icon]="faPhone"></fa-icon> +251 911 393 123 
+                     +251 939 003 838 
+                      +251 925 121 314</li>
+                    <li><fa-icon [icon]="faEnvelope"></fa-icon> <a
+                        href="mailto:abizeerfamily@gmail.com"> abizeerfamily&#64;gmail.com</a></li>
+                  </ul>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 EPLFFC Football Associatoins. All rights reserved.</p>
+            <br />
+            <p class="m-0"> Powerd By <a style="color:white">DAF-TECH Computer Engineering</a> </p>
+
+        </div>
+
+    </div>
+</footer>

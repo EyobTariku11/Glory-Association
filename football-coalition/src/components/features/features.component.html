@@ -1,0 +1,28 @@
+<section id="features" class="py-20 bg-black text-white">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-yellow-400 mb-12">{{ title || ('features.title' | transloco) }}</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <a routerLink="/tickets">
+        <div class="text-5xl mb-4">🎟️</div>
+        <h3 class="font-bold text-lg mb-2">{{ 'tickets.title' | transloco }}</h3>
+        <p class="text-sm text-gray-300">{{ 'tickets.ticketDescription' | transloco }}</p>
+      </a>
+      <a routerLink="/jerseys">
+        <div class="text-5xl mb-4">🧥</div>
+        <h3 class="font-bold text-lg mb-2">{{ 'jerseys.title' | transloco }}</h3>
+        <p class="text-sm text-gray-300">{{ 'jerseys.jerseyDescription' | transloco }}</p>
+      </a>
+      <a routerLink="/membership">
+        <div class="text-5xl mb-4">🙋</div>
+        <h3 class="font-bold text-lg mb-2">{{ 'membership.title' | transloco }}</h3>
+        <p class="text-sm text-gray-300">{{ 'features.membershipText' | transloco }}</p>
+      </a>
+      <a routerLink="/donations">
+        <div class="text-5xl mb-4">💖</div>
+        <h3 class="font-bold text-lg mb-2">{{ 'donations.title' | transloco }}</h3>
+        <p class="text-sm text-gray-300">{{ 'donations.donationDescription' | transloco }}</p>
+      </a>
+    </div>
+  </div>
+</section>

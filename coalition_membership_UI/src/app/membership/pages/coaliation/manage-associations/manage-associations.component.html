@@ -1,0 +1,117 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _> </a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            List
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="col-md-12 p-4 ">
+        <div class="col-md-12 text-end">
+            <span style="font-size: 18px;color:#3b2413"> Total :
+                {{associations.length}}
+            </span>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 ">
+                <!-- <input type="text" placeholder="search ..." class="form-control" style="font-size: 18px;"
+                    [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search"> -->
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+                <button class="btn btn-sm btn-outline-primary text-end" (click)="RegisterAssociation()"><i
+                        class="bi bi-plust"></i> Register </button>
+
+            </div>
+        </div>
+
+
+        <div class="table-responsive mt-3">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Name (EN)</th>
+                        <th>Name (AM)</th>
+                        <th>ArifPay Key</th>
+                        <th>Logo</th>
+                        <th>Phone Numbers</th>
+                        
+                        <th>Website</th>
+                        <th>Primary Color</th>
+                        <th>Secondary Color</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let association of associations">
+                        <td>{{ association.name }}</td>
+                        <td>{{ association.amharicName }}</td>
+                        <td>{{ association.arifPayKey }}</td>
+                        <td>
+                            <img [src]="getImage(association.logoPath)" alt="Logo" style="height: 40px;" appImageError>
+                        </td>
+                        <td>
+                            <span *ngFor="let phone of association.phoneNumbers; let last = last">
+                                {{ phone }}<span *ngIf="!last">, </span>
+                            </span>
+                        </td>
+                       
+                        <td>
+                            <a [href]="association.websiteLink" target="_blank">{{ association.websiteLink }}</a>
+                        </td>
+                        <td>
+                            <div [style.background]="association.primaryColor" class="rounded px-2 text-white">
+                                {{ association.primaryColor }}
+                            </div>
+                        </td>
+                        <td>
+                            <div [style.background]="association.secondaryColor" class="rounded px-2 text-white">
+                                {{ association.secondaryColor }}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                              <!-- Users Button -->
+                              <button class="btn btn-sm btn-outline-primary rounded-circle" 
+                                      (click)="AssociationUserList(association.id)" 
+                                      title="View Users">
+                                <i class="ti ti-user"></i>
+                              </button>
+                          
+                              <!-- Edit Button -->
+                              <button type="button" 
+                                      class="btn btn-sm btn-outline-warning rounded-circle" 
+                                      (click)="updateAssociation(association)" 
+                                      title="Edit Association">
+                                <i class="ti ti-pencil"></i>
+                              </button>
+                          
+                              <!-- Delete Button -->
+                              <button type="button" 
+                                      class="btn btn-sm btn-outline-danger rounded-circle" 
+                                      (click)="removeAssociation(association.id)" 
+                                      title="Delete Association">
+                                <i class="ti ti-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                          
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

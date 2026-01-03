@@ -1,0 +1,98 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _>Contact us </a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            Message List
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+
+    <ul class="nav nav-tabs" id="list-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " id="list-mailtab-2" data-bs-toggle="tab" href="#list-mail-2" role="tab"
+                aria-controls="list-mail-2" aria-selected="false">
+                Contact Us Messages Overview
+            </a>
+        </li>
+    </ul>
+
+
+
+    <div class="d-flex justify-content-center">
+        <div class="col-md-12 p-4 bg-light shadow-sm rounded">
+        
+                <div class="row">
+
+
+
+                    <!-- <div class="col-3">
+                <div class="form-floating mb-3">
+
+                    <input type="text" placeholder="search ..." class="form-control" style="font-size: 18px;"
+                        [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search">
+
+                    <label for="floatingInput">Filter :</label>
+                </div>
+            </div> -->
+
+
+
+
+                </div>
+
+
+                <table class="custom-table mt-4">
+                    <thead>
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Created Date</th>
+
+                            <th *ngIf="userView.role.includes('SuperAdmin')">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngFor="let item of messages">
+                            <td>{{item.name}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.subject}}</td>
+                            <td>{{item.message}}</td>
+                            <td>{{item.createdDate | date:"dd MMM yyyy"}}</td>
+
+
+                            <td *ngIf="userView.role.includes('SuperAdmin')">
+
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+                <div class="card flex justify-content-center">
+                </div>
+            </div>
+
+ 
+
+    </div>
+
+</div>

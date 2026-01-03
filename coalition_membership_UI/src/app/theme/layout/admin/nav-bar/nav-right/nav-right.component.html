@@ -1,0 +1,90 @@
+<div class="ms-auto">
+  <ul class="list-unstyled">
+    <li *ngIf="currentUser.role.toUpperCase() == 'MEMBER'">
+      <div class="dropdown pc-h-item" ngbDropdown>
+        <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
+          href="javascript:" ngbDropdownToggle>
+          <i class="ti ti-bell"></i>
+          <span class="badge bg-warning  " style="font-size: 10px;">{{events&&events.length}}</span>
+        </a>
+
+        <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
+          <div class="dropdown-header">
+            <h5>
+              All Notification
+              <span class="badge bg-warning rounded-pill ms-1">{{events&&events.length}}</span>
+            </h5>
+          </div>
+          <hr />
+          <ng-scrollbar style="height: calc(60vh - 215px)" visibility="hover">
+            <div class="dropdown-header px-0 text-wrap">
+              <div class="list-group list-group-flush w-100">
+
+                <a *ngFor="let item of events" href="/members/member-event" style="cursor: pointer;" class="list-group-item list-group-item-action">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <img [src]="getImage(item.imagePath)" alt="user-image" class="user-avtar" appImageError>
+                    </div>
+                    <div class="flex-grow-1 ms-1">
+                      <span class="float-end text-muted">{{item.createdDate|date:"dd MMM YYYY"}} </span>
+                      <h5>{{item.title}}</h5>
+                      <p class="text-body fs-6 description">{{item.description}} </p>
+                      <p *ngIf="item.isDonation">
+                        {{"Amount" | translate}}: {{ item.amount | currency:'ETB ':'symbol-narrow' }}
+                      </p>
+                      <p *ngIf="item.isDonation">
+                        {{"Amount_Collected" | translate}}: {{ item.amountCollected | currency:'ETB ':'symbol-narrow' }}
+                      </p>
+                      <div class="badge rounded-pill bg-light-success" (click)="onDonate(item)">Donate</div>
+
+                    </div>
+                  </div>
+                </a>
+
+              </div>
+            </div>
+          </ng-scrollbar>
+          <div class="dropdown-divider"></div>
+
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="dropdown pc-h-item header-user-profile" ngbDropdown>
+        <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
+          href="javascript:" ngbDropdownToggle>
+          <img [src]="getProfileImage()" alt="user-image" class="user-avtar" appImageError>
+          <span>
+            <i class="ti ti-settings"></i>
+          </span>
+        </a>
+        <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
+          <div class="dropdown-header" style="max-height: 180px;">
+            <h4 class="greeting-text"> {{greeting}}, <span class="user-name small text-muted text-secondary" 
+                [title]="currentUser.fullName.toUpperCase()">
+                {{getDisplayName(currentUser.fullName, 25)}}</span> </h4>
+
+
+            <hr />
+            <ng-scrollbar style="height: 200px" visibility="hover">
+
+
+              <a [routerLink]="['/guest/register']" class="dropdown-item">
+                <i class="ti ti-settings"></i>
+                <span>Account Profile</span>
+              </a>
+              <!-- <a href="javascript:" class="dropdown-item">
+                <i class="ti ti-user"></i>
+                <span>Social Profile</span>
+              </a> -->
+              <a (click)="logOut()" class="dropdown-item">
+                <i class="ti ti-logout"></i>
+                <span>Logout</span>
+              </a>
+            </ng-scrollbar>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

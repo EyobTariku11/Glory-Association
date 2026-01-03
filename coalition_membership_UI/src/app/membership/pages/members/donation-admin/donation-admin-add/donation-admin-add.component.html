@@ -1,0 +1,101 @@
+<div class=" card ">
+    <div class="modal-header">
+        <h5>{{ isEditing ? 'Edit Donation Event' : 'Add Donation Event' }}</h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+
+
+
+
+        <div class="card-body">
+            <form [formGroup]="donationForm" (ngSubmit)="addOrUpdate()">
+
+
+                <div class="row">
+                    <div class="col-4">
+
+                        <img [src]="getImage2()" alt="Profile" style="width:100%;" appImageError>
+                        <input #file (change)="onUpload($event)" type="file" style="display: none; max-height: 150px;"
+                            accept="image/*" />
+                        <div class="pt-2">
+                            <a (click)="file.click()" style="width: 100%;" class="btn btn-outline-primary btn-sm"
+                                title="Upload new profile image">
+                                <i class="bi bi-upload"></i> Upload Image
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <div class="col-8">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="title">Title</label>
+                                <input type="text" id="title" class="form-control" formControlName="title" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="subTitle">Subtitle</label>
+                                <input type="text" id="subTitle" class="form-control" formControlName="subTitle" />
+                            </div>
+
+
+                            <div class="col-md-3 mt-2">
+                                <label for="isDonation">Is Donation</label>
+                                <select id="isDonation" class="form-control" formControlName="isDonation"
+                                    (change)="onDonationChange()">
+                                    <option [value]="true">Yes</option>
+                                    <option [value]="false">No</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mt-2" *ngIf="donationForm.get('isDonation')?.value">
+                                <label>Donation Target Area</label>
+                                <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="['et']"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true" [searchCountryField]="[
+                                    SearchCountryField.Iso2,
+                                    SearchCountryField.Name
+                                  ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Ethiopia"
+                                    [maxLength]="15" [phoneValidation]="true" [separateDialCode]="true"
+                                    [numberFormat]="PhoneNumberFormat.National"
+                                    (countryChange)="onCountryChange($event)" formControlName="countryCode">
+                                </ngx-intl-tel-input>
+                            </div>
+
+                            <div class="col-md-3 mt-2" *ngIf="donationForm.get('isDonation')?.value">
+                                <label for="amount">Amount ({{countryType === 'ETHIOPIAN' ? 'ETB' : 'USD'}})</label>
+                                <input type="number" id="amount" class="form-control" formControlName="amount" />
+                            </div>
+
+                            <div class="col-md-12 mt-2">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" rows="10" style="height: auto;"
+                                    formControlName="description"></textarea>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="modal-footer mt-2">
+                    <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="donationForm.invalid">
+                        {{ isEditing ? 'Update' : 'Add' }} Events
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+
+
+    </div>
+</div>

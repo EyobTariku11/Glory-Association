@@ -1,0 +1,120 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title"><span class="text-success" style="font-size: 18px;font-weight: bolder;"> Register Member
+      </span>
+    </h5>
+    <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+      aria-label="Close"></button>
+  </div>
+
+  <div class="card">
+
+    <div class="card p-4">
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="row mb-3">
+          <div class="col-md-4 mt-2">
+            <div class="form-floating">
+              <input type="text" class="form-control " id="firstName" formControlName="firstName"
+                placeholder="First Name" />
+              <label for="firstName">First Name</label>
+            </div>
+          </div>
+          <div class="col-md-4 mt-2">
+            <div class="form-floating">
+              <input type="text" class="form-control " id="lastName" formControlName="lastName"
+                placeholder="Last Name" />
+              <label for="lastName">Last Name</label>
+            </div>
+          </div>
+          <div class="col-md-4 mt-2">
+            <div class="form-floating">
+              <select class="form-control" formControlName="gender">
+                <option value=""></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <label for="gender">Gender</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6 mt-2">
+            <div class="form-floating">
+              <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="['et']"
+                [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                [searchCountryField]="[
+                SearchCountryField.Iso2,
+                SearchCountryField.Name
+              ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Ethiopia" [maxLength]="15"
+                [phoneValidation]="true" [separateDialCode]="true" [numberFormat]="PhoneNumberFormat.National"
+                (change)="checkIfPhoneNumberExist()" (countryChange)="onCountryChange($event)"
+                formControlName="phoneNumber">
+              </ngx-intl-tel-input>
+
+              <!-- Validation Messages -->
+              <div
+                *ngIf="registerForm.controls['phoneNumber'].invalid && (registerForm.controls['phoneNumber'].touched || registerForm.controls['phoneNumber'].dirty)"
+                class="text-danger mt-2">
+                <small *ngIf="registerForm.controls['phoneNumber'].hasError('required')">
+                  Phone number is required.
+                </small>
+                <small *ngIf="registerForm.controls['phoneNumber'].hasError('validatePhoneNumber')">
+                  Please enter a valid phone number.
+                </small>
+                <small *ngIf="registerForm.controls['phoneNumber'].hasError('maxlength')">
+                  Phone number must not exceed 15 characters.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mt-2">
+            <div class="form-floating">
+              <select class="form-control " id="region" formControlName="RegionId">
+                <option value="00000000-0000-0000-0000-000000000000"></option>
+                <option *ngFor="let item of regions" [value]="item.id">{{ item.name }}</option>
+              </select>
+              <label for="region">{{countryType==='ETHIOPIAN'?'Regions':'Country'}} </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6 mt-2">
+            <div class="form-floating mb-3">
+              <select class="form-control" #category (change)="getMemberships(category.value)">
+                <option></option>
+                <option value=0>WEEKLY</option>
+                <option value=1>MONTHLY</option>
+                <option value=2>YEARLY</option>
+              </select>
+              <label for="category">Membership Category</label>
+            </div>
+          </div>
+          <div class="col-md-6 mt-2">
+            <div class="form-floating">
+              <select class="form-control " formControlName="membershipType">
+                <option></option>
+                <option *ngFor="let item of memberships" [value]="item.id">{{ item.name }}</option>
+              </select>
+              <label for="membershipType">Membership Type</label>
+            </div>
+            <!-- Availability notice for foreign users -->
+            <div *ngIf="countryType === 'FOREIGN' && memberships.length === 0" class="text-warning mt-1">
+              <small><i class="fas fa-info-circle me-1"></i> Membership type for foreign countries isn't available
+                yet</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid mt-4">
+          <button type="submit" [disabled]="!registerForm.valid"
+            class="btn btn-primary btn-lg  shadow-lg">Register</button>
+        </div>
+        <hr />
+
+      </form>
+    </div>
+  </div>
+</div>

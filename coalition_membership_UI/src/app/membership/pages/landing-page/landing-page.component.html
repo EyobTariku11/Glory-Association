@@ -1,0 +1,672 @@
+<!-- -landing.component.html -->
+<header class="fixed-top shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center">
+        <img src="assets/logo-transparent.png" height="60" alt=" Logo" appImageError>
+        <span class="ms-2 text-primary fw-bold fs-4"> {{ 'EPLFFC_COMMUNITY' | translate }}</span>
+      </a>
+      <button class="navbar-toggler" (click)="toggleNavbar()" aria-controls="navbarNav" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [ngClass]="{'show': isNavbarCollapsed}" id="navbarNav">
+
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium hover-effect" href="#home">{{ 'Home' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium hover-effect" href="#about">{{ 'About_Us' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium hover-effect" href="#donation">{{ 'Events' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium hover-effect" href="#services">{{ 'Services' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium hover-effect" href="#membership">{{ 'Membership' | translate }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium hover-effect" href="#contact">{{ 'Contact' | translate }}</a>
+          </li>
+
+          <!-- Action Buttons -->
+          <li class="nav-item d-flex align-items-center">
+            <button class="btn btn-primary ms-2 rounded-pill shadow-sm" (click)="navigateToRegister()">
+              {{ 'Be_a_Member' | translate }}
+            </button>
+            <a href="/auth/membership-login" class="btn btn-outline-primary ms-3 rounded-pill">
+
+              {{ 'Login' | translate }}
+            </a>
+          </li>
+
+          <!-- Language Switcher -->
+          <li class="nav-item d-flex align-items-center justify-content-center mt-2">
+            <div class="language-switcher">
+              <i class="ti ti-globe me-2"></i>
+              <a (click)="switchLanguage('en')" class="lang-link me-2">English</a>
+              <span class="separator">|</span>
+              <a (click)="switchLanguage('am')" class="lang-link ms-2">አማርኛ</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero Section -->
+  <!-- Enhanced Hero Section -->
+  <section id="home" class="hero-section position-relative overflow-hidden " style="margin-top: 60px;">
+    <div class="hero-background"></div>
+    <div class="container position-relative">
+      <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"
+            aria-current="true"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
+
+        <div class="carousel-inner">
+          <!-- Slide 1 -->
+          <div class="carousel-item active">
+            <div class="row align-items-center min-vh-75">
+              <div class="col-lg-6 hero-content fade-in-left">
+                <h1 class="display-3 fw-bold text-gradient mb-3">
+
+                  {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.title)|| "Welcome to
+                  EPLFFC"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ EPLFFC እንኳን በደህና መጡ") }}
+
+                  <span class="highlight-bar"></span>
+                </h1>
+                <p class="lead mb-4 text-secondary fw-medium">
+                  {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.description)|| "Empowering
+                  professionals through collaboration and growth. Join our community of innovators and leaders."):
+                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ EPLFFC እንኳን በደህና መጡ በትብብር እና በማደግ
+                  ባለሙያዎችን ማበረታታት. የፈጠራ ባለሙያዎች እና መሪዎች ማህበረሰባችንን ይቀላቀሉ።") }}
+                </p>
+                <div class="hero-buttons">
+                  <button class="btn btn-primary btn-lg pulse-btn" (click)="navigateToRegister()">
+                    {{'Join_Now'|translate}}
+                    <i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                  <a class="btn btn-outline-primary btn-lg ms-3" href="#about">
+                    {{'Learn_More'|translate}}
+                    <i class="fas fa-info-circle ms-2"></i>
+                  </a>
+                </div>
+                <div class="hero-stats mt-4">
+                  <div class="stat-item">
+                    <span class="stat-number">{{(companyProfileDto&&companyProfileDto.membersCount)|| '1000'}}+</span>
+                    <span class="stat-label"> {{'Members'|translate}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">{{(companyProfileDto&&companyProfileDto.eventsPerYear) || '100'}}+</span>
+                    <span class="stat-label"> {{'Events'|translate}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">ETB {{companyProfileDto&&companyProfileDto.donationCount}} </span>
+                    <span class="stat-label"> {{'Donation'|translate}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 hero-image fade-in-right">
+                <div class="image-wrapper">
+                  <img *ngIf="companyProfileDto"
+                    [src]="getImage(companyProfileDto&&companyProfileDto.dashboardImagePath)"
+                    class="img-fluid rounded-lg hero-img" alt="Hero Image" appImageError>
+                  <img *ngIf="!companyProfileDto" src="../../../../assets/hero.jpg" height="50"
+                    class="img-fluid rounded shadow-sm mb-4" alt="About Us" appImageError>
+
+                  <div class="floating-card card-1">
+                    <i class="fas fa-users"></i>
+                    <span> {{'Growing_Community'|translate}}</span>
+                  </div>
+                  <div class="floating-card card-2">
+                    <i class="fas fa-chart-line"></i>
+                    <span> {{'Professional_Growth'|translate}} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="carousel-item ">
+            <div class="row align-items-center min-vh-75">
+              <div class="col-lg-6 hero-content fade-in-left">
+                <h1 class="display-3 fw-bold text-gradient mb-3">
+
+                  {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.title)|| "Welcome to
+                  EPLFFC"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ EPLFFC እንኳን በደህና መጡ") }}
+
+                  <span class="highlight-bar"></span>
+                </h1>
+                <p class="lead mb-4 text-secondary fw-medium">
+                  {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.description)|| "Empowering
+                  professionals through collaboration and growth. Join our community of innovators and leaders."):
+                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ EPLFFC እንኳን በደህና መጡ በትብብር እና በማደግ
+                  ባለሙያዎችን ማበረታታት. የፈጠራ ባለሙያዎች እና መሪዎች ማህበረሰባችንን ይቀላቀሉ።") }}
+                </p>
+                <div class="hero-buttons">
+                  <button class="btn btn-primary btn-lg pulse-btn" (click)="navigateToRegister()">
+                    {{'Join_Now'|translate}}
+                    <i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                  <button class="btn btn-outline-primary btn-lg ms-3">
+                    {{'Learn_More'|translate}}
+                    <i class="fas fa-info-circle ms-2"></i>
+                  </button>
+                </div>
+                <div class="hero-stats mt-4">
+                  <div class="stat-item">
+                    <span class="stat-number">{{(companyProfileDto&&companyProfileDto.membersCount)||'1000'}}+</span>
+                    <span class="stat-label"> {{'Members'|translate}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">{{(companyProfileDto&&companyProfileDto.eventsPerYear) || '100'}}+</span>
+                    <span class="stat-label"> {{'Events'|translate}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">ETB {{companyProfileDto&&companyProfileDto.donationCount}} </span>
+                    <span class="stat-label"> {{'Donation'|translate}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 hero-image fade-in-right">
+                <div class="image-wrapper">
+                  <img *ngIf="companyProfileDto"
+                    [src]="getImage(companyProfileDto&&companyProfileDto.dashboardImagePath)"
+                    class="img-fluid rounded-lg hero-img" alt="Hero Image" appImageError>
+                  <img *ngIf="!companyProfileDto" src="../../../../assets/hero.jpg" height="50"
+                    class="img-fluid rounded shadow-sm mb-4" alt="About Us" appImageError>
+
+                  <div class="floating-card card-1">
+                    <i class="fas fa-users"></i>
+                    <span> {{'Growing_Community'|translate}}</span>
+                  </div>
+                  <div class="floating-card card-2">
+                    <i class="fas fa-chart-line"></i>
+                    <span> {{'Professional_Growth'|translate}} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="carousel-item ">
+            <div class="row align-items-center min-vh-75">
+              <div class="col-lg-6 hero-content fade-in-left">
+                <h1 class="display-3 fw-bold text-gradient mb-3">
+
+                  {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.title)|| "Welcome to
+                  EPLFFC"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ EPLFFC እንኳን በደህና መጡ") }}
+
+                  <span class="highlight-bar"></span>
+                </h1>
+                <p class="lead mb-4 text-secondary fw-medium">
+                  {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.description)|| "Empowering
+                  professionals through collaboration and growth. Join our community of innovators and leaders."):
+                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ EPLFFC እንኳን በደህና መጡ በትብብር እና በማደግ
+                  ባለሙያዎችን ማበረታታት. የፈጠራ ባለሙያዎች እና መሪዎች ማህበረሰባችንን ይቀላቀሉ።") }}
+                </p>
+                <div class="hero-buttons">
+                  <button class="btn btn-primary btn-lg pulse-btn" (click)="navigateToRegister()">
+                    {{'Join_Now'|translate}}
+                    <i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                  <button class="btn btn-outline-primary btn-lg ms-3">
+                    {{'Learn_More'|translate}}
+                    <i class="fas fa-info-circle ms-2"></i>
+                  </button>
+                </div>
+                <div class="hero-stats mt-4">
+                  <div class="stat-item">
+                    <span class="stat-number">{{(companyProfileDto&&companyProfileDto.membersCount)||'1000'}}+</span>
+                    <span class="stat-label"> {{'Members'|translate}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">{{(companyProfileDto&&companyProfileDto.eventsPerYear) || '100'}}+</span>
+                    <span class="stat-label"> {{'Events'|translate}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">ETB {{companyProfileDto&&companyProfileDto.donationCount}} </span>
+                    <span class="stat-label"> {{'Donation'|translate}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 hero-image fade-in-right">
+                <div class="image-wrapper">
+                  <img *ngIf="companyProfileDto"
+                    [src]="getImage(companyProfileDto&&companyProfileDto.dashboardImagePath)"
+                    class="img-fluid rounded-lg hero-img" alt="Hero Image" appImageError>
+                  <img *ngIf="!companyProfileDto" src="../../../../assets/hero.jpg" height="50"
+                    class="img-fluid rounded shadow-sm mb-4" alt="About Us" appImageError>
+
+                  <div class="floating-card card-1">
+                    <i class="fas fa-users"></i>
+                    <span> {{'Growing_Community'|translate}}</span>
+                  </div>
+                  <div class="floating-card card-2">
+                    <i class="fas fa-chart-line"></i>
+                    <span> {{'Professional_Growth'|translate}} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- Custom Carousel Controls -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Advertisement Banner -->
+  <section class="advertisement-section py-4">
+    <div class="container">
+      <app-advertisement pageType="homepage" position="top" type="banner" [maxCount]="2"></app-advertisement>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section-padding">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h2 class="fw-bold text-primary">{{'About_Us'|translate}}</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <img *ngIf="companyProfileDto" [src]="getImage(companyProfileDto&&companyProfileDto.aboutLogoPath)"
+            height="50" class="img-fluid rounded shadow-sm mb-4" alt="About Us" appImageError>
+
+          <img *ngIf="!companyProfileDto" src="../../../../assets/logo-transparent.png" height="50"
+            class="img-fluid rounded shadow-sm mb-4" alt="About Us" appImageError>
+        </div>
+        <div class="col-md-6">
+          <h3 class="text-secondary">{{'Our_Story'|translate}}</h3>
+          <div *ngIf="companyProfileDto&&selectedLanguage=='en'"
+            [innerHTML]="companyProfileDto&&companyProfileDto.aboutUs">
+
+          </div>
+          <div *ngIf="companyProfileDto&&selectedLanguage=='am'"
+            [innerHTML]="companyProfileDto&&companyProfileDto.localAboutUs">
+
+          </div>
+
+          <div *ngIf="!companyProfileDto&&selectedLanguage=='en'">
+
+            <p>
+               is dedicated to fostering professional growth and excellence in our community.
+              We bring together industry leaders, experts, and ambitious professionals.
+               is dedicated to fostering professional growth and excellence in our community.
+              We bring together industry leaders, experts, and ambitious professionals.
+            </p>
+            <br />
+            <p>
+               is dedicated to fostering professional growth and excellence in our community.
+              We bring together industry leaders, experts, and ambitious professionals.
+               is dedicated to fostering professional growth and excellence in our community.
+              We bring together industry leaders, experts, and ambitious professionals.
+               is dedicated to fostering professional growth and excellence in our community. </p>
+            <br />
+            <p>
+              We bring together industry leaders, experts, and ambitious professionals.
+               is dedicated to fostering professional growth and excellence in our community.
+              We bring together industry leaders, experts, and ambitious professionals.
+               is dedicated to fostering professional growth and excellence in our community.
+              We bring together industry leaders, experts, and ambitious professionals.</p>
+          </div>
+          <div *ngIf="!companyProfileDto&&selectedLanguage=='am'">
+
+            አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ ቁርጠኛ ነው። የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች
+            ሰብስበናል።
+
+            አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ ቁርጠኛ ነው። የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች
+            ሰብስበናል።
+
+            አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ ቁርጠኛ ነው። የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች
+            ሰብስበናል።
+
+            አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ ቁርጠኛ ነው። የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች
+            ሰብስበናል። አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ ቁርጠኛ ነው።
+
+            የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች ሰብስበናል። አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ ቁርጠኛ
+            ነው። የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች ሰብስበናል። አቢዘር በማህበረሰባችን ውስጥ ሙያዊ እድገትን እና የላቀ ደረጃን ለማሳደግ
+            ቁርጠኛ ነው። የኢንዱስትሪ መሪዎችን፣ ባለሙያዎችን እና ከፍተኛ ፍላጎት ያላቸውን ባለሙያዎች ሰብስበናል።
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-6">
+              <div class="stat-box bg-light text-center py-3 rounded shadow-sm">
+                <h4 class="text-primary fw-bold">{{(companyProfileDto&&companyProfileDto.membersCount)||'1000'}}+</h4>
+                <p class="text-muted">{{'Active_Members'|translate}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-box bg-light text-center py-3 rounded shadow-sm">
+                <h4 class="text-primary fw-bold">{{(companyProfileDto&&companyProfileDto.eventsPerYear)||'100'}}+</h4>
+                <p class="text-muted">{{'Events_Per_Year'|translate}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="donation" class="section-padding bg-light">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h2 class="fw-bold text-primary">{{ 'Donation_Events' | translate }}</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div id="donationEventsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row">
+              <div class="col-md-3" *ngFor="let event of donationEvents.slice(0, 4)">
+                <div class="donation-event-card">
+                  <img [src]="getImage(event.imagePath)" alt="{{ event.title }}" class="d-block w-100" appImageError>
+                  <h3>{{ event.title }}</h3>
+                  <p *ngIf="event.subTitle">{{ event.subTitle }}</p>
+                  <p>{{ event.description }}</p>
+                  <p *ngIf="event.isDonation">
+                    {{"Amount" | translate}}: {{ event.amount | currency:'ETB ':'symbol-narrow' }}
+                  </p>
+                  <p *ngIf="event.isDonation">
+                    {{"Amount_Collected" | translate}}: {{ event.amountCollected | currency:'ETB ':'symbol-narrow' }}
+                  </p>
+                  <button *ngIf="event.isDonation" (click)="onDonate(event)" class="btn btn-outline-primary">
+                    {{ 'Donate' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Slide (from 4th to 8th event) -->
+          <div class="carousel-item">
+            <div class="row">
+              <div class="col-md-3" *ngFor="let event of donationEvents.slice(4, 8)">
+                <div class="donation-event-card">
+                  <img [src]="getImage(event.imagePath)" alt="{{ event.title }}" class="d-block w-100" appImageError>
+                  <h3>{{ event.title }}</h3>
+                  <p *ngIf="event.subTitle">{{ event.subTitle }}</p>
+                  <p>{{ event.description }}</p>
+                  <p *ngIf="event.isDonation">
+                    {{"Amount" | translate}}: {{ event.amount | currency:'ETB ':'symbol-narrow' }}
+                  </p>
+                  <p *ngIf="event.isDonation">
+                    {{"Amount_Collected" | translate}}: {{ event.amountCollected | currency:'ETB ':'symbol-narrow' }}
+                  </p>
+                  <button *ngIf="event.isDonation" (click)="onDonate(event)" class="btn btn-outline-primary">
+                    {{ 'Donate' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#donationEventsCarousel"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">{{ 'Previous' | translate }}</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#donationEventsCarousel"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">{{ 'Next' | translate }}</span>
+        </button>
+
+        <!-- Show All Button -->
+        <div class="text-center mt-3">
+          <button class="btn btn-primary" (click)="showAllEvents()">
+            {{ 'Show_All' | translate }}
+          </button>
+        </div>
+      </div>
+
+
+
+    </div>
+  </section>
+
+  <!-- Inline Advertisement -->
+  <section class="advertisement-section py-4">
+    <div class="container">
+      <app-advertisement pageType="homepage" position="inline" type="inline" [maxCount]="1"></app-advertisement>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section-padding ">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h2 class="fw-bold text-primary">{{'Our_Services_for_Orphans'|translate}}</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+
+          <div class="service-card text-center p-4 shadow-sm rounded bg-white">
+            <div class="icon-box mb-3">
+              <i class="ti ti-home fa-2x text-primary"></i>
+            </div>
+            <h4 class="fw-bold">{{'Shelter'|translate}}</h4>
+            <p>{{'Providing_a_safe_and_loving_home_for_orphaned_children'|translate}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="service-card text-center p-4 shadow-sm rounded bg-white">
+            <div class="icon-box mb-3">
+              <i class="ti ti-book fa-2x text-primary"></i>
+            </div>
+            <h4 class="fw-bold">{{'Education'|translate}}</h4>
+            <p>{{'Offering_access_to_quality_education_and_learning_resources'|translate}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="service-card text-center p-4 shadow-sm rounded bg-white">
+            <div class="icon-box mb-3">
+              <i class="ti ti-heart fa-2x text-primary"></i>
+            </div>
+            <h4 class="fw-bold">{{'Counseling'|translate}}</h4>
+            <p>{{'Providing_emotional_and_psychological_support_for_orphans'|translate}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="donation-box" class="section-padding bg-light  rounded" 
+        style="padding: 50px 0;"
+        >
+          <div class="container">
+            <div class="section-header text-center mb-5">
+              <h2 class="fw-bold text-primary display-5">
+                <i class="fas fa-hand-holding-heart me-2"></i> {{ 'Make_a_Donation' | translate }}
+              </h2>
+              <p class="text-muted fs-5">{{ 'Select an amount or enter your own.' | translate }}</p>
+              <hr class="divider mx-auto" style="width: 60px; border-top: 3px solid #007bff;">
+            </div>
+      
+            <div class="donation-options text-center">
+              <div class="amount-boxes d-flex justify-content-center flex-wrap gap-3">
+                <button class="amount-box btn btn-outline-primary btn-lg px-4 py-2 rounded-pill shadow-sm"
+                  *ngFor="let amount of presetAmounts" (click)="selectAmount(amount)"
+                  [class.selected]="selectedAmount === amount">
+                  {{ amount | currency:'ETB':'symbol-narrow' }}
+                </button>
+              </div>
+      
+              <div class="custom-amount my-4">
+                <label for="customAmount" class="form-label fw-semibold">
+                  {{ 'Enter a Custom Amount' | translate }}
+                </label>
+                <input type="number" id="customAmount" class="form-control form-control-lg text-center rounded-pill"
+                  placeholder="{{ 'Enter amount in Ethiopian Birr' | translate }}" [(ngModel)]="customAmount"
+                  (input)="clearSelectedAmount()" />
+              </div>
+      
+              <button class="btn btn-success btn-lg mt-3 px-5 py-2 rounded-pill shadow-lg"
+                [disabled]="!isDonationValid()" (click)="donate()">
+                <i class="fas fa-donate me-2"></i> {{ 'Donate' | translate }}
+              </button>
+            </div>
+          </div>
+        </section>
+
+
+  <!-- Membership Section -->
+  <section id="membership" class="section-padding">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h2 class="fw-bold text-primary">{{'Membership_Subscriptions'|translate}}</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="membership-card text-center shadow-sm p-4 rounded bg-light">
+            <h3 class="fw-bold">{{'Weekly'|translate}}</h3>
+            <div class="price mb-3">50 {{'ETB'|translate}}/{{'Week'|translate}}</div>
+            <ul class="benefits-list list-unstyled text-start px-4">
+              <li>{{'Network_Access'|translate}}</li>
+              <li>{{'Monthly_Newsletters'|translate}}</li>
+              <li>{{'Event_Discounts'|translate}}</li>
+            </ul>
+            <button class="btn btn-outline-primary mt-3"
+              (click)="navigateToRegister()">{{'Select_Plan'|translate}}</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="membership-card featured text-center shadow-lg p-4 rounded bg-white position-relative">
+            <div class="badge bg-primary text-white position-absolute top-0 start-50 translate-middle mt-4">
+              {{'Popular'|translate}}
+            </div>
+            <h3 class="fw-bold mt-2">{{'Monthly'|translate}}</h3>
+            <div class="price mb-3">{{'ETB'|translate}} 100/{{'month'|translate}}</div>
+            <ul class="benefits-list list-unstyled text-start px-4">
+              <li>{{'All_Basic_Benefits'|translate}}</li>
+              <li>{{'Training_Access'|translate}}</li>
+              <li>{{'Mentorship_Program'|translate}}</li>
+              <li>{{'Priority_Support'|translate}}</li>
+            </ul>
+            <button class="btn btn-primary mt-3" (click)="navigateToRegister()">{{'Select_Plan'|translate}}</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="membership-card text-center shadow-sm p-4 rounded bg-light">
+            <h3 class="fw-bold">{{'Yearly'|translate}}</h3>
+            <div class="price mb-3">{{'Contact_Us'|translate}}</div>
+            <ul class="benefits-list list-unstyled text-start px-4">
+              <li>{{'All_Professional_Benefits'|translate}}</li>
+              <li>{{'Custom_Solutions'|translate}}</li>
+              <li>{{'Dedicated_Support'|translate}}</li>
+              <li>{{'Team_Management'|translate}}</li>
+            </ul>
+            <button class="btn btn-outline-primary mt-3" (click)="contactSales()">{{'Contact_Sales'|translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section-padding bg-light">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h2 class="fw-bold text-primary">{{'Contact_Us'|translate}}</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="contact-card p-4 shadow-sm rounded bg-white">
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <input type="text" class="form-control" [placeholder]="'Your_Name'|translate" formControlName="name">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <input type="email" class="form-control" [placeholder]="'Your_Email'|translate"
+                    formControlName="email">
+                </div>
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" [placeholder]="'Subject'|translate" formControlName="subject">
+              </div>
+              <div class="mb-3">
+                <textarea class="form-control" rows="5" [placeholder]="'Message'|translate"
+                  formControlName="message"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100"
+                [disabled]="!contactForm.valid">{{'Send_Message'|translate}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Advertisement Banner -->
+  <section class="advertisement-section py-4">
+    <div class="container">
+      <app-advertisement pageType="homepage" position="bottom" type="banner" [maxCount]="2"></app-advertisement>
+    </div>
+  </section>
+</main>
+
+<footer class="footer bg-primary text-white pt-5 pb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <img src="assets/logo.jpg" style="border-radius: 50%;" height="100" alt=" Logo" class="mb-3" appImageError>
+        <p>{{'Empowering_professionals_through_collaboration_and_growth'|translate}}</p>
+      </div>
+      <div class="col-md-4">
+        <h5 class="text-white">{{'Quick_Links'|translate}}</h5>
+        <ul class="footer-links list-unstyled">
+          <li><a href="#home" class="text-white">{{'Home'|translate}}</a></li>
+          <li><a href="#about" class="text-white">{{'About_Us'|translate}}</a></li>
+          <li><a href="#services" class="text-white">{{'Services'|translate}}</a></li>
+          <li><a href="#membership" class="text-white">{{'Membership'|translate}}</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5 class="text-white">{{'Contact_Info'|translate}}</h5>
+        <ul class="footer-contact list-unstyled">
+          <li><fa-icon [icon]="faMapMarkerAlt"></fa-icon> Bisrate Gebriel Addis Ababa, Ethiopia</li>
+          <li><fa-icon [icon]="faPhone"></fa-icon> +251 911 393 123 
+           +251 939 003 838 
+            +251 925 121 314</li>
+          <li><fa-icon [icon]="faEnvelope"></fa-icon> <a
+              href="mailto:abizeerfamily@gmail.com"> abizeerfamily&#64;gmail.com</a></li>
+        </ul>
+
+      </div>
+    </div>
+    <hr class="bg-light">
+    <div class="text-center">
+      <p class="mb-0">&copy; 2025 EPLFFC Football Associatoins. All rights reserved.</p>
+      <br />
+      <p class="m-0"> Powerd By <a style="color:white">DAF-TECH Computer Engineering</a> </p>
+
+    </div>
+
+  </div>
+</footer>

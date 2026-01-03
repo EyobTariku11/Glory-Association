@@ -1,0 +1,102 @@
+.dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+.pagination {
+
+
+    --bs-pagination-hover-bg: #cee0d8 !important;
+    --bs-pagination-active-bg:#cee0d8 !important;
+    --bs-pagination-hover-border-color: #03683a !important;
+    --bs-pagination-active-border-color:#03683a !important
+}
+
+/* Mobile Fix: Ensure page-header is fully visible */
+@media (max-width: 1024px) {
+  .page-header {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1;
+    margin-bottom: 20px;
+    padding: 15px 15px !important;
+    overflow: visible !important;
+    
+    .page-block {
+      width: 100%;
+      overflow: visible !important;
+    }
+    
+    .page-header-title {
+      display: block;
+      width: 100%;
+      margin-bottom: 8px;
+      
+      h5 {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+        word-wrap: break-word;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        white-space: normal !important;
+      }
+    }
+    
+    .breadcrumb {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      overflow: visible !important;
+      padding: 0;
+      margin-bottom: 0;
+      width: 100%;
+      
+      .breadcrumb-item {
+        font-size: 0.875rem;
+        white-space: normal;
+        word-wrap: break-word;
+        
+        a {
+          display: inline-block;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+  
+  /* Ensure content below header has proper spacing */
+  .card {
+    margin-top: 0;
+    overflow: visible !important;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 576px) {
+  .page-header {
+    padding: 12px 10px !important;
+    margin-bottom: 15px;
+    
+    .page-header-title h5 {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    
+    .breadcrumb {
+      font-size: 0.8rem;
+      
+      .breadcrumb-item {
+        font-size: 0.8rem;
+        padding: 2px 4px;
+      }
+    }
+  }
+}

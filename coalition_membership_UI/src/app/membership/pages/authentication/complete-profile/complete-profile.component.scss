@@ -1,0 +1,86 @@
+/* Ensure modal displays properly */
+:host {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1050 !important;
+}
+
+.auth-main2 {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1050 !important;
+    position: relative;
+}
+
+.auth-wrapper1 {
+    display: flex !important;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Modal backdrop and positioning */
+.modal-backdrop {
+    z-index: 1040 !important;
+    opacity: 0.5 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+    display: block !important;
+}
+
+.modal-dialog {
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 1.75rem auto;
+}
+
+.modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Full width modal class */
+.full-width-modal .modal-dialog {
+    max-width: 95vw;
+    width: 95vw;
+}
+
+.full-width-modal .modal-content {
+    height: 90vh;
+}
+
+@media only screen and (max-width: 768px) {
+   
+    .auth-wrapper {
+        flex-direction: column;
+    }
+    .col-8, .col-4 {
+        width: 100%;
+    }
+    .row {
+        flex-wrap: wrap;
+        margin: 0 -5px;
+    }
+    .col-xl-4, .col-xl-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 5px;
+    }
+    .auth-header {
+        text-align: center;
+    }
+    .auth-main .card-body {
+        padding: 15px;
+    }
+    
+    .modal-dialog {
+        max-width: 95vw;
+        margin: 10px;
+    }
+}

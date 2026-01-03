@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Copy Static Files to Persistent Storage
+# This script copies wwwroot files to /var/wwwroot on the server
+
+set -e
+
+echo "📁 Copying static files to persistent storage..."
+
+# Configuration
+SERVER_HOST="196.190.251.48"
+SERVER_USER="timret"
+SERVER_PASSWORD="DAFTech@2024"
+
+# Create a temporary tar file of wwwroot
+echo "📦 Creating archive of wwwroot files..."
+cd .. && tar -czf wwwroot-files.tar.gz MembershipAPI/wwwroot/
+
+echo "📤 Transferring files to server..."
+sshpass -p "$SERVER_PASSWORD" scp wwwroot-files.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/
+
+echo "🔧 Extracting files on server..."
+sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_HOST << EOF
+    echo "Creating /var/wwwroot directory..."
+    sudo mkdir -p /var/wwwroot
+    
+    echo "Extracting files to /var/wwwroot..."
+    sudo tar -xzf /tmp/wwwroot-files.tar.gz -C /var/wwwroot --strip-components=2
+    
+    echo "Setting proper permissions..."
+    sudo chown -R www-data:www-data /var/wwwroot
+    sudo chmod -R 755 /var/wwwroot
+    
+    echo "Cleaning up..."
+    rm /tmp/wwwroot-files.tar.gz
+    
+    echo "✅ Static files copied successfully!"
+    echo "📁 Files are now available at:"
+    echo "   https://eplffc.et/api/wwwroot/Association/"
+    echo "   https://eplffc.et/api/wwwroot/Member/"
+    echo "   https://eplffc.et/api/wwwroot/Coalition/"
+EOF
+
+echo "🧹 Cleaning up local files..."
+rm wwwroot-files.tar.gz
+
+echo "✅ Static files deployment completed!"
+echo "🎯 Files are now accessible at https://eplffc.et/api/wwwroot/" 

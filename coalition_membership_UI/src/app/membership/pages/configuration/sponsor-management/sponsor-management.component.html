@@ -1,0 +1,235 @@
+<div class="container-fluid">
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Configuration</a></li>
+            <li class="breadcrumb-item" aria-current="page">Sponsor Management</li>
+          </ul>
+        </div>
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h2 class="mb-0">Sponsor Management</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] start -->
+
+  <!-- [ breadcrumb ] end -->
+
+  <div class="row">
+    <!-- Create/Edit Sponsor Form -->
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ isEditMode ? 'Edit Sponsor' : 'Create New Sponsor' }}</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="sponsorForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="fas fa-building me-2 text-primary"></i>Sponsor Name *
+                  </label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="name"
+                         placeholder="Enter sponsor name"
+                         [class.is-invalid]="sponsorForm.get('name')?.invalid && sponsorForm.get('name')?.touched">
+                  <div class="invalid-feedback" *ngIf="sponsorForm.get('name')?.invalid && sponsorForm.get('name')?.touched">
+                    <div *ngIf="sponsorForm.get('name')?.errors?.['required']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Sponsor name is required.
+                    </div>
+                    <div *ngIf="sponsorForm.get('name')?.errors?.['minlength']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Sponsor name must be at least 2 characters.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="fas fa-globe me-2 text-success"></i>Website URL
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-link text-success"></i>
+                    </span>
+                    <input type="url" 
+                           class="form-control" 
+                           formControlName="websiteUrl"
+                           placeholder="https://example.com"
+                           [class.is-invalid]="sponsorForm.get('websiteUrl')?.invalid && sponsorForm.get('websiteUrl')?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="sponsorForm.get('websiteUrl')?.invalid && sponsorForm.get('websiteUrl')?.touched">
+                    <div *ngIf="sponsorForm.get('websiteUrl')?.errors?.['pattern']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Please enter a valid URL starting with http:// or https://
+                    </div>
+                  </div>
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Leave blank if no website available
+                  </small>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" 
+                           type="checkbox" 
+                           id="isActive" 
+                           formControlName="isActive"
+                           style="width: 3rem; height: 1.5rem;">
+                    <label class="form-check-label" for="isActive">
+                      <i class="fas fa-toggle-on me-2 text-info"></i>Active Status
+                    </label>
+                  </div>
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Active sponsors will be visible on your public pages
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="fas fa-image me-2 text-warning"></i>Sponsor Logo
+                  </label>
+                  <div class="image-upload-container">
+                    <div class="upload-area border-2 border-dashed rounded p-4 text-center position-relative" 
+                         [class.border-primary]="!imagePreview"
+                         [class.border-success]="imagePreview">
+                      <input type="file" 
+                             class="file-input" 
+                             accept="image/*" 
+                             (change)="onImageSelected($event)"
+                             style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; z-index: 10;">
+                      
+                      <div *ngIf="!imagePreview" class="upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                        <h6 class="text-muted">Click to upload logo</h6>
+                        <small class="text-muted">or drag and drop</small>
+                      </div>
+                      
+                      <div class="image-preview mt-3" *ngIf="imagePreview">
+                        <div class="position-relative">
+                          <img [src]="imagePreview" 
+                               alt="Preview" 
+                               class="img-thumbnail rounded shadow-sm" 
+                               style="max-width: 100%; height: auto;">
+                          <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" 
+                                  (click)="imagePreview = null; imageFile = null">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                      <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Recommendations:</strong>
+                        <ul class="mb-0 mt-2">
+                          <li>Square format (200x200px or larger)</li>
+                          <li>Maximum file size: 2MB</li>
+                          <li>PNG or JPG format preferred</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="d-flex gap-2">
+                  <button type="submit" 
+                          [disabled]="submitting || sponsorForm.invalid" 
+                          class="btn btn-primary">
+                    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+                    <i class="fas me-2" [class]="isEditMode ? 'fa-save' : 'fa-plus'"></i>
+                    {{ isEditMode ? 'Update Sponsor' : 'Create Sponsor' }}
+                  </button>
+                  <button *ngIf="isEditMode" 
+                          type="button" 
+                          (click)="cancelEdit()" 
+                          class="btn btn-secondary">
+                    <i class="fas fa-times me-2"></i>Cancel Edit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sponsors List -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>My Sponsors ({{ sponsors.length }})</h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Sponsors List -->
+          <div *ngIf="!loading" class="sponsors-list">
+            <div *ngFor="let sponsor of sponsors" class="sponsor-item border-bottom pb-3 mb-3">
+              <div class="d-flex align-items-start">
+                <img [src]="getSponsorImage(sponsor)" 
+                     [alt]="sponsor.name" 
+                     class="rounded me-3" 
+                     style="width: 60px; height: 60px; object-fit: cover;">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">{{ sponsor.name }}</h6>
+                  <p class="text-muted small mb-2">
+                    <span *ngIf="sponsor.websiteUrl" class="text-success">
+                      <i class="fas fa-globe me-1"></i>Has website
+                    </span>
+                    <span *ngIf="!sponsor.websiteUrl" class="text-muted">
+                      <i class="fas fa-times-circle me-1"></i>No website
+                    </span>
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span [class]="sponsor.isActive ? 'badge bg-success' : 'badge bg-danger'">
+                      {{ sponsor.isActive ? 'Active' : 'Inactive' }}
+                    </span>
+                    <small class="text-muted">{{ getSponsorDate(sponsor.createdDate) }}</small>
+                  </div>
+                  <div class="mt-2">
+                    <button (click)="openModal(sponsor)" class="btn btn-sm btn-outline-primary me-2">
+                      <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button (click)="toggleStatus(sponsor)" class="btn btn-sm btn-outline-warning me-2">
+                      <i [class]="sponsor.isActive ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                      {{ sponsor.isActive ? 'Deactivate' : 'Activate' }}
+                    </button>
+                    <button (click)="deleteSponsor(sponsor.id)" class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i> Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Sponsors State -->
+            <div *ngIf="sponsors.length === 0" class="text-center py-4">
+              <i class="fas fa-handshake text-muted" style="font-size: 3rem;"></i>
+              <p class="text-muted mt-2">No sponsors yet. Create your first sponsor!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

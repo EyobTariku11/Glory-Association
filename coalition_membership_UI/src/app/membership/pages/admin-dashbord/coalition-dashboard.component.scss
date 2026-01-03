@@ -1,0 +1,76 @@
+// Coalition Dashboard Styles
+.chart-title {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  
+  .chart-title-text {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #495057;
+  }
+}
+
+.demo-chart {
+  height: 400px;
+  padding: 1rem;
+}
+
+.dashnum-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.dashnum-card-small {
+  margin-bottom: 1rem;
+}
+
+.alert {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .demo-chart {
+    height: 300px;
+  }
+  
+  .chart-title-text {
+    font-size: 1rem;
+  }
+} 

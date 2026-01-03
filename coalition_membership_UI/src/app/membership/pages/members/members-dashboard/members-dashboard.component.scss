@@ -1,0 +1,34 @@
+/* Fix scrolling issues on member dashboard */
+:host {
+  display: block;
+  overflow-y: auto;
+}
+
+/* Ensure the page can scroll properly */
+.pc-container {
+  overflow-y: auto;
+}
+
+/* Mobile Fix: Push content down below the top bar on mobile */
+@media (max-width: 1024px) {
+  .row:first-of-type {
+    margin-top: 60px !important;
+  }
+  
+  /* Also add spacing for the celebration component if present */
+  app-celebration {
+    display: block;
+    margin-top: 60px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 576px) {
+  .row:first-of-type {
+    margin-top: 60px !important;
+  }
+  
+  app-celebration {
+    margin-top: 60px;
+  }
+}

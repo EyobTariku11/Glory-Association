@@ -1,0 +1,51 @@
+// Custom styles for Quill editor in association form
+::ng-deep .ql-editor {
+  min-height: 150px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+::ng-deep .ql-toolbar.ql-snow {
+  border: 1px solid #dee2e6;
+  border-radius: 4px 4px 0 0;
+  background-color: #f8f9fa;
+}
+
+::ng-deep .ql-container.ql-snow {
+  border: 1px solid #dee2e6;
+  border-radius: 0 0 4px 4px;
+  border-top: none;
+}
+
+::ng-deep .ql-editor.ql-blank::before {
+  color: #6c757d;
+  font-style: italic;
+}
+
+// Modal specific styles
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+// Form spacing
+.form-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+// Social media input styling
+input[formControlName="facebook"],
+input[formControlName="telegram"],
+input[formControlName="tiktok"] {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[formControlName="facebook"]:focus,
+input[formControlName="telegram"]:focus,
+input[formControlName="tiktok"]:focus {
+  border-color: #09653a;
+  box-shadow: 0 0 0 0.2rem rgba(9, 101, 58, 0.25);
+}

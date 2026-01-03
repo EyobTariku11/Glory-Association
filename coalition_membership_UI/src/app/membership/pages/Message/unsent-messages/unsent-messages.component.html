@@ -1,0 +1,144 @@
+<div class="page-header ng-star-inserted">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title"><!----><!---->
+          <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a _>Messages </a></li>
+          <li class="breadcrumb-item ng-star-inserted">
+            <a href="javascript:">
+              Unsent Message
+            </a>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+
+
+  <div class="col-md-12 p-4 ">
+    <div class="row mt-2" *ngIf="!isSent">
+      <div class="col-12 text-end" *ngIf="userView.role.includes('SuperAdmin')">
+        <button 
+          class="btn btn-sm btn-outline-primary text-end" 
+          (click)="send()"
+          [disabled]="selectedRows.length === 0 || isSending">
+          <span *ngIf="isSending" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <i *ngIf="!isSending" class="fas fa-paper-plane"></i> 
+          {{ isSending ? 'Sending...' : 'Send Selected Messages (' + selectedRows.length + ')' }}
+        </button>
+        <small class="text-muted d-block mt-1">
+          <i class="fas fa-info-circle"></i> Only approved messages can be sent
+        </small>
+      </div>
+    </div>
+
+    <!-- Enhanced Search and Filter Section -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fas fa-search"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search messages..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()"
+            [disabled]="isLoading">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="selectedMessageType" (change)="onMessageTypeChange()" [disabled]="isLoading">
+          <option value="all">All Message Types</option>
+          <option *ngFor="let type of messageTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="selectedApprovalStatus" (change)="onApprovalStatusChange()" [disabled]="isLoading">
+          <option value="all">All Status</option>
+          <option *ngFor="let status of approvalStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="isSent" (change)="getMessages()" [disabled]="isLoading">
+          <option [value]="false">Not Sent</option>
+          <option [value]="true">Sent</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100" (click)="clearFilters()" [disabled]="isLoading">
+          <i class="fas fa-times"></i> Clear
+        </button>
+      </div>
+    </div>
+
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3 text-muted">Loading messages...</p>
+    </div>
+
+    <!-- Messages Table -->
+    <table *ngIf="!isLoading" class="custom-table mt-4">
+      <thead>
+        <tr>
+          <th *ngIf="!isSent">
+            <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="areAllSelected" />
+          </th>
+          <th>Name</th>
+          <th>Phone Number</th>
+          <th>Message Content</th>
+          <th>Message Type</th>
+          <th>Approval Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredMessages">
+          <td *ngIf="!isSent">
+            <input type="checkbox" [checked]="isSelected(item)" (change)="toggleSelection(item)" />
+          </td>
+          <td>{{ item.memberName }}</td>
+          <td>{{ item.memberPhoneNumber }}</td>
+          <td>{{ item.messageContent }}</td>
+          <td>{{ item.messageTypeGet }}</td>
+          <td>
+            <span class="badge" [ngClass]="isMessageApproved(item) ? 'bg-success' : 'bg-warning'">
+              {{ isMessageApproved(item) ? 'Approved' : 'Pending' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- No Search Results -->
+    <div *ngIf="!isSent && unsentMessages.length > 0 && filteredMessages.length === 0" class="text-center py-4">
+      <i class="fas fa-search fa-3x text-muted mb-3"></i>
+      <h5 class="text-muted">No messages match your search</h5>
+      <p class="text-muted">Try adjusting your search criteria or clear the filters.</p>
+      <button class="btn btn-outline-primary" (click)="clearFilters()">
+        <i class="fas fa-times"></i> Clear Filters
+      </button>
+    </div>
+
+    <!-- No Messages -->
+    <div *ngIf="unsentMessages.length === 0" class="text-center py-4">
+      <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+      <h5 class="text-muted">No unsent messages found</h5>
+      <p class="text-muted">There are currently no unsent messages to display.</p>
+    </div>
+
+
+
+  </div>
+
+</div>

@@ -1,0 +1,67 @@
+// Status icon animations
+.text-8xl {
+  animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Card hover effects
+.bg-white {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bg-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+// Button hover animations
+a:hover {
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+// Status-specific styling
+.text-green-600 {
+  .bg-green-50 {
+    border-left: 4px solid #059669;
+  }
+}
+
+.text-yellow-600 {
+  .bg-yellow-50 {
+    border-left: 4px solid #d97706;
+  }
+}
+
+.text-red-600 {
+  .bg-red-50 {
+    border-left: 4px solid #dc2626;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-8xl {
+    font-size: 4rem;
+  }
+} 

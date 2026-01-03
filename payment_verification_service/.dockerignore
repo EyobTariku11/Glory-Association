@@ -1,0 +1,10 @@
+*.log
+*.tar.gz
+logs/
+.git/
+.gitignore
+README.md
+*.md
+*.save
+payment-verification-service
+

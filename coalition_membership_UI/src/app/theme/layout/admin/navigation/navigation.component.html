@@ -1,0 +1,16 @@
+<!-- [ Sidebar Menu ] start -->
+<nav>
+  <div class="navbar-wrapper">
+    <div class="m-header">
+      <!-- [ Header Topbar ] start -->
+      <a [routerLink]="['/admin-dashboard']" class="b-brand">
+        <!-- ========   change your logo hear   ============ -->
+        <img src="assets/logo-transparent.png" height="80px" class="logo logo-lg text-center" appImageError> 
+        <span class="text-center" style="margin-left: 2px;  font-size: 20px;color:#09653a">EPLFFC</span>
+
+      </a>
+    </div>
+    <app-nav-content (NavCollapsedMob)="navCollapseMob()" class="scroll-div w-100"></app-nav-content>
+  </div>
+</nav>
+<!-- [ Sidebar Menu ] end -->

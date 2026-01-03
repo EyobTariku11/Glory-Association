@@ -1,0 +1,101 @@
+<section class="py-20 bg-gray-50 text-center px-4 mt-10">
+  <div class="max-w-2xl mx-auto">
+    <!-- Status Icon -->
+    <div class="text-8xl mb-6">
+      {{ getStatusIcon() }}
+    </div>
+
+    <!-- Status Message -->
+    <h1 class="text-4xl md:text-5xl font-bold mb-6" [ngClass]="getStatusColor()">
+      {{ getStatusMessage() | transloco }}
+    </h1>
+
+    <!-- Success Details -->
+    <div *ngIf="donationStatus === 'success'" class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+        {{ 'donations.donationReceived' | transloco }}
+      </h2>
+      
+      <div *ngIf="sessionId" class="bg-gray-50 rounded-lg p-4 mb-4">
+        <p class="text-sm text-gray-600 mb-2">{{ 'donations.donationReference' | transloco }}</p>
+        <p class="font-mono text-sm bg-white px-3 py-2 rounded border">{{ sessionId }}</p>
+      </div>
+
+      <p class="text-gray-700 mb-6">
+        {{ 'donations.receiptEmail' | transloco }}
+      </p>
+
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <p class="text-green-800 text-sm">
+          <i class="fas fa-check-circle mr-2"></i>
+          {{ 'donations.paymentProcessed' | transloco }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Cancelled Message -->
+    <div *ngIf="donationStatus === 'cancelled'" class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+        {{ 'donations.donationNotCompleted' | transloco }}
+      </h2>
+      
+      <p class="text-gray-700 mb-6">
+        {{ 'donations.noChargesMade' | transloco }}
+      </p>
+
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p class="text-yellow-800 text-sm">
+          <i class="fas fa-info-circle mr-2"></i>
+          {{ 'donations.canTryAgain' | transloco }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="donationStatus === 'error'" class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+        {{ 'donations.paymentError' | transloco }}
+      </h2>
+      
+      <p class="text-gray-700 mb-6">
+        {{ 'donations.contactSupport' | transloco }}
+      </p>
+
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p class="text-red-800 text-sm">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          {{ 'donations.technicalIssue' | transloco }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="space-y-4">
+      <a 
+        routerLink="/donation" 
+        class="inline-block bg-red-600 text-white py-3 px-8 rounded-lg font-medium hover:bg-red-700 transition-colors duration-200">
+        <i class="fas fa-heart mr-2"></i>
+        {{ 'donations.makeAnotherDonation' | transloco }}
+      </a>
+
+      <div class="pt-4">
+        <a 
+          routerLink="/" 
+          class="inline-block bg-gray-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-200">
+          <i class="fas fa-home mr-2"></i>
+          {{ 'donations.backToHome' | transloco }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Support Information -->
+    <div class="mt-12 text-center text-sm text-gray-500">
+      <p>{{ 'donations.needHelp' | transloco }}</p>
+      <p class="mt-2">
+        <a href="mailto:support@eplffc.et" class="text-red-600 hover:text-red-700">
+          support&#64;eplffc.et
+        </a>
+      </p>
+    </div>
+  </div>
+</section> 

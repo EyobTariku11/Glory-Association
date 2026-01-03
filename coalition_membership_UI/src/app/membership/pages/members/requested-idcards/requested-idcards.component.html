@@ -1,0 +1,100 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _>Requested Members</a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                           Id Card List
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card">
+
+
+    <div class="col-md-12 p-4 ">
+        <div class="col">
+
+        </div>
+        <div class="col-md-12 text-end">
+
+
+            <span style="font-size: 18px;color:#3b2413"> Total Members: {{Members.length}}
+            </span>
+        </div>
+
+        <div class="col-3">
+            <input type="text" placeholder="search ..." class="form-control" style="font-size: 18px;"
+                [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search">
+        </div>
+
+        <table class="custom-table mt-4">
+            <thead>
+                <tr>
+
+                    <th>FUll name</th>
+                    <th>Member Id</th>
+                    <th>Phone Number</th>
+                    <th>Membership Type</th>
+                    <th>Region</th>
+                    <th>Inistitute</th>
+                    <th>Gender</th>
+                    <th>Payment Status</th>
+                    <th>Expired Date</th>
+                    <th *ngIf="userView.role.includes('SuperAdmin')">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of paginatedMembers ;let i = index">
+
+                    <td> <img style="height: 40px;width: 40px;border-radius: 50%;margin-right: 10px;"
+                            [src]="getImagePath(item.imagePath)" appImageError>{{item.fullName}}</td>
+                            <td>{{item.memberId}}</td>
+                    <td>{{item.phoneNumber}}</td>
+                    <td>{{item.membershipType}}</td>
+                    <td>{{item.region}}</td>
+                    <td>{{item.inistitute}} {{item.instituteRole}}</td>
+                    <td>{{item.gender}}</td>
+                    <td>
+
+
+                        <span *ngIf="item.paymentStatus=='PAID'" class="badge rounded-pill bg-success">
+                            {{item.paymentStatus}}</span>
+                        <span *ngIf="item.paymentStatus=='PENDING'" class="badge rounded-pill bg-warning">
+                            {{item.paymentStatus}}</span>
+                        <span *ngIf="item.paymentStatus=='EXPIRED'" class="badge rounded-pill bg-danger">
+                            {{item.paymentStatus}}</span>
+
+                    </td>
+                    <td>{{item.expiredDate|date:"dd MMM yyyy"}}</td>
+                    <td *ngIf="userView.role.includes('SuperAdmin')">
+
+                     <button class="btn btn-sm btn-outline-success" (click)="changeIdStatus('Approve',item.id)">Approve</button> <br/><br/> 
+                     <button (click)="changeIdStatus('Reject',item.id)" class="btn btn-sm btn-outline-danger">Reject</button>   
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+        <div class="card flex justify-content-center">
+      </div>
+
+
+
+    </div>
+
+</div>

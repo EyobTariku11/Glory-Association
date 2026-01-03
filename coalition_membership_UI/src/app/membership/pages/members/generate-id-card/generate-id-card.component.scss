@@ -1,0 +1,649 @@
+/* Professional ID Card Component - Compact Design */
+
+/* Container Layout */
+.id-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for better UX */
+.id-card-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.id-card-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.id-card-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.id-card-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* ID Card Base Styles - More Compact */
+.id-card-front,
+.id-card-back {
+  width: 600px;
+  height: 420px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+  /* Prevent cards from shrinking */
+  z-index: 0;
+  overflow: hidden;
+  isolation: isolate;
+  /* Create new stacking context */
+}
+
+.card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /* Changed from -1 to be on top of card white bg */
+  pointer-events: none;
+}
+
+.background-img {
+  position: absolute;
+  top: 50%;
+  left: 50%; // Center horizontally
+  transform: translate(-50%, -50%); // Center exactly
+  width: 50%; // Make it smaller as requested (in the middle)
+  height: auto;
+  object-fit: contain;
+  filter: blur(0.5px); // Adjusted blur
+  opacity: 0.2;
+}
+
+/* Hover effect for better interaction */
+.id-card-front:hover,
+.id-card-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Header - Compact */
+.card-header {
+  color: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 90px;
+  flex-shrink: 0;
+}
+
+.logo-section {
+  flex-shrink: 0;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.title-section {
+  flex: 1;
+  text-align: center;
+  margin: 0 1rem;
+}
+
+.org-name {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.org-name-amharic {
+  margin: 0.3rem 0 0 0;
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.9;
+  line-height: 1.2;
+}
+
+/* Card Body - Compact */
+.card-body {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  min-height: 180px;
+  overflow: visible;
+  flex-shrink: 1;
+}
+
+/* Front Side Specific - Compact */
+.photo-section {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.photo-stamp {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  z-index: 5;
+
+  /* Positioning */
+  bottom: -30px;
+  left: -10px;
+  /* Moved slightly right from -30px */
+  right: auto;
+
+  transform: rotate(-15deg);
+  mix-blend-mode: normal;
+  /* Transparency is handled via JS pre-processing */
+}
+
+.member-photo {
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
+  border: 3px solid;
+  border-color: var(--association-primary, #2a5298);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.details-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  overflow: visible;
+}
+
+/* Compact Detail Rows */
+.detail-row.compact {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  background: transparent;
+  border-radius: 6px;
+  border-left: none;
+  min-height: 30px;
+  box-shadow: none;
+}
+
+.detail-row.compact .label {
+  font-weight: 600;
+  color: var(--association-primary, #2a5298);
+  min-width: 100px;
+  margin-right: 0.8rem;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+}
+
+.detail-row.compact .value {
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  word-break: break-word;
+  font-size: 0.9rem;
+}
+
+/* Back Side Specific - Compact */
+.info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  overflow: visible;
+}
+
+.info-row.compact {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  background: transparent;
+  border-radius: 6px;
+  border-left: none;
+  min-height: 30px;
+  box-shadow: none;
+}
+
+.info-row.compact .label {
+  font-weight: 600;
+  color: var(--association-primary, #2a5298);
+  min-width: 100px;
+  margin-right: 0.8rem;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+}
+
+.info-row.compact .value {
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  word-break: break-word;
+  font-size: 0.9rem;
+}
+
+.qr-section {
+  flex-shrink: 0;
+}
+
+.qr-code {
+  width: 80px;
+  height: 80px;
+  border: 2px solid white;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Stamps Section - Compact */
+.stamps-section {
+  position: absolute;
+  bottom: 40px;
+  /* Make room for disclaimer text */
+  left: 0;
+  right: 0;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+  border-top: 1px solid #e0e0e0;
+  z-index: 10;
+  overflow: visible;
+}
+
+/* Disclaimer Section */
+.disclaimer-section {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid #e0e0e0;
+  z-index: 11;
+}
+
+.disclaimer-text {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666;
+  text-align: center;
+  line-height: 1.2;
+  font-family: 'Arial', sans-serif;
+}
+
+.stamp-left,
+.stamp-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stamp {
+  width: 120px;
+  height: auto;
+  opacity: 0.85;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.stamp-right .stamp {
+  transform: rotate(-30deg);
+}
+
+.signature-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signature {
+  width: 100px;
+  height: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Watermark - Compact */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgba(42, 82, 152, 0.06);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Card Footer - Compact */
+.card-footer {
+  color: white;
+  padding: 0.8rem;
+  text-align: center;
+  border-top: 2px solid;
+  border-top-color: var(--association-secondary, #1e3c72);
+  flex-shrink: 0;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authorization-text {
+  font-size: 1rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+  text-align: center;
+  margin: 1rem 0;
+  padding: 0.5rem;
+}
+
+.scroll-to-top .btn {
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.scroll-to-top .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Action Buttons */
+.action-buttons {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+  border: none;
+}
+
+.btn-outline-info {
+  border: 2px solid #2a5298;
+  color: #2a5298;
+}
+
+.btn-outline-info:hover {
+  background: #2a5298;
+  color: white;
+}
+
+/* Scroll indicator for better UX */
+.id-card-container::before {
+  content: "Scroll to view both sides of the ID card";
+  display: block;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px dashed #dee2e6;
+}
+
+/* Responsive Design - Compact */
+@media (max-width: 768px) {
+  .id-card-container {
+    padding: 0.5rem;
+  }
+
+  .id-card-container::before {
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .id-card-front,
+  .id-card-back {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    min-height: 350px;
+  }
+
+  .card-header {
+    padding: 0.8rem;
+    min-height: 80px;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .org-name {
+    font-size: 1.1rem;
+  }
+
+  .org-name-amharic {
+    font-size: 0.9rem;
+  }
+
+  .card-body {
+    padding: 0.8rem;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-height: 160px;
+  }
+
+  .member-photo {
+    width: 90px;
+    height: 110px;
+  }
+
+  .detail-row.compact,
+  .info-row.compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    min-height: 30px;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .detail-row.compact .label,
+  .info-row.compact .label {
+    min-width: auto;
+    margin-right: 0;
+    font-size: 0.8rem;
+  }
+
+  .detail-row.compact .value,
+  .info-row.compact .value {
+    font-size: 0.8rem;
+  }
+
+  .stamps-section {
+    height: auto;
+    min-height: 120px;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.8rem;
+    position: relative;
+    bottom: 50px;
+    /* Make room for disclaimer on mobile */
+  }
+
+  .disclaimer-section {
+    height: 50px;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .disclaimer-text {
+    font-size: 0.7rem;
+  }
+
+  .stamp {
+    width: 90px;
+  }
+
+  .signature {
+    width: 80px;
+  }
+
+  .watermark {
+    font-size: 1.2rem;
+  }
+
+  .card-footer {
+    min-height: 40px;
+    padding: 0.6rem;
+  }
+
+  .authorization-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .id-card-front,
+  .id-card-back {
+    border-width: 2px;
+    border-radius: 10px;
+  }
+
+  .card-header {
+    padding: 0.6rem;
+  }
+
+  .card-body {
+    padding: 0.6rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Print Styles for PDF Generation */
+@media print {
+  .id-card-container {
+    gap: 1rem;
+  }
+
+  .id-card-front,
+  .id-card-back {
+    page-break-inside: avoid;
+    margin: 0;
+    box-shadow: none;
+    border: 2px solid #000;
+    height: 420px !important;
+  }
+
+  .card-header {
+    background: var(--association-primary, #2a5298) !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .card-footer {
+    background: var(--association-primary, #2a5298) !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .watermark {
+    color: rgba(42, 82, 152, 0.08) !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .stamps-section {
+    background: rgba(255, 255, 255, 0.95) !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .disclaimer-section {
+    background: rgba(255, 255, 255, 0.95) !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .disclaimer-text {
+    color: #333 !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .action-buttons {
+    display: none;
+  }
+}

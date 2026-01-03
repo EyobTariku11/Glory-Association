@@ -1,0 +1,89 @@
+/* =========================
+LINE CLAMP UTILITIES
+========================= */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================
+NEWS CARD & BREAKING NEWS CARD
+========================= */
+.news-card,
+.breaking-news-card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* =========================
+NEWS IMAGE
+========================= */
+.news-image {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* =========================
+NEWS GRID
+========================= */
+.news-grid,
+.breaking-news-grid {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 1rem;
+  padding: 0 1rem;
+
+  .news-card,
+  .breaking-news-card {
+    flex: 0 0 100%; /* mobile: 1 card per screen */
+    max-width: 100%;
+    scroll-snap-align: start;
+  }
+}
+
+/* =========================
+SCROLLBAR HIDE
+========================= */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* =========================
+DESKTOP: 3 CARDS VISIBLE
+========================= */
+@media (min-width: 768px) {
+  .news-grid,
+  .breaking-news-grid {
+    gap: 1.5rem;
+    padding: 0;
+
+    .news-card,
+    .breaking-news-card {
+      flex: 0 0 calc(33.333% - 1rem);
+      max-width: calc(33.333% - 1rem);
+    }
+  }
+}

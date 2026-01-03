@@ -1,0 +1,35 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Are you sure you want to 
+            <span   [class]="approvalType=='Approve'? 'text-success':'text-danger'">{{approvalType}} </span>member Id Card</h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+
+            <form class="" [formGroup]="statusForm" (ngSubmit)="submit()">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" style="height: 80px;" formControlName="remark"> </textarea>
+                          
+                            <label for="floatingInput">Remark</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer"> <button type="button" class="btn btn-outline-secondary"
+                        (click)="closeModal()">Close</button> <button type="button" type="submit"
+                        [disabled]="!statusForm.valid"
+                        [class]="approvalType=='Approve'? 'btn btn-outline-success':'btn btn-outline-danger'">{{approvalType}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,79 @@
+<div class="auth-main">
+  <div class="auth-wrapper v3 row justify-content-center align-items-center">
+    <div class="auth-form col-lg-8 col-md-7 col-sm-10">
+      <div class="card shadow-lg border-0 rounded-lg p-4">
+        <div class="card-body">
+          <a href="#" class="d-flex justify-content-center mb-4">
+            <img src="assets/logo-remove.png" height="100" class="logo-image" alt="Logo" appImageError>
+          </a>
+          <div class="text-center">
+            <h2 class="text-primary mb-3 display-6"><b>{{'Welcome_Back'|translate}} Admin</b></h2>
+            <p class="fs-5 text-muted">{{'Login_Message'|translate}}</p>
+          </div>
+          <form [formGroup]="loginForm" class="mt-4">
+            <div class="form-floating mb-4">
+              <input type="email" class="form-control form-control-lg " id="floatingInput"
+                formControlName="userName" [placeholder]="'Email_Username'|translate" />
+              <label for="floatingInput">{{'Email_Username'|translate}}</label>
+            </div>
+            <div class="form-floating mb-4">
+              <input type="password" class="form-control form-control-lg " id="password"
+                formControlName="password" [placeholder]="'Password'|translate" />
+              <label for="password">{{'Password'|translate}}</label>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="customCheckc1" checked />
+                <label class="form-check-label text-muted" for="customCheckc1">{{'Remember_Me'|translate}}</label>
+              </div>
+              <a href="#" class="text-primary fw-bold">{{'Forgot_Password'|translate}}</a>
+            </div>
+            <div class="d-grid mt-4">
+              <button type="submit" (click)="login()" class="btn btn-primary btn-lg shadow">
+                {{'Sign_In'|translate}}
+              </button>
+            </div>
+            <hr class="my-4" />
+            <p class="text-left">
+              {{'No_Account'|translate}}? <a class="text-decoration-none text-primary fw-bold" style="cursor: pointer;"
+                (click)="loginasMember()">{{'Sign_Up_Member'|translate}}</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-5 col-sm-10 mt-md-0 mt-4">
+     
+      <div class="member-info p-4 bg-light border rounded-lg shadow-sm">
+        <h5 class="text-secondary mb-3">⚽ {{ 'Join_Fans_Association' | translate }}</h5>
+        <p class="text-muted mb-3" style="font-size: 0.9rem;">
+          {{ 'Fans_Association_Benefits' | translate }}
+        </p>
+    
+        <ul class="list-unstyled text-muted" style="font-size: 0.85rem;">
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Easy_Registration' | translate }}</span>
+          </li>
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Access_Tickets_And_Merch' | translate }}</span>
+          </li>
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Support_Your_Club' | translate }}</span>
+          </li>
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Be_Part_Of_Coalition' | translate }}</span>
+          </li>
+        </ul>
+        <div class="partner-logo mt-4 text-end">
+          <img src="assets/arifpay.svg" alt="Partner Logo" class="w-32 h-auto" appImageError>
+        </div>
+        <!-- <button class="btn btn-outline-primary btn-sm mt-2">Join Now</button> -->
+      </div>
+   
+      
+    </div>
+
+
+  </div>
+</div>

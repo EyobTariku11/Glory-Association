@@ -1,0 +1,61 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">{{Region?"Update":"Add"}} Chapter</h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form class="" [formGroup]="RegionForm" (ngSubmit)="Region?update():submit()">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                          
+                            <select class="form-control" formControlName="countryType">
+                                <option value=0>ETHIOPIAN</option>
+                                <!-- <option value=1>FOREIGN</option> -->
+                                
+                            </select>
+                            <label for="floatingInput">Country Type</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="regionName" id="floatingInput" />
+                            <label for="floatingInput">Region Name</label>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6" *ngIf="Region">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="userName" id="floatingInput" />
+                            <label for="floatingInput">User name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" *ngIf="Region">
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" formControlName="password" id="floatingInput" />
+                            <label for="floatingInput">Password</label>
+                        </div>
+                    </div>
+
+
+
+                 
+
+                </div>
+
+            <div class="modal-footer"> <button type="button" class="btn btn-outline-secondary"
+                (click)="closeModal()">Close</button> <button type="button" type="submit"
+                [disabled]="!RegionForm.valid"   
+                class="btn btn-outline-success">{{Region?"Update":"Create"}}</button></div>
+            </form>
+    </div>
+</div>
+
+</div>

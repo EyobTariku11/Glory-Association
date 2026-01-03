@@ -1,0 +1,174 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _>Configuration</a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            Company Profile
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+    <ul class="nav nav-tabs" id="list-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " id="list-mailtab-2" data-bs-toggle="tab" href="#list-mail-2" role="tab"
+                aria-controls="list-mail-2" aria-selected="false">
+                Company Profile overview
+            </a>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-center">
+        <div class="col-md-12 p-4  shadow-sm rounded">
+            <form [formGroup]="updateCompanyProfileForm" (submit)="submit()">
+
+                <div class="row">
+
+                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+
+
+
+                        <img [src]="getImage2()" alt="Profile" style="width:100%;" appImageError>
+                        <input #file (change)="onUpload($event)" type="file" style="display: none;" accept="image/*" />
+                        <div class="pt-2">
+                            <a (click)="file.click()" style="width: 100%;" class="btn btn-outline-primary btn-sm"
+                                title="Upload new profile image">
+                                <i class="bi bi-upload"></i> Upload Image
+                            </a>
+                        </div>
+
+
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+
+
+                        <hr />
+
+                        <div class="row mt-2">
+                            <div class="col-md-6 ">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="title" id="title" />
+                                    <label for="title">Title </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="localTitle" id="title" />
+                                    <label for="title">Local Title </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="description"
+                                        id="description" />
+                                    <label for="description">Description </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="localDescription"
+                                        id="description" />
+                                    <label for="description">Local Description </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <label for="localAboutUs">Local About Us</label>
+                                <quill-editor 
+                                  formControlName="localAboutUs" 
+                                  [modules]="quillModules"
+                                  placeholder="Enter local about us information..."
+                                  style="height: 200px;">
+                                </quill-editor>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+
+
+                            <div class="col-md-8">
+                                <div class="form-floating mb-3">
+                                    <label for="aboutUs">About Us</label>
+                                    <quill-editor 
+                                      formControlName="aboutUs" 
+                                      [modules]="quillModules"
+                                      placeholder="Enter about us information..."
+                                      style="height: 200px;">
+                                    </quill-editor>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <img [src]="getImage3()" alt="Profile" style="width:100%;" appImageError>
+                                <input #file2 (change)="onUpload2($event)" type="file" style="display: none;"
+                                    accept="image/*" />
+                                <div class="pt-2">
+                                    <a (click)="file2.click()" style="width: 100%;"
+                                        class="btn btn-outline-primary btn-sm" title="Upload new profile image">
+                                        <i class="bi bi-upload"></i> Upload Image
+                                    </a>
+                                </div>
+                            </div>
+
+                       
+
+                          
+
+                        </div>
+
+                        <!-- Social Media Links -->
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="facebook" id="facebook" placeholder="https://facebook.com/..." />
+                                    <label for="facebook">Facebook</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="telegram" id="telegram" placeholder="https://t.me/..." />
+                                    <label for="telegram">Telegram</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="tiktok" id="tiktok" placeholder="https://tiktok.com/..." />
+                                    <label for="tiktok">TikTok</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    <div class="col-12 text-end mt-4">
+                        <button type="submit" [disabled]="!updateCompanyProfileForm.valid"
+                            class="btn btn-outline-warning">Update</button>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>

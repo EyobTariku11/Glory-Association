@@ -1,0 +1,688 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <div class="card">
+        <div
+          class="card-header d-flex flex-wrap justify-content-between align-items-center"
+        >
+          <h4 class="card-title">Donation Targets Management</h4>
+          <button class="btn btn-primary" (click)="onCreateTarget()">
+            <i class="fas fa-plus"></i> Create Target
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Search and Filter Section -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search targets..."
+                  [(ngModel)]="searchTerm"
+                  (input)="onSearchChange()"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select
+                class="form-select"
+                [(ngModel)]="selectedEvent"
+                (change)="onEventChange()"
+              >
+                <option value="all">All Events</option>
+                <option
+                  *ngFor="let event of getUniqueEvents()"
+                  [value]="event.id"
+                >
+                  {{ event.title }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select
+                class="form-select"
+                [(ngModel)]="selectedStatus"
+                (change)="onStatusChange()"
+              >
+                <option value="all">All Status</option>
+                <option value="approved">Approved</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button
+                class="btn btn-outline-secondary w-100"
+                (click)="clearFilters()"
+              >
+                <i class="fas fa-times"></i> Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Pending Approval Section (Coalition Only) -->
+          <div
+            *ngIf="isCoalition && filteredPendingTargets.length > 0"
+            class="mb-4"
+          >
+            <h5 class="text-warning">
+              <i class="fas fa-clock"></i> Pending Approval ({{
+                filteredPendingTargets.length
+              }})
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-warning">
+                  <tr>
+                    <th>Title</th>
+                    <th>Association</th>
+                    <th>Target Amount</th>
+                    <th>Linked Event</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let target of filteredPendingTargets">
+                    <td>{{ target.title }}</td>
+                    <td>{{ target.associationName }}</td>
+                    <td>{{ target.targetAmount | currency : "ETB" }}</td>
+                    <td>
+                      <span
+                        *ngIf="target.eventTitle"
+                        class="badge badge-info"
+                        >{{ target.eventTitle }}</span
+                      >
+                      <span *ngIf="!target.eventTitle" class="text-muted"
+                        >Standalone</span
+                      >
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-success btn-sm me-2"
+                        (click)="onApproveTarget(target.id)"
+                      >
+                        <i class="fas fa-check"></i> Approve
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        (click)="onRejectTarget(target.id)"
+                      >
+                        <i class="fas fa-times"></i> Reject
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Donation Targets List -->
+          <div class="mb-3" *ngIf="isAssociation">
+            <button
+              class="btn btn-primary"
+              (click)="onCreateTarget()"
+              [disabled]="showCreateForm || showEditForm"
+            >
+              <i class="fas fa-plus"></i> Create New Donation Target
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>Title</th>
+                  <th>Association</th>
+                  <th>Target Amount</th>
+                  <th>Amount Collected</th>
+                  <th>Progress</th>
+                  <th>Linked Event</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let target of filteredDonationTargets">
+                  <td>
+                    <strong>{{ target.title }}</strong>
+                    <div class="text-muted small">{{ target.description }}</div>
+                  </td>
+                  <td>{{ target.associationName }}</td>
+                  <td>{{ target.targetAmount | currency : "ETB" }}</td>
+                  <td>{{ target.amountCollected | currency : "ETB" }}</td>
+                  <td>
+                    <div
+                      class="progress"
+                      style="height: 20px; overflow: hidden"
+                    >
+                      <div
+                        class="progress-bar"
+                        [style.width.%]="
+                          getCappedProgress(target.progressPercentage)
+                        "
+                        [class]="
+                          target.progressPercentage >= 100
+                            ? 'bg-success'
+                            : 'bg-primary'
+                        "
+                      >
+                        {{ target.progressPercentage.toFixed(1) }}%
+                      </div>
+                    </div>
+                    <!-- Show exceeded amount if raised > target -->
+                    <small
+                      *ngIf="target.progressPercentage > 100"
+                      class="text-success d-block mt-1"
+                    >
+                      🎉 Target exceeded by
+                      {{
+                        (target.amountCollected || 0) - target.targetAmount
+                          | currency : "ETB"
+                      }}!
+                    </small>
+                  </td>
+                  <td>
+                    <span *ngIf="target.eventTitle" class="badge badge-info">{{
+                      target.eventTitle
+                    }}</span>
+                    <span *ngIf="!target.eventTitle" class="text-muted"
+                      >Standalone</span
+                    >
+                  </td>
+                  <td>
+                    <span class="badge" [class]="getStatusBadgeClass(target)">
+                      {{ getStatusText(target) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button
+                        class="btn btn-info btn-sm me-1"
+                        (click)="onViewTarget(target)"
+                        title="View Details"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        *ngIf="isAssociation && !target.isApproved"
+                        class="btn btn-warning btn-sm me-1"
+                        (click)="onEditTarget(target)"
+                        title="Edit Target"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        *ngIf="isAssociation && !target.isApproved"
+                        class="btn btn-danger btn-sm me-1"
+                        (click)="onDeleteTarget(target.id)"
+                        title="Delete Target"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                      <button
+                        *ngIf="isCoalition && target.isApproved"
+                        class="btn btn-success btn-sm"
+                        (click)="onViewTarget(target)"
+                        title="View Details"
+                      >
+                        <i class="fas fa-heart"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="donationTargets.length === 0 && !loading">
+                  <td colspan="8" class="text-center text-muted">
+                    <i class="fas fa-heart fa-2x mb-2"></i>
+                    <br />No donation targets found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Loading Spinner -->
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div
+            *ngIf="!loading && donationTargets.length === 0"
+            class="text-center py-4"
+          >
+            <i class="fas fa-bullseye fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No donation targets found</h5>
+            <p class="text-muted">
+              There are no donation targets to display at the moment.
+            </p>
+          </div>
+
+          <!-- No Search Results -->
+          <div
+            *ngIf="
+              !loading &&
+              donationTargets.length > 0 &&
+              filteredDonationTargets.length === 0
+            "
+            class="text-center py-4"
+          >
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No targets match your search</h5>
+            <p class="text-muted">
+              Try adjusting your search criteria or clear the filters.
+            </p>
+            <button class="btn btn-outline-primary" (click)="clearFilters()">
+              <i class="fas fa-times"></i> Clear Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Donation Target Modal -->
+  <div
+    class="modal fade"
+    id="donationTargetFormModal"
+    tabindex="-1"
+    aria-labelledby="donationTargetFormModalLabel"
+    aria-hidden="true"
+    [class.show]="showCreateForm || showEditForm"
+    [style.display]="showCreateForm || showEditForm ? 'block' : 'none'"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="donationTargetFormModalLabel">
+            {{
+              showEditForm
+                ? "Edit Donation Target"
+                : "Create New Donation Target"
+            }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="cancelForm()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="donationTargetForm" (ngSubmit)="onSubmitTarget()">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                formControlName="title"
+                [class.is-invalid]="
+                  donationTargetForm.get('title')?.invalid &&
+                  donationTargetForm.get('title')?.touched
+                "
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  donationTargetForm.get('title')?.invalid &&
+                  donationTargetForm.get('title')?.touched
+                "
+              >
+                Title is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description *</label>
+              <textarea
+                class="form-control"
+                id="description"
+                rows="3"
+                formControlName="description"
+                [class.is-invalid]="
+                  donationTargetForm.get('description')?.invalid &&
+                  donationTargetForm.get('description')?.touched
+                "
+              ></textarea>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  donationTargetForm.get('description')?.invalid &&
+                  donationTargetForm.get('description')?.touched
+                "
+              >
+                Description is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="targetAmount" class="form-label"
+                >Target Amount (ETB) *</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="targetAmount"
+                formControlName="targetAmount"
+                min="1"
+                step="0.01"
+                [class.is-invalid]="
+                  donationTargetForm.get('targetAmount')?.invalid &&
+                  donationTargetForm.get('targetAmount')?.touched
+                "
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  donationTargetForm.get('targetAmount')?.invalid &&
+                  donationTargetForm.get('targetAmount')?.touched
+                "
+              >
+                Target amount is required and must be greater than 0
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="eventId" class="form-label"
+                >Link to Event (Optional)</label
+              >
+              <select
+                class="form-control"
+                id="eventId"
+                formControlName="eventId"
+              >
+                <option value="">No Event (Standalone Target)</option>
+                <option *ngFor="let event of events" [value]="event.id">
+                  {{ event.title }} -
+                  {{ event.eventDate | date : "mediumDate" }}
+                </option>
+              </select>
+              <small class="form-text text-muted">
+                Leave empty to create a standalone donation target, or select an
+                event to link this donation target to it
+              </small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelForm()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="onSubmitTarget()"
+            [disabled]="donationTargetForm.invalid"
+          >
+            {{ showEditForm ? "Update Target" : "Create Target" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Donation Target Modal -->
+  <div
+    class="modal fade"
+    id="donationTargetViewModal"
+    tabindex="-1"
+    aria-labelledby="donationTargetViewModalLabel"
+    aria-hidden="true"
+    [class.show]="showViewModal"
+    [style.display]="showViewModal ? 'block' : 'none'"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="donationTargetViewModalLabel">
+            <i class="fas fa-heart me-2"></i>
+            Donation Target Details
+          </h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            (click)="closeViewModal()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedTarget">
+          <!-- Header Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="d-flex align-items-center mb-3">
+                <div class="me-3">
+                  <i class="fas fa-bullseye fa-2x text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="mb-1">{{ selectedTarget.title }}</h4>
+                  <p class="text-muted mb-0">
+                    {{ selectedTarget.associationName }}
+                  </p>
+                </div>
+              </div>
+              <p class="text-muted">{{ selectedTarget.description }}</p>
+            </div>
+          </div>
+
+          <!-- Progress Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <h6 class="card-title text-primary mb-3">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Fundraising Progress
+                  </h6>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between">
+                        <span class="text-muted">Target Amount:</span>
+                        <span class="fw-bold text-primary">{{
+                          selectedTarget.targetAmount | currency : "ETB"
+                        }}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="d-flex justify-content-between">
+                        <span class="text-muted">Amount Collected:</span>
+                        <span class="fw-bold text-success">{{
+                          selectedTarget.amountCollected | currency : "ETB"
+                        }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="progress mb-2"
+                    style="height: 25px; overflow: hidden"
+                  >
+                    <div
+                      class="progress-bar"
+                      [style.width.%]="
+                        getCappedProgress(selectedTarget.progressPercentage)
+                      "
+                      [class]="
+                        selectedTarget.progressPercentage >= 100
+                          ? 'bg-success'
+                          : 'bg-primary'
+                      "
+                    >
+                      {{ selectedTarget.progressPercentage.toFixed(1) }}%
+                    </div>
+                  </div>
+                  <!-- Show exceeded amount if raised > target -->
+                  <small
+                    *ngIf="selectedTarget.progressPercentage > 100"
+                    class="text-success d-block mt-1"
+                  >
+                    🎉 Target exceeded by
+                    {{
+                      (selectedTarget.amountCollected || 0) -
+                        selectedTarget.targetAmount | currency : "ETB"
+                    }}!
+                  </small>
+                  <small class="text-muted">
+                    {{ selectedTarget.amountCollected | currency : "ETB" }}
+                    raised of
+                    {{ selectedTarget.targetAmount | currency : "ETB" }} goal
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Details Section -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card border-0 bg-light mb-3">
+                <div class="card-body">
+                  <h6 class="card-title text-primary mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Target Information
+                  </h6>
+                  <div class="mb-2">
+                    <small class="text-muted">Status:</small>
+                    <div>
+                      <span
+                        class="badge"
+                        [class]="getStatusBadgeClass(selectedTarget)"
+                      >
+                        {{ getStatusText(selectedTarget) }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mb-2">
+                    <small class="text-muted">Created:</small>
+                    <div>
+                      {{ selectedTarget.createdDate | date : "mediumDate" }}
+                    </div>
+                  </div>
+                  <div class="mb-2" *ngIf="selectedTarget.approvedDate">
+                    <small class="text-muted">Approved:</small>
+                    <div>
+                      {{ selectedTarget.approvedDate | date : "mediumDate" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 bg-light mb-3">
+                <div class="card-body">
+                  <h6 class="card-title text-primary mb-3">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Linked Event
+                  </h6>
+                  <div *ngIf="selectedTarget.eventTitle">
+                    <div class="mb-2">
+                      <small class="text-muted">Event:</small>
+                      <div class="fw-bold">{{ selectedTarget.eventTitle }}</div>
+                    </div>
+                    <span class="badge badge-info">
+                      <i class="fas fa-link me-1"></i>
+                      Linked to Event
+                    </span>
+                  </div>
+                  <div *ngIf="!selectedTarget.eventTitle">
+                    <div class="text-muted">
+                      <i class="fas fa-unlink me-2"></i>
+                      Standalone donation target
+                    </div>
+                    <small class="text-muted"
+                      >Not linked to any specific event</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Association Info -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <h6 class="card-title text-primary mb-3">
+                    <i class="fas fa-building me-2"></i>
+                    Association Information
+                  </h6>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="me-3"
+                      *ngIf="selectedTarget.associationLogoPath"
+                    >
+                      <img
+                        [src]="selectedTarget.associationLogoPath"
+                        [alt]="selectedTarget.associationName"
+                        class="rounded-circle"
+                        style="width: 50px; height: 50px; object-fit: cover"
+                      />
+                    </div>
+                    <div>
+                      <div class="fw-bold">
+                        {{ selectedTarget.associationName }}
+                      </div>
+                      <small class="text-muted"
+                        >Managing this donation target</small
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeViewModal()"
+          >
+            <i class="fas fa-times me-2"></i>
+            Close
+          </button>
+          <button
+            *ngIf="isAssociation && !selectedTarget?.isApproved"
+            type="button"
+            class="btn btn-warning"
+            (click)="onEditTarget(selectedTarget!)"
+          >
+            <i class="fas fa-edit me-2"></i>
+            Edit Target
+          </button>
+          <button
+            *ngIf="isCoalition && !selectedTarget?.isApproved"
+            type="button"
+            class="btn btn-success"
+            (click)="onApproveTarget(selectedTarget!.id)"
+          >
+            <i class="fas fa-check me-2"></i>
+            Approve Target
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Backdrops -->
+  <div
+    class="modal-backdrop fade"
+    [class.show]="showCreateForm || showEditForm"
+    [style.display]="showCreateForm || showEditForm ? 'block' : 'none'"
+    (click)="cancelForm()"
+  ></div>
+
+  <div
+    class="modal-backdrop fade"
+    [class.show]="showViewModal"
+    [style.display]="showViewModal ? 'block' : 'none'"
+    (click)="closeViewModal()"
+  ></div>
+</div>

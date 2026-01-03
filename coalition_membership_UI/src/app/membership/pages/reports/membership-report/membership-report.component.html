@@ -1,0 +1,288 @@
+<div class="page-header ng-star-inserted">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <!----><!---->
+          <h5 class="mb-2 ng-star-inserted">Reports</h5>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a _>Members</a></li>
+          <li class="breadcrumb-item ng-star-inserted">
+            <a href="javascript:"> List </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <div
+        echarts
+        [options]="chartOptions"
+        [loading]="loading"
+        class="demo-chart"
+      ></div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div
+        echarts
+        [options]="chartOptions3"
+        [loading]="loading3"
+        class="demo-chart"
+      ></div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div
+        echarts
+        [options]="chartOptions2"
+        [loading]="loading2"
+        class="demo-chart"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="col-md-12 p-4">
+    <div class="col"></div>
+    <div class="col-md-12 text-end">
+      <button class="btn btn-sm btn-warning" (click)="reset()">
+        <i class="ti ti-refresh"></i>
+      </button>
+      <span style="font-size: 18px; color: #3b2413">
+        {{
+          Members && filterdMembers && Members.length == filterdMembers.length
+            ? "Total"
+            : "Filterd"
+        }}
+        Members: {{ filterdMembers && filterdMembers.length }}
+      </span>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedCountryType"
+            (change)="onCountryTypeChange($event)"
+            required
+          >
+            <option value="">Select Country Type</option>
+            <option value="ETHIOPIAN">ETHIOPIAN</option>
+            <option value="FOREIGN">FOREIGN</option>
+          </select>
+          <label for="floatingInput">Country Type</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <select
+            class="form-control"
+            style="font-size: 18px"
+            [(ngModel)]="selectedRegion"
+          >
+            <option value="">Select Region</option>
+            <option *ngFor="let item of regions" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+          <label for="floatingInput">Region</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <select
+            class="form-control"
+            style="font-size: 18px"
+            [(ngModel)]="selectedAssociation"
+            (change)="onAssociationChange($event)"
+            [disabled]="userView.role === 'Association'"
+          >
+            <option value="">Select Association</option>
+            <option *ngFor="let item of associations" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+          <label for="floatingInput">Association</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <select
+            class="form-control"
+            style="font-size: 18px"
+            [(ngModel)]="selectedGender"
+          >
+            <option value="">Select Gender</option>
+            <option value="MALE">MALE</option>
+            <option value="FEMALE">FEMALE</option>
+          </select>
+          <label for="floatingInput">Gender</label>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <select
+            class="form-control"
+            style="font-size: 18px"
+            [(ngModel)]="selectedStatus"
+          >
+            <option value="">Select Payment Status</option>
+            <option value="PENDING">PENDING</option>
+            <option value="PAID">PAID</option>
+            <option value="EXPIRED">EXPIRED</option>
+          </select>
+          <label for="floatingInput">Payemnt Status</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-floating mb-3">
+          <select class="form-control" [(ngModel)]="selectedMembership">
+            <option value="">Select Membership Type</option>
+            <option *ngFor="let item of membershipTypes" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+          <label for="membershipType">Membership Types</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <input
+            type="date"
+            placeholder="search ..."
+            class="form-control"
+            style="font-size: 18px"
+            [(ngModel)]="fromDate"
+            placeholder="Search"
+          />
+          <label for="floatingInput">From Date</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <input
+            type="date"
+            placeholder="search ..."
+            class="form-control"
+            style="font-size: 18px"
+            [(ngModel)]="toDate"
+            (input)="applyFilter()"
+            placeholder="Search"
+          />
+          <label for="floatingInput">To Date</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating mb-3">
+          <select class="form-control" [(ngModel)]="memberType">
+            <option value="">Select Member Status</option>
+            <option value="New Member">New Member</option>
+            <option value="Renewed Member">Renewed Member</option>
+            <option value="Waiting for Renewal">Waiting for Renewal</option>
+          </select>
+          <label for="email">Member Status</label>
+        </div>
+      </div>
+
+      <div class="col">
+        <button class="btn btn-outline-success" (click)="applyFilter()">
+          <i class="ti ti-search"> </i>
+        </button>
+        |
+        <button
+          class="btn btn-outline-success text-end"
+          (click)="exportAsExcel('membershipReport')"
+        >
+          <i class="bi bi-file-excel"></i> Export Excel
+        </button>
+      </div>
+
+      <div class="col"></div>
+    </div>
+    <!-- <div class="card">
+                <iframe #stockReportIframe width="100%" height="700px"></iframe>
+                    
+              </div> -->
+
+    <div class="table-container">
+      <!-- Add this wrapper -->
+
+      <table #excelTable class="custom-table mt-4">
+        <thead>
+          <tr>
+            <th style="border: 1px solid black">FUll name</th>
+            <th style="border: 1px solid black">Member Id</th>
+            <th style="border: 1px solid black">Phone Number</th>
+            <th style="border: 1px solid black">Membership Type</th>
+            <th style="border: 1px solid black">Region</th>
+
+            <th style="border: 1px solid black">Gender</th>
+            <th style="border: 1px solid black">Payment Status</th>
+            <th style="border: 1px solid black">Member Status</th>
+            <th style="border: 1px solid black">Expired Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filterdMembers; let i = index">
+            <td style="border: 1px solid black">
+              <!-- <img
+                            style="height: 40px;width: 40px;border-radius: 50%;margin-right: 10px;"
+                            [src]="getImagePath(item.imagePath)" appImageError> -->
+
+              {{ item.fullName }}
+            </td>
+            <td style="border: 1px solid black">{{ item.memberId }}</td>
+            <td style="border: 1px solid black">{{ item.phoneNumber }}</td>
+            <td style="border: 1px solid black">{{ item.membershipType }}</td>
+            <td style="border: 1px solid black">{{ item.region }}</td>
+            <td style="border: 1px solid black">{{ item.gender }}</td>
+            <td style="border: 1px solid black">
+              <span
+                *ngIf="item.paymentStatus == 'PAID'"
+                class="badge rounded-pill bg-success"
+              >
+                {{ item.paymentStatus }}</span
+              >
+              <span
+                *ngIf="item.paymentStatus == 'PENDING'"
+                class="badge rounded-pill bg-warning"
+              >
+                {{ item.paymentStatus }}</span
+              >
+              <span
+                *ngIf="item.paymentStatus == 'EXPIRED'"
+                class="badge rounded-pill bg-danger"
+              >
+                {{ item.paymentStatus }}</span
+              >
+            </td>
+            <td style="border: 1px solid black">{{ item.memberStatus }}</td>
+
+            <td style="border: 1px solid black">
+              {{ item.expiredDate | date : "dd MMM yyyy" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- <div class="card flex justify-content-center">
+                <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+                    [totalRecords]="Members&&Members.length" [rowsPerPageOptions]="[ 10, 20,30]"></p-paginator>
+            </div>  -->
+  </div>
+</div>

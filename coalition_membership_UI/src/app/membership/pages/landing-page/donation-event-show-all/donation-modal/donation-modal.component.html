@@ -1,0 +1,50 @@
+<div class="modal-content shadow-lg">
+  <button class="close-btn" (click)="closeModal()">×</button>
+
+  <div class="text-center">
+    <h2 class="fw-bold text-primary display-5">
+      <i class="fas fa-hand-holding-heart me-2"></i> {{ 'Make_a_Donation' | translate }}
+    </h2>
+    <h3 class="text-secondar">"{{ eventTitle }}"</h3>
+  
+    <div class="mt-2 p-3 bg-light border rounded shadow-sm d-inline-block">
+      <h5 class="fw-bold text-dark">
+        <i class="fas fa-money-bill-wave me-2"></i> {{ 'Amount' | translate }}:
+        <span class="text-success">{{ amoount }}</span>
+      </h5>
+      <h5 class="fw-bold text-dark mt-2">
+        <i class="fas fa-donate me-2"></i> {{ 'Amount_Collected' | translate }}:
+        <span class="text-primary">{{ amountCollected }}</span>
+      </h5>
+    </div>
+  </div>
+  
+  <p class="text-muted fs-5 text-center">
+
+
+  <hr class="divider mx-auto" style="width: 60px; border-top: 3px solid #007bff;">
+
+  <div class="donation-options text-center">
+    <div class="amount-boxes d-flex justify-content-center flex-wrap gap-3">
+      <button class="amount-box btn btn-outline-primary btn-lg px-4 py-2 rounded-pill shadow-sm"
+        *ngFor="let amount of presetAmounts" (click)="selectAmount(amount)"
+        [class.selected]="selectedAmount === amount">
+        {{ amount | currency:'ETB':'symbol-narrow' }}
+      </button>
+    </div>
+
+    <div class="custom-amount my-4 ">
+      <label for="customAmount" class="form-label fw-semibold">
+        {{ 'Enter a Custom Amount' | translate }}
+      </label>
+      <input type="number" id="customAmount" class="form-control form-control-lg text-center rounded-pill"
+        placeholder="{{ 'Enter amount in Ethiopian Birr' | translate }}" [(ngModel)]="customAmount"
+        (input)="clearSelectedAmount()" />
+    </div>
+
+    <button class="btn btn-success btn-lg mt-3 px-5 py-2 rounded-pill shadow-lg" [disabled]="!isDonationValid()"
+      (click)="onDonate()">
+      <i class="fas fa-donate me-2"></i> {{ 'Donate' | translate }}
+    </button>
+  </div>
+</div>

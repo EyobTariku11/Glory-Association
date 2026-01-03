@@ -1,0 +1,53 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><span class="text-success"
+                style="font-size: 18px;font-weight: bolder;">{{userData?"Update":"Register"}}
+                Association User
+            </span>
+        </h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+
+        <div class="card p-4">
+
+            <form [formGroup]="associationUserForm" (ngSubmit)="onSubmit()">
+                <div class="row g-3">
+                    <!-- Name (English) -->
+                    <div class="col-md-6">
+                        <label for="userName" class="form-label">User Name</label>
+                        <input id="userName" formControlName="userName" class="form-control" required />
+                    </div>
+
+                    <!-- Name (Amharic) -->
+                    <div class="col-md-6">
+                        <label for="amharicemailName" class="form-label">Email</label>
+                        <input id="email" formControlName="email" type="email" class="form-control" required />
+                    </div>
+
+                    <!-- ArifPay Key -->
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Password</label>
+                        <input id="password" formControlName="password" type="password" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="rowStatus">Status</label>
+                        <select id="rowStatus" formControlName="rowStatus" class="form-control">
+                            <option value="ACTIVE">Active</option>
+                            <option value="INACTIVE">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="text-end mt-4">
+                        <button type="submit" class="btn btn-success px-4" [disabled]="associationUserForm.invalid">
+                            {{userData?"Update":"Register"}} User
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

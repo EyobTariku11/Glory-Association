@@ -1,0 +1,25 @@
+<div class="modal-content shadow-lg rounded-3 border-0">
+
+    <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Membership Details</h5>
+        <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="closeModal()"></button>
+    </div>
+
+    <div class="card border-0">
+        <div class="modal-body p-4">
+            <!-- User Details -->
+            <div class="mb-4">
+                <p><strong>Phone Number:</strong> {{ phone_number }}</p>
+                <p> {{ message }}</p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="modal-footer bg-light border-top-0">
+            <button type="button" class="btn btn-success w-100" (click)="closeModal()">Continue</button>
+        </div>
+    </div>
+</div>

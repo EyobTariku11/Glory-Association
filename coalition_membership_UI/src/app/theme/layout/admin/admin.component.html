@@ -1,0 +1,37 @@
+<app-navigation
+  class="coded-navbar pc-sidebar"
+  [ngClass]="{
+    'navbar-collapsed': navCollapsed,
+    'mob-open': navCollapsedMob
+  }"
+  (NavCollapsedMob)="navMobClick()"
+></app-navigation>
+<app-nav-bar (NavCollapse)="this.navCollapsed = !this.navCollapsed" (NavCollapsedMob)="navMobClick()"></app-nav-bar>
+<div class="pc-container">
+  <div class="coded-wrapper">
+    <div class="coded-content">
+      <div class="coded-inner-content">
+      
+        <div class="main-body">
+          <div class="page-wrapper">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="pc-footer">
+  <div class="footer-wrapper container-fluid">
+    <div class="row">
+      <div class="col my-1">
+        <p class="m-0"> Copyright &copy; <a href="#" target="_blank">2024 EPLFFC </a> </p>
+      </div>
+      <div class="col-auto my-1">
+        <p class="m-0"> Powerd By <a>DAF-TECH Computer Engineering</a> </p>
+       
+      </div>
+    </div>
+  </div>
+</footer>
+<app-configuration></app-configuration>

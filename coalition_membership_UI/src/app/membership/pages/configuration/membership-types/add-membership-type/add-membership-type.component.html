@@ -1,0 +1,104 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">{{MembershipType?"Update":"Add"}} Membership Type</h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form class="" [formGroup]="MembershipTypeForm" (ngSubmit)="MembershipType?update():submit()">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="name" id="floatingInput" />
+                            <label for="floatingInput">Membership Type Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="shortCode" id="floatingInput" />
+                            <label for="floatingInput">Short Code</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+
+                            <select class="form-control" formControlName="category" #subType>
+                                <option></option>
+                                <!-- <option value=0>WEEKLY</option>
+                                <option value=1>MONTHLY</option> -->
+                                <option value=2>YEARLY</option>
+                            </select>
+                            <label for="floatingInput">Subscription Type </label>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" formControlName="counter" id="floatingInput" />
+                            <label for="floatingInput">Counter</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="['et']"
+                                [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                                [searchCountryField]="[
+                                SearchCountryField.Iso2,
+                                SearchCountryField.Name
+                              ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Ethiopia"
+                                [maxLength]="15" [phoneValidation]="true" [separateDialCode]="true"
+                                [numberFormat]="PhoneNumberFormat.National" (countryChange)="onCountryChange($event)"
+                                formControlName="countryCode">
+                            </ngx-intl-tel-input>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" *ngIf="countryType === 'ETHIOPIAN'">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" formControlName="money" id="floatingInput" />
+                            <label for="floatingInput">Money (ETB)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" *ngIf="countryType === 'FOREIGN'">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" formControlName="money" id="floatingInput" />
+                            <label for="floatingInput">Money (USD)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" style="display: none;">
+                        <div class="form-floating mb-3">
+                            <select class="form-control" formControlName="currency">
+                                <option value="0">ETB</option>
+                                <option value="1">USD</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" formControlName="description" style="height: 100px;">
+                            </textarea>
+                            <label for="floatingInput">Desctiption </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer"> <button type="button" class="btn btn-outline-secondary"
+                        (click)="closeModal()">Close</button> <button type="button" type="submit"
+                        [disabled]="!MembershipTypeForm.valid"
+                        class="btn btn-outline-success">{{MembershipType?"Update":"Create"}}</button></div>
+            </form>
+        </div>
+    </div>
+
+</div>

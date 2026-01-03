@@ -1,0 +1,282 @@
+// Coalition About Component Styles
+.coalition-about {
+
+
+  .card {
+    border-radius: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .card-header {
+      border-radius: 1rem 1rem 0 0 !important;
+      
+      &.bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      }
+    }
+  }
+
+  .logo-container {
+    position: relative;
+    display: inline-block;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      
+      .logo-overlay {
+        opacity: 1;
+      }
+    }
+    
+    img {
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .logo-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 1rem;
+    }
+  }
+
+  .form-floating {
+    .form-control {
+      border-radius: 0.75rem;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+      
+      &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+      }
+    }
+    
+    label {
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  .input-group {
+    .input-group-text {
+      border-radius: 0.75rem 0 0 0.75rem;
+      border: 2px solid #e9ecef;
+      border-right: none;
+    }
+    
+    .form-control {
+      border-radius: 0 0.75rem 0.75rem 0;
+      border-left: none;
+      
+      &:focus {
+        border-left: 2px solid #667eea;
+      }
+    }
+  }
+
+  .btn {
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    
+    &.btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(102, 126, 234, 0.4);
+      }
+      
+      &:disabled {
+        background: #6c757d;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+    
+    &.btn-outline-primary {
+      border-color: #667eea;
+      color: #667eea;
+      
+      &:hover {
+        background: #667eea;
+        border-color: #667eea;
+        transform: translateY(-1px);
+      }
+    }
+    
+    &.btn-outline-danger {
+      border-radius: 0.5rem;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .phone-numbers-container {
+    .input-group {
+      margin-bottom: 0.75rem;
+      
+      &:last-of-type {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  // Quill Editor Customization
+  ::ng-deep .ql-editor {
+    border-radius: 0.75rem;
+    min-height: 120px;
+    
+    &.ql-blank::before {
+      color: #6c757d;
+      font-style: italic;
+    }
+  }
+  
+  ::ng-deep .ql-toolbar {
+    border-radius: 0.75rem 0.75rem 0 0;
+    border-color: #e9ecef;
+  }
+  
+  ::ng-deep .ql-container {
+    border-radius: 0 0 0.75rem 0.75rem;
+    border-color: #e9ecef;
+  }
+
+  // Loading States
+  .spinner-border {
+    color: #667eea;
+  }
+
+  // Card Sections
+  .card.bg-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    
+    .card-header {
+      background: white !important;
+      border-bottom: 2px solid #e9ecef;
+      
+      h6 {
+        font-weight: 600;
+        
+        i {
+          width: 20px;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  // Social Media Icons
+  .ti-brand-facebook {
+    color: #1877f2 !important;
+  }
+  
+  .ti-brand-telegram {
+    color: #0088cc !important;
+  }
+  
+  .ti-brand-tiktok {
+    color: #000000 !important;
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    .logo-container {
+      max-width: 150px;
+      
+      img {
+        max-width: 150px;
+        max-height: 150px;
+      }
+    }
+    
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  // Animation for form elements
+  .form-floating, .card {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Hover effects for interactive elements
+  .form-control:hover {
+    border-color: #adb5bd;
+  }
+  
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  // Form Status Badges
+  .form-status {
+    .badge {
+      font-size: 0.875rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      
+      &.bg-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+      }
+      
+      &.bg-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+        color: #212529 !important;
+      }
+    }
+  }
+
+  // Enhanced form validation styling
+  .form-control.ng-invalid.ng-touched {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+  }
+
+  .form-control.ng-valid.ng-touched {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  }
+
+  // Enhanced card animations
+  .card {
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.3s; }
+    &:nth-child(4) { animation-delay: 0.4s; }
+  }
+} 

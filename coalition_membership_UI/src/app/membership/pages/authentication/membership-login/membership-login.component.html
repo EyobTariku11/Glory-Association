@@ -1,0 +1,78 @@
+<div class="auth-main">
+  <div class="auth-wrapper v3 row justify-content-center align-items-center">
+
+    <!-- Form Section -->
+    <div class="auth-form col-lg-7 col-md-7 col-sm-10">
+      <div class="card shadow-lg border-0 rounded-lg p-4">
+        <div class="card-body">
+          <!-- Logo -->
+          <a href="#" class="d-flex justify-content-center mb-4">
+            <img src="assets/logo-remove.png" height="120" class="logo-image" alt="Logo" appImageError>
+          </a>
+
+          <!-- Header -->
+          <div class="text-center">
+            <h2 class="text-primary mb-3 display-6"><b>{{'Welcome_Back'|translate}}</b></h2>
+            <p class="fs-5 text-muted">{{'Login_Message2'|translate}}</p>
+          </div>
+
+          <!-- Form -->
+          <form [formGroup]="loginForm" class="mt-4">
+            <div class="form-floating mb-4">
+              <input type="text" class="form-control form-control-lg " id="floatingInput" formControlName="userName"
+                [placeholder]="'Membership_ID'|translate" />
+              <label for="floatingInput">{{'Membership_ID'|translate}}</label>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" (click)="login()"
+                class="btn btn-primary btn-lg  shadow">{{'Sign_In'|translate}}</button>
+            </div>
+
+            <hr class="my-4" />
+            <p class="text-left">
+              {{'No_Account'|translate}}
+              <button type="button" class="btn btn-link text-decoration-none text-primary fw-bold" (click)="register()">
+                {{'Register_Now'|translate}}
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Section (Tip) -->
+    <div class="col-lg-4 col-md-5 col-sm-10 mt-md-0 mt-4">
+     
+      <div class="member-info p-4 bg-light border rounded-lg shadow-sm">
+        <h5 class="text-secondary mb-3">⚽ {{ 'Join_Fans_Association' | translate }}</h5>
+        <p class="text-muted mb-3" style="font-size: 0.9rem;">
+          {{ 'Fans_Association_Benefits' | translate }}
+        </p>
+    
+        <ul class="list-unstyled text-muted" style="font-size: 0.85rem;">
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Easy_Registration' | translate }}</span>
+          </li>
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Access_Tickets_And_Merch' | translate }}</span>
+          </li>
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Support_Your_Club' | translate }}</span>
+          </li>
+          <li class="mb-2">
+            <span class="fw-bold text-dark">{{ 'Be_Part_Of_Coalition' | translate }}</span>
+          </li>
+        </ul>
+        <div class="partner-logo mt-4 text-end">
+          <img src="assets/arifpay.svg" alt="Partner Logo" class="w-32 h-auto" appImageError>
+        </div>
+        <!-- <button class="btn btn-outline-primary btn-sm mt-2">Join Now</button> -->
+      </div>
+   
+      
+    </div>
+    
+
+  </div>
+</div>

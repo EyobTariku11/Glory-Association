@@ -1,0 +1,226 @@
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.table {
+  th {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    font-weight: 600;
+  }
+  
+  td {
+    vertical-align: middle;
+  }
+}
+
+.badge {
+  font-size: 0.75em;
+  padding: 0.375em 0.75em;
+  
+  &.badge-success {
+    background-color: #28a745;
+  }
+  
+  &.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  &.badge-secondary {
+    background-color: #6c757d;
+  }
+}
+
+.progress {
+  background-color: #e9ecef;
+  
+  .progress-bar {
+    background-color: #007bff;
+  }
+}
+
+.btn-group {
+  .btn {
+    margin-right: 0.25rem;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.modal {
+  &.show {
+    display: block !important;
+  }
+  
+  .modal-dialog {
+    max-width: 800px;
+  }
+  
+  .modal-content {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+  }
+}
+
+.modal-backdrop {
+  &.show {
+    opacity: 0.5;
+  }
+}
+
+// Ensure modals don't show on page load
+.modal:not(.show) {
+  display: none !important;
+}
+
+.modal-backdrop:not(.show) {
+  display: none !important;
+}
+
+.form-control {
+  &:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  &.is-invalid {
+    border-color: #dc3545;
+    
+    &:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .btn-group {
+    .btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+  }
+  
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+} 
+
+/* --- Header & Title Responsiveness --- */
+.page-header {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  .page-header-title {
+    h2 {
+      /* Prevents text from cutting off by scaling down and allowing wrapping */
+      font-size: 1.75rem; 
+      font-weight: 700;
+      line-height: 1.2;
+      color: #212529;
+      word-wrap: break-word; 
+
+      @media (max-width: 576px) {
+        font-size: 1.4rem; /* Smaller font on phones */
+        margin-top: 5px;
+      }
+    }
+  }
+}
+
+/* --- Breadcrumb Mobile Fix --- */
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    /* Allows breadcrumbs to scroll horizontally instead of breaking the layout */
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    padding-bottom: 5px;
+    
+    &::-webkit-scrollbar {
+      display: none; /* Hides scrollbar for a cleaner look */
+    }
+
+    .breadcrumb-item {
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+  }
+}
+
+/* --- Card Header Mobile Fix --- */
+.card-header {
+  @media (max-width: 576px) {
+    flex-direction: column; 
+    gap: 15px;
+    align-items: flex-start !important;
+
+    .btn {
+      width: 100%; /* Makes button full width for easier tapping */
+    }
+  }
+}
+@media (max-width: 768px) {
+  .breadcrumb {
+    /* 1. Allow items to wrap to a new line instead of cutting off */
+    flex-wrap: wrap !important; 
+    
+    /* 2. Ensure the container doesn't hide the text */
+    overflow: visible !important; 
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
+  .breadcrumb-item {
+    /* 3. Allow long words like "Management" to breathe */
+    white-space: normal !important; 
+    font-size: 13px; /* Slightly smaller to fit better */
+    line-height: 1.4;
+
+    /* 4. Fix the spacing between wrapped items */
+    display: flex;
+    align-items: center;
+  }
+
+  /* Adjust the separator (the "/" or ">") spacing */
+  .breadcrumb-item + .breadcrumb-item::before {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+}

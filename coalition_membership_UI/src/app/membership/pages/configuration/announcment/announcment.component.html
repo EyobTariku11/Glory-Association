@@ -1,0 +1,67 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _>Configuration</a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            Announcment
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card p-4">
+    <div class="col-lg-12 text-end p-2" *ngIf="userView.role.includes('SuperAdmin')"> 
+        <button type="button" class="btn btn-outline-success" (click)="addAnnouncment()">
+            <i class="pi pi-plus me-1" style="font-size: 12px;"></i> Announcment
+        </button>
+    </div>
+    <div class="card mt-2" style="background-color: #ecf0f4;">
+    <div style="display: flex; justify-content: center;">
+        <div class="col-md-12 p-4">
+          
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col mb-4" *ngFor="let item of paginatedAnnouncment; let i = index">
+                    <div class="card membership-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{item.title}}</h5>
+                            <hr>
+                            <img *ngIf="item.imagePath" [src]="getImage(item.imagePath)" width="100%" style="border-radius: 10px;margin-bottom: 20px;"appImageError>
+                            <p class="card-text"><strong>Expired Date:</strong> {{item.epiredDate|date:"dd MMM yyy"}}</p>    
+                            <p class="card-text">{{item.description}}</p>                          
+                          
+
+                            <div class="card-buttons" *ngIf="userView.role.includes('SuperAdmin')">
+                                <button type="button" (click)="updateAnnouncment(item)"
+                                    class="btn btn-outline-warning btn-sm">
+                                    <i class="ti ti-pencil"></i> Edit
+                                </button>&nbsp;&nbsp;&nbsp;
+                                <button type="button" (click)="removeAnnouncment(item.id)"
+                                    class="btn btn-outline-danger btn-sm">
+                                    <i class="ti ti-trash"></i> Delete
+                                </button>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card flex justify-content-center">
+                <!-- <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+                    [totalRecords]="Announcment && Announcment.length"
+                    [rowsPerPageOptions]="[3, 6, 9]"></p-paginator> -->
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

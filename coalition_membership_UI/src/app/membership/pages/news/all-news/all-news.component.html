@@ -1,0 +1,247 @@
+<div class="container-fluid">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+              <li class="breadcrumb-item"><a href="javascript: void(0);">News Management</a></li>
+              <li class="breadcrumb-item" aria-current="page">All News</li>
+            </ul>
+          </div>
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h2 class="mb-0">All News</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+
+    <!-- Filters -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label">Search</label>
+                  <input type="text" class="form-control" [(ngModel)]="searchQuery" placeholder="Search news...">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">Category</label>
+                  <select class="form-control" [(ngModel)]="selectedCategory">
+                    <option value="">All Categories</option>
+                    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">Status</label>
+                  <select class="form-control" [(ngModel)]="selectedStatus">
+                    <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="form-label">&nbsp;</label>
+                  <button class="btn btn-secondary w-100" (click)="clearFilters()">
+                    <i class="ti ti-refresh"></i> Clear
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading news...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- News List -->
+    <div *ngIf="!loading" class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>All News ({{ filteredNewsCount }})</h5>
+            <div class="d-flex gap-2">
+              <span class="badge bg-success">{{ approvedCount }} Approved</span>
+              <span class="badge bg-warning">{{ pendingCount }} Pending</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div *ngFor="let news of getFilteredNews()" class="col-lg-6 mb-4">
+                <div class="card border h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start">
+                      <img [src]="getNewsImage(news)" [alt]="news.title" 
+                           class="rounded me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                      <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                          <h6 class="mb-1">{{ news.title }}</h6>
+                          <div class="d-flex gap-1">
+                            <span *ngIf="news.isBreakingNews" class="badge bg-danger">BREAKING</span>
+                            <span *ngIf="news.isFeatured" class="badge bg-warning">FEATURED</span>
+                          </div>
+                        </div>
+                        
+                        <p *ngIf="news.subTitle" class="text-muted small mb-2">{{ news.subTitle }}</p>
+                        <p class="text-muted small mb-3">{{ truncateContent(news.content) }}</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <div>
+                            <span class="badge bg-primary me-2">{{ news.associationName }}</span>
+                            <span *ngIf="news.category" class="badge bg-info">{{ news.category }}</span>
+                            <span [class]="getStatusBadge(news).class">{{ getStatusBadge(news).text }}</span>
+                          </div>
+                          <small class="text-muted">{{ getNewsDate(news.createdDate) }}</small>
+                        </div>
+
+                        <!-- Tags -->
+                        <div *ngIf="getNewsTags(news).length > 0" class="mb-3">
+                          <span *ngFor="let tag of getNewsTags(news)" class="badge bg-light text-dark me-1">
+                            #{{ tag }}
+                          </span>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="d-flex justify-content-between align-items-center">
+                          <small class="text-muted">
+                            <i class="ti ti-eye"></i> {{ news.viewCount }} views
+                          </small>
+                          <button (click)="viewFullNews(news)" class="btn btn-outline-primary btn-sm">
+                            <i class="ti ti-eye"></i> View Full
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Results -->
+            <div *ngIf="getFilteredNews().length === 0" class="text-center py-5">
+              <i class="ti ti-search text-muted" style="font-size: 4rem;"></i>
+              <h4 class="mt-3">No news found</h4>
+              <p class="text-muted">Try adjusting your search criteria or filters.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- View Full News Modal -->
+<div *ngIf="selectedNewsForView" class="modal fade show" style="display: block; z-index: 99999; background-color: rgba(0, 0, 0, 0.5);" tabindex="-1" (click)="onModalBackdropClick($event)">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-newspaper me-2 text-primary"></i>
+          View News Article
+        </h5>
+        <button type="button" class="btn-close" (click)="closeViewModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="mb-3">{{ selectedNewsForView.title }}</h4>
+            <p *ngIf="selectedNewsForView.subTitle" class="text-muted mb-3">{{ selectedNewsForView.subTitle }}</p>
+            
+            <div class="mb-3">
+              <span *ngIf="selectedNewsForView.isBreakingNews" class="badge bg-danger me-2">
+                <i class="fas fa-bolt me-1"></i>BREAKING
+              </span>
+              <span *ngIf="selectedNewsForView.isFeatured" class="badge bg-warning me-2">
+                <i class="fas fa-star me-1"></i>FEATURED
+              </span>
+              <span *ngIf="selectedNewsForView.category" class="badge bg-info me-2">{{ selectedNewsForView.category }}</span>
+              <span [class]="getStatusBadge(selectedNewsForView).class">
+                <i class="fas fa-check-circle me-1"></i>{{ getStatusBadge(selectedNewsForView).text }}
+              </span>
+            </div>
+
+            <div class="mb-3">
+              <img *ngIf="selectedNewsForView.imagePath" 
+                   [src]="getNewsImage(selectedNewsForView)" 
+                   [alt]="selectedNewsForView.title"
+                   class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover;">
+            </div>
+
+            <div class="mb-3 p-3 bg-light rounded">
+              <p class="text-muted mb-1">
+                <i class="fas fa-building me-2 text-primary"></i>
+                <strong>Association:</strong> {{ selectedNewsForView.associationName }}
+              </p>
+              <p class="text-muted mb-1">
+                <i class="fas fa-calendar-alt me-2 text-success"></i>
+                <strong>Created:</strong> {{ getNewsDate(selectedNewsForView.createdDate) }}
+              </p>
+              <p class="text-muted mb-0">
+                <i class="fas fa-eye me-2 text-info"></i>
+                <strong>Views:</strong> {{ selectedNewsForView.viewCount }}
+              </p>
+            </div>
+
+            <div *ngIf="getNewsTags(selectedNewsForView).length > 0" class="mb-3">
+              <strong><i class="fas fa-tags me-2 text-warning"></i>Tags:</strong>
+              <div class="mt-2">
+                <span *ngFor="let tag of getNewsTags(selectedNewsForView)" class="badge bg-light text-dark me-1">
+                  <i class="fas fa-hashtag me-1"></i>{{ tag }}
+                </span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <strong><i class="fas fa-file-text me-2 text-primary"></i>Content:</strong>
+              <div class="mt-2 p-3 bg-light rounded border">
+                <div [innerHTML]="formatContent(selectedNewsForView.content)"></div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedNewsForView.videoUrl" class="mb-3">
+              <strong><i class="fas fa-video me-2 text-danger"></i>Video:</strong>
+              <div class="mt-2">
+                <div class="ratio ratio-16x9">
+                  <iframe [src]="getVideoUrl(selectedNewsForView.videoUrl) | safe" 
+                          frameborder="0" 
+                          allowfullscreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          class="rounded shadow-sm">
+                  </iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeViewModal()">
+          <i class="fas fa-times me-2"></i>Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

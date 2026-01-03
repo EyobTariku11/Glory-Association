@@ -1,0 +1,123 @@
+<div class="modal-header">
+    <h5 class="modal-title"> Message Detail
+
+    </h5>
+    <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+        aria-label="Close"></button>
+</div>
+
+<div class="card p-4">
+
+    <div class="row">
+
+
+        <div class="col-4">
+            <h4>Message Content :</h4>
+            <p>{{message&&message.content}}</p>
+            <h4>Message Type :</h4>
+            <p>{{message&&message.messageTypeGet}}</p>
+
+            <h4>Selected Members :</h4>
+            <p>{{messageMembers&&messageMembers.length}}</p>
+
+
+        </div>
+
+
+
+        <div class="col-8" *ngIf="messageMembers">
+
+
+
+            <div class="row">
+
+
+                <div class="col-6">
+
+                    <div class="form-floating mb-3">
+
+                        <select class="form-control" [(ngModel)]="messageStatus" (change)="getMessageMembers()">
+                            <option [value]="0">Pending</option>
+                            <option [value]="1">Sent</option>
+                        </select>
+                        <label for="floatingInput">Message Status</label>
+                    </div>
+                </div>
+
+
+
+                <div class="col-6" *ngIf="messageMembers.length==0">
+
+                    <div class="form-floating mb-3">
+
+                        <select class="form-control" [(ngModel)]="selectedReciverType" (change)="onReciverTypeSelect()">
+                            <option *ngFor=" let item of recivertypes" [value]="item.code">{{item.name}}</option>
+
+                        </select>
+                        <label for="floatingInput">Reciver Types</label>
+                    </div>
+                </div>
+
+
+                <div class="col-12" *ngIf="selectedReciverType==1">
+
+                    <div class="form-floating mb-3">
+
+                        <select class="form-control" [(ngModel)]="selectedMembershipTypes" multiple
+                            style="height: 120px;">
+                            <option *ngFor=" let item of membershipTypes" [value]="item.id">{{item.name}}</option>
+
+                        </select>
+                        <label for="floatingInput">Membership Types</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end" *ngIf="messageMembers && messageMembers.length == 0 && selectedReciverType">
+                <button class="btn btn-outline-success" (click)="submit()"
+                    [disabled]="(this.selectedReciverType == 1 && this.selectedMembershipTypes.length <= 0)">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-12 text-end mt-3" *ngIf="messageMembers && messageMembers.length > 0 && messageStatus == 0">
+        <button class="btn btn-success" (click)="send()">
+            <i class="fas fa-paper-plane"></i> Send
+        </button>
+    </div>
+    <table class="custom-table mt-4">
+        <thead>
+            <tr>
+
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Message Status </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let item of messageMembers">
+                <td>{{item.memberName}}</td>
+                <td>{{item.memberPhoneNumber}}</td>
+                <td>{{item.messageStatusGet}}</td>
+
+
+
+            </tr>
+
+
+        </tbody>
+
+    </table>
+
+
+
+
+</div>

@@ -1,0 +1,116 @@
+// Board Members Component Styles
+.member-photo {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #e9ecef;
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.1);
+    border-color: #007bff;
+  }
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  
+  &.badge-success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  &.badge-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+}
+
+.btn-group {
+  .btn {
+    margin-right: 0.25rem;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+// Modal styles
+.modal {
+  &.show {
+    display: block !important;
+  }
+}
+
+.modal-backdrop {
+  &.show {
+    opacity: 0.5;
+  }
+}
+
+.modal-content {
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+// Ensure modal doesn't show on page load
+.modal:not(.show) {
+  display: none !important;
+}
+
+.modal-backdrop:not(.show) {
+  display: none !important;
+}
+
+// Form validation styles
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+// Photo preview
+.img-thumbnail {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .member-photo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+} 

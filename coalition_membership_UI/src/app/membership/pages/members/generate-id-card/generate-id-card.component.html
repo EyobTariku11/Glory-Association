@@ -1,0 +1,163 @@
+<div class="card p-3">
+  <!-- Loading State -->
+  <div *ngIf="isLoadingAssociation" class="text-center p-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading association data...</p>
+  </div>
+
+  <!-- ID Card Content -->
+  <div class="id-card-container" *ngIf="association && !isLoadingAssociation">
+
+    <!-- Front Side -->
+    <div class="id-card-front" id="front-side">
+      <!-- Background Image -->
+      <div class="card-background" *ngIf="backgroundImage || logoPath">
+        <img [src]="backgroundImage || logoPath" alt="Background Image" class="background-img" appImageError>
+      </div>
+      <div class="card-header" [ngStyle]="{
+        background: 'linear-gradient(135deg, ' + association.primaryColor + ' 0%, ' + association.secondaryColor + ' 100%)'
+      }" style="display: flex; align-items: center;">
+        <div class="logo-section">
+          <img [src]="logoPath" alt="Organization Logo" class="logo" appImageError>
+        </div>
+        <!-- Title section centered -->
+        <div class="title-section" style="flex: 1; text-align: center;">
+          <h1 class="org-name" style="margin: 0;">{{association.name}}</h1>
+          <h2 class="org-name-amharic" style="margin: 0;">{{association.amharicName}}</h2>
+        </div>
+        <!-- Empty div to balance the logo on the left for perfect centering -->
+        <div style="width: 60px;" class="header-spacer"></div>
+      </div>
+
+      <div class="card-body">
+        <div class="photo-section">
+          <div class="photo-wrapper">
+            <img [src]="imagePath" alt="Member Photo" class="member-photo" appImageError>
+            <img *ngIf="photoStamp" [src]="photoStamp" alt="Photo Stamp" class="photo-stamp" appImageError>
+          </div>
+        </div>
+        <div class="details-section" style="margin-left: 25px;">
+          <div class="detail-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 130px; display: inline-block;">ID Number:</span>
+            <span class="value">{{getFormattedMemberId()}}</span>
+          </div>
+          <div class="detail-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 130px; display: inline-block;">Name:</span>
+            <span class="value">{{member.fullName}}</span>
+          </div>
+          <div class="detail-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 130px; display: inline-block;">Membership
+              Type:</span>
+            <span class="value">{{member.membershipType}}</span>
+          </div>
+          <div class="detail-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 130px; display: inline-block;">Mobile
+              Number:</span>
+            <span class="value">{{member.phoneNumber}}</span>
+          </div>
+          <div class="detail-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 130px; display: inline-block;">Issued
+              Date:</span>
+            <span class="value">{{member.lastPaid|date:"dd MMM yyyy"}}</span>
+          </div>
+          <div class="detail-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 130px; display: inline-block;">Expired
+              Date:</span>
+            <span class="value">{{expiryDate|date:"dd MMM yyyy"}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="watermark">{{association.name}}</div>
+
+      <div class="card-footer" [ngStyle]="{
+        background: association.primaryColor,
+        borderTop: '2px solid ' + association.secondaryColor
+      }">
+        <div class="authorization-text">
+          <strong>Authorized by {{association.name}}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Side -->
+    <div class="id-card-back" id="back-side">
+      <div class="card-header" [ngStyle]="{
+        background: 'linear-gradient(135deg, ' + association.primaryColor + ' 0%, ' + association.secondaryColor + ' 100%)'
+      }" style="display: flex; align-items: center;">
+        <div class="logo-section">
+          <img [src]="logoPath" alt="Organization Logo" class="logo" appImageError>
+        </div>
+        <!-- Title section centered -->
+        <div class="title-section" style="flex: 1; text-align: center;">
+          <h1 class="org-name" style="margin: 0;">{{association.name}}</h1>
+          <h2 class="org-name-amharic" style="margin: 0;">{{association.amharicName}}</h2>
+        </div>
+        <div class="qr-section">
+          <img [src]="qrCodeBase64" alt="QR Code" class="qr-code">
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="info-section" style="margin-left: 25px;">
+          <div class="info-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 80px; display: inline-block;">Address:</span>
+            <span class="value">Bisrate Gebriel, in front of Zambia Embassy</span>
+          </div>
+          <div class="info-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 80px; display: inline-block;">Website:</span>
+            <span class="value">{{association.websiteLink}}</span>
+          </div>
+          <div class="info-row compact">
+            <span class="label" style="padding-right: 15px; min-width: 80px; display: inline-block;">Phone:</span>
+            <span class="value">{{association.phoneNumbers}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stamps-section">
+        <div class="stamp-left">
+          <img [src]="stampPath" alt="Official Stamp" class="stamp" appImageError>
+        </div>
+        <div class="signature-center">
+          <img [src]="signaturePath" alt="Authorized Signature" class="signature" appImageError>
+        </div>
+        <div class="stamp-right">
+          <img [src]="stampPath2" alt="Official Stamp 2" class="stamp" appImageError>
+        </div>
+      </div>
+
+      <div class="disclaimer-section">
+        <p class="disclaimer-text">
+          ይህ የአባልነት መታወቂያ ብቻ ነው። ለሌላ አገልግሎት አይጠቀምም።
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <div class="scroll-to-top" *ngIf="association && !isLoadingAssociation">
+    <button class="btn btn-outline-primary btn-sm" (click)="scrollToTop()" title="Scroll to top">
+      <i class="ti ti-arrow-up"></i> Scroll to Top
+    </button>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons" *ngIf="association && !isLoadingAssociation">
+    <button class="btn btn-primary btn-lg me-3" id="download-button" (click)="generatePdf()"
+      [disabled]="isGeneratingPdf">
+      <span *ngIf="!isGeneratingPdf">
+        <i class="fas fa-download me-2"></i>Download ID Card
+      </span>
+      <span *ngIf="isGeneratingPdf">
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Generating PDF...
+      </span>
+    </button>
+  </div>
+
+  <div id="pdf-render-area" style="position: absolute; left: -9999px; top: 0; width: 700px; background: white;">
+  </div>
+</div>

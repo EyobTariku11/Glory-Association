@@ -1,0 +1,40 @@
+// Import packages
+const express = require("express");
+const home = require("./routes/home");
+const chapa = require("./routes/chapa");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const fs = require("fs");
+const https = require("https");
+
+// Middlewares
+const app = express();
+app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const options = {
+  key: fs.readFileSync("/app/key.pem"), // Update with the correct path to your SSL/TLS private key
+  cert: fs.readFileSync("/app/cert.pem"), // Update with the correct path to your SSL/TLS certificate
+};
+  cors({
+      origin: '*',
+      methods: '*',
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true,
+    })
+
+
+app.use(cors(options));
+app
+app.use("/", home);
+app.use("/chapa", chapa);
+
+
+// Connection
+const port = 8443; // Change this to your desired HTTPS port
+
+https.createServer(options, app).listen(port, () => {
+  console.log(`Listening to port ${port}`);
+});

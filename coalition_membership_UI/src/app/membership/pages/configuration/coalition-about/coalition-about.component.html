@@ -1,0 +1,245 @@
+<div class="coalition-about">
+
+
+
+<div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Configuration</a></li>
+            <li class="breadcrumb-item" aria-current="page"> Coalition Management</li>
+          </ul>
+        </div>
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h2 class="mb-0">Coalition About</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <!-- Loading Spinner -->
+        <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 text-muted">Loading coalition profile...</p>
+        </div>
+        
+        <!-- Main Form -->
+        <div class="card shadow-sm border-0" [hidden]="loading">
+            <div class="card-header bg-gradient-primary text-white">
+                <div class="d-flex align-items-center">
+                    <i class="ti ti-building-community fs-4 me-3"></i>
+                    <div>
+                        <h5 class="mb-0">Coalition Profile</h5>
+                        <small class="opacity-75">Manage your organization's information and branding</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body p-4">
+                <form [formGroup]="updateCoalitionForm" (ngSubmit)="submit()">
+                    <div class="row">
+                        <!-- Logo Section -->
+                        <div class="col-xl-3 col-lg-4 col-md-12 mb-4">
+                            <div class="text-center">
+                                <div class="position-relative mb-3">
+                                    <div class="logo-container">
+                                        <img [src]="imagePath || getImage('default-logo.png')" 
+                                             alt="Coalition Logo" 
+                                             class="img-fluid rounded shadow-sm border" 
+                                             style="max-width: 200px; max-height: 200px; object-fit: cover;"
+                                             appImageError>
+                                        <div class="logo-overlay">
+                                            <i class="ti ti-camera text-white fs-4"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input #file (change)="onUpload($event)" type="file" style="display: none;" accept="image/*" />
+                                <button type="button" (click)="file.click()" class="btn btn-primary btn-sm w-100">
+                                    <i class="ti ti-upload me-2"></i>Upload Logo
+                                </button>
+                                <small class="text-muted d-block mt-2">Recommended: 200x200px, PNG/JPG</small>
+                            </div>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="col-xl-9 col-lg-8 col-md-12">
+                            <!-- Basic Information Card -->
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-header bg-white border-0">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="ti ti-info-circle me-2"></i>Basic Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" formControlName="name" id="name" />
+                                                <label for="name">
+                                                    <i class="ti ti-language me-1"></i>Name (English)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" formControlName="amharicName" id="amharicName" />
+                                                <label for="amharicName">
+                                                    <i class="ti ti-language me-1"></i>Name (Amharic)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" formControlName="arifPayKey" id="arifPayKey" />
+                                                <label for="arifPayKey">
+                                                    <i class="ti ti-key me-1"></i>ArifPay Key
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="email" class="form-control" formControlName="email" id="email" />
+                                                <label for="email">
+                                                    <i class="ti ti-mail me-1"></i>Email Address
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Phone Numbers Card -->
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-header bg-white border-0">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="ti ti-phone me-2"></i>Contact Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Phone Numbers</label>
+                                        <div class="phone-numbers-container">
+                                            <div class="input-group mb-2" *ngFor="let phone of phoneNumbers.controls; let i = index">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="ti ti-phone"></i>
+                                                </span>
+                                                <input type="text" class="form-control" [formControl]="getPhoneControl(i)" placeholder="Enter phone number" />
+                                                <button type="button" class="btn btn-outline-danger" (click)="removePhoneNumber(i)" *ngIf="phoneNumbers.length > 1">
+                                                    <i class="ti ti-trash"></i>
+                                                </button>
+                                            </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addPhoneNumber()">
+                                                <i class="ti ti-plus me-1"></i>Add Phone Number
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Content Card -->
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-header bg-white border-0">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="ti ti-file-text me-2"></i>Content & Description
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Description</label>
+                                        <quill-editor 
+                                          formControlName="description" 
+                                          [modules]="quillModules"
+                                          placeholder="Enter a brief description of your coalition..."
+                                          style="height: 150px;">
+                                        </quill-editor>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">About</label>
+                                        <quill-editor 
+                                          formControlName="about" 
+                                          [modules]="quillModules"
+                                          placeholder="Provide detailed information about your coalition, mission, and goals..."
+                                          style="height: 200px;">
+                                        </quill-editor>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Social Media Card -->
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-header bg-white border-0">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="ti ti-share me-2"></i>Social Media Links
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" formControlName="facebook" id="facebook" placeholder="https://facebook.com/..." />
+                                                <label for="facebook">
+                                                    <i class="ti ti-brand-facebook me-1 text-primary"></i>Facebook
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" formControlName="telegram" id="telegram" placeholder="https://t.me/..." />
+                                                <label for="telegram">
+                                                    <i class="ti ti-brand-telegram me-1 text-info"></i>Telegram
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" formControlName="tikTok" id="tikTok" placeholder="https://tiktok.com/..." />
+                                                <label for="tikTok">
+                                                    <i class="ti ti-brand-tiktok me-1 text-dark"></i>TikTok
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-end">
+                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                    <!-- Form Status -->
+                                    <div class="form-status" *ngIf="updateCoalitionForm.valid">
+                                        <span class="badge bg-success">
+                                            <i class="ti ti-check me-1"></i>Form Valid
+                                        </span>
+                                    </div>
+                                    <div class="form-status" *ngIf="!updateCoalitionForm.valid && updateCoalitionForm.touched">
+                                        <span class="badge bg-warning">
+                                            <i class="ti ti-alert-triangle me-1"></i>Please fill required fields
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Submit Button -->
+                                    <button type="submit" 
+                                            [disabled]="!updateCoalitionForm.valid || loading"
+                                            class="btn btn-primary btn-lg px-5">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        <i class="ti ti-device-floppy me-2"></i>
+                                        {{ coalitionData ? 'Update' : 'Create' }} Coalition Profile
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

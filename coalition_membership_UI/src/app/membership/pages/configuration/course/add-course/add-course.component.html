@@ -1,0 +1,50 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">{{Course?"Update":"Add"}} Course</h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form class="" [formGroup]="CourseForm" (ngSubmit)="Course?update():submit()">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="fileName" id="floatingInput" />
+                            <label for="floatingInput"> Event Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" #file (change)="onUpload($event)"
+                                id="floatingInput" />
+                            <label for="floatingInput">Event Thumbnail</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+
+
+
+
+                            <p-editor formControlName="description" [style]="{ height: '320px' }"></p-editor>
+
+
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer"> <button type="button" class="btn btn-outline-secondary"
+                        (click)="closeModal()">Close</button> <button type="button" type="submit"
+                        [disabled]="!CourseForm.valid"
+                        class="btn btn-outline-success">{{Course?"Update":"Create"}}</button></div>
+            </form>
+        </div>
+    </div>
+
+</div>

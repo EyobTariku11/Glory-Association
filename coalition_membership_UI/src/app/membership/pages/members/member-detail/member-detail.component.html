@@ -1,0 +1,245 @@
+<div class=" card ">
+    <div class="modal-header">
+        <div>
+            <h5 class="modal-title">Member: <span class="text-success"
+                    style="font-size: 18px;font-weight: bolder;">{{member&&member.fullName.toUpperCase()}}</span> detail
+            </h5>
+            <!-- Membership Information Display -->
+            <div class="mt-2">
+                <span class="badge bg-primary me-2">
+                    <i class="fas fa-tag"></i> Category: {{ getMembershipCategoryName(member?.membershipCategory) }}
+                </span>
+                <span class="badge bg-info">
+                    <i class="fas fa-certificate"></i> Type: {{ getMembershipTypeName() }}
+                </span>
+            </div>
+        </div>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+
+        <div class="card p-4">
+
+            <form [formGroup]="updateProfileForm" (submit)="submit()">
+
+                <div class="row">
+
+                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+
+
+
+                        <img [src]="getImage2()" alt="Profile" style="width:100%;" appImageError>
+                        <input #file (change)="onUpload($event)" type="file" style="display: none;" accept="image/*" />
+                        <div class="pt-2">
+                            <a (click)="file.click()" style="width: 100%;" class="btn btn-outline-primary btn-sm"
+                                title="Upload new profile image">
+                                <i class="bi bi-upload"></i> Upload Image
+                            </a>
+                        </div>
+
+
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+
+
+                        <hr />
+
+                        <!-- Current Membership Information Display -->
+                        <div class="row mt-2 mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <h6 class="alert-heading">
+                                        <i class="fas fa-info-circle"></i> Current Membership Information
+                                        <small class="text-muted ms-2">
+                                            <i class="fas fa-lock"></i> Read-only fields
+                                        </small>
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <strong>Category:</strong> {{ getMembershipCategoryName(member?.membershipCategory) }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>Type:</strong> {{ getMembershipTypeName() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-4 ">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="fullName" id="fullName" />
+                                    <label for="fullName">Full Name </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="phoneNumber"
+                                        id="phoneNumber" />
+                                    <label for="phoneNumber">Phonenumber </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" disabled readonly
+                                        [value]="member&&member.memberId" id="memberId" />
+                                    <label for="memberId">MemberId </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" formControlName="email" id="memberId" />
+                                    <label for="memberId">Email </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+
+                                    <select class="form-control" formControlName="gender">
+
+                                        <option></option>
+                                        <option value="MALE">MALE
+                                        </option>
+                                        <option value="FEMALE">FEMALE
+                                        </option>
+
+                                    </select>
+                                    <label for="educationalLeevels">Gender</label>
+
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="woreda" id="woreda" />
+                                    <label for="woreda">Woreda </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" formControlName="regionId">
+
+                                        <option></option>
+                                        <option *ngFor="let item of chapters" [value]="item.id.toLowerCase()">
+                                            {{item.name}}
+                                        </option>
+
+                                    </select>
+                                    <label for="regionId">Region </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" formControlName="birthDate"
+                                        id="birthDate" />
+                                    <label for="birthDate">Birth Date</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" formControlName="paymentStatus">
+                                        <option>PENDING</option>
+                                        <option>PAID</option>
+                                        <option>EXPIRED</option>
+                                    </select>
+                                    <label for="paymetnStatus">Payment Status</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" formControlName="lastPaid" id="lastPaid"
+                                        (change)="getExpiredDate()" />
+                                    <label for="lastPaid">Last Paid</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" formControlName="expiredDate"
+                                        id="expiredDate" />
+                                    <label for="expiredDate">Expired Date</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+
+                                    <select class="form-control" #category (change)="getMemberships(category.value)" formControlName="membershipCategory" [disabled]="true">
+                                        <option value=""></option>
+                                        <option value="0">WEEKLY</option>
+                                        <option value="1">MONTHLY</option>
+                                        <option value="2">YEARLY</option>
+
+                                    </select>
+                                    <label for="membershipCategory">Membership Category</label>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+
+                                <div class="form-floating mb-3">
+
+                                    <select class="form-control" formControlName="membershipType"
+                                        (change)="getExpiredDate()" [disabled]="true">
+                                        <option></option>
+                                        <option *ngFor="let item of memberships" [value]="item.id.toLowerCase()">
+                                            {{item.name}}</option>
+
+                                    </select>
+
+                                    <label for="membershipType">Membership Types</label>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="col-12 text-end mt-4">
+                            <button type="submit" [disabled]="!updateProfileForm.valid"
+                                class="btn btn-outline-warning">Update</button>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <hr />
+            </form>
+
+        </div>
+    </div>

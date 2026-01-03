@@ -1,0 +1,36 @@
+<section class="section banner banner-section">
+  <div class="container banner-column">
+    <img *ngIf="!inlineLogo" class="banner-image" [src]="logoUrl || 'assets/images/logos/logo-remove.jpg'" alt="banner">
+    <div class="banner-inner">
+      <div class="flex items-center gap-4 flex-wrap">
+        <h1 class="heading-lg">{{ title || ('hero.title' | transloco) }}</h1>
+        <img *ngIf="inlineLogo" [src]="logoUrl || 'assets/images/logos/logo-remove.jpg'" alt="logo"
+          class="w-20 h-20 object-contain">
+      </div>
+      <p class="paragraph">
+        {{ description || ('hero.description' | transloco) }}
+      </p>
+
+      <button routerLink="/membership"
+        class=" w-52 h-10 bg-gray-800 hover:bg-yellow-500 text-white hover:text-black font-semibold py-2 rounded-lg shadow transition">
+        {{ 'hero.ctaButton' | transloco }}
+      </button>
+
+
+    </div>
+    <div class="banner-links">
+      <a href="#" title=""><i class="bx bxl-facebook"></i></a>
+      <a href="#" title=""><i class="bx bxl-instagram"></i></a>
+      <a href="#" title=""><i class="bx bxl-twitter"></i></a>
+      <a href="#" title=""><i class="bx bxl-youtube"></i></a>
+    </div>
+
+  </div>
+  <div class="mt-14 animate-bounce text-center">
+    <a href="#latest-news" (click)="scrollToNews($event)"
+      class="text-yellow-600 font-semibold hover:text-yellow-300 transition">
+      ↓ {{ 'news.title' | transloco }}
+    </a>
+  </div>
+
+</section>

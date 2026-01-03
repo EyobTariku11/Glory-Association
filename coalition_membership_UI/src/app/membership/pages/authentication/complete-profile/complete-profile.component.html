@@ -1,0 +1,106 @@
+<div class="auth-main2">
+    <div class="auth-wrapper1  v3 row p-2">
+        <div class="col-md-8 ">
+            <div class="auth-form" style="background-color: white; ">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="auth-header text-center">
+                            <h2>{{member&&member.fullName.toUpperCase()}} ({{member&&member.memberId.toUpperCase()}})
+                            </h2>
+                            <h2 *ngIf="memberVar.paymentStatus=='PAID'" class="text-secondary "><b>
+                                    Please Complete Your Profile before proceeding</b></h2>
+                            <hr>
+                        </div>
+                        <form [formGroup]="completeProfileForm" *ngIf="memberVar.paymentStatus=='PAID'">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <img [src]="getImage2()" alt="Profile" style="width: 100%;" appImageError>
+                                    <input #file (change)="onUpload($event)" type="file" style="display: none;"
+                                        accept="image/*">
+                                    <div class="pt-2">
+                                        <a (click)="file.click()" style="width: 100%;"
+                                            class="btn btn-outline-primary btn-sm" title="Upload new profile image">
+                                            <i class="bi bi-upload"></i> Upload Image
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-8">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <select class="form-control" formControlName="gender">
+                                                    <option></option>
+                                                    <option value="MALE">MALE</option>
+                                                    <option value="FEMALE">FEMALE</option>
+                                                </select>
+                                                <label for="gender">Gender</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" readonly
+                                                    [value]="member&&member.phoneNumber" id="phoneNumber">
+                                                <label for="phoneNumber">Phone Number</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="date" class="form-control" formControlName="birthDate"
+                                                    id="birthDate">
+                                                <label for="birthDate">Birth Date</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid mt-4">
+                                <button type="submit" [disabled]="!completeProfileForm.valid" (click)="register()"
+                                    class="btn btn-secondary">Continue</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="member-info text-center">
+                <img src="assets/logo-remove.png" alt="Member Image" style="max-height: 300px;"
+                    class="img-fluid bounce-image" appImageError>
+                <h2 class=" mt-2" style="color: rgb(9 101 58)!important;"><b>EPLFFC  Coalition
+                    </b></h2>
+
+                <span style="font-size: 20px;font-weight: bold;">{{paymentStatus}}</span>
+                
+                <div class="partner-logo mt-4 text-end me-2">
+                    <img src="assets/arifpay.svg" alt="Partner Logo" class="w-32 h-auto" appImageError>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <div *ngIf="(memberVar.paymentStatus=='PENDING' && memberVar.text_Rn!=null)">
+                        <div class="d-grid mt-4">
+                            <button (click)="renewMembership2()" class="btn btn-secondary">Continue to Payment</button>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="((memberVar.paymentStatus=='PENDING' && memberVar.text_Rn==null)||memberVar.paymentStatus==null)">
+                        <div class="d-grid mt-4">
+                            <button (click)="renewMembership3()" class="btn btn-secondary">Continue to Payment</button>
+                        </div>
+                    </div>
+                    <div *ngIf="memberVar.paymentStatus=='EXPIRED'">
+                        <div class="d-grid mt-4">
+                            <button (click)="renewMembershipArifPay()" class="btn btn-primary">Renew with ArifPay</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid mt-4">
+                    <button type="button" (click)="logout()" class="btn btn-outline-danger">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

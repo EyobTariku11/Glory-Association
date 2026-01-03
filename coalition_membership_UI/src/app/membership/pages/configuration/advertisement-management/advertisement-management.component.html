@@ -1,0 +1,406 @@
+<div class="container-fluid">
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Configuration</a></li>
+            <li class="breadcrumb-item" aria-current="page">Advertisement Management</li>
+          </ul>
+        </div>
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h2 class="mb-0">Advertisement Management</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] end -->
+
+  <div class="row">
+    <!-- Create/Edit Advertisement Form -->
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ isEditMode ? 'Edit Advertisement' : 'Create New Advertisement' }}</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="advertisementForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group mb-3">
+                  <label class="form-label">
+                    <i class="fas fa-heading me-2 text-primary"></i>Title *
+                  </label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="title"
+                         placeholder="Enter advertisement title"
+                         [class.is-invalid]="advertisementForm.get('title')?.invalid && advertisementForm.get('title')?.touched">
+                  <div class="invalid-feedback" *ngIf="advertisementForm.get('title')?.invalid && advertisementForm.get('title')?.touched">
+                    <div *ngIf="advertisementForm.get('title')?.errors?.['required']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Title is required.
+                    </div>
+                    <div *ngIf="advertisementForm.get('title')?.errors?.['minlength']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Title must be at least 2 characters.
+                    </div>
+                    <div *ngIf="advertisementForm.get('title')?.errors?.['maxlength']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Title must not exceed 100 characters.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label">
+                    <i class="fas fa-align-left me-2 text-info"></i>Description
+                  </label>
+                  <textarea class="form-control" 
+                            rows="3"
+                            formControlName="description"
+                            placeholder="Enter advertisement description (optional)"
+                            [class.is-invalid]="advertisementForm.get('description')?.invalid && advertisementForm.get('description')?.touched"></textarea>
+                  <div class="invalid-feedback" *ngIf="advertisementForm.get('description')?.errors?.['maxlength']">
+                    <i class="fas fa-exclamation-circle me-1"></i>Description must not exceed 500 characters.
+                  </div>
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Optional description for the advertisement
+                  </small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label">
+                    <i class="fas fa-globe me-2 text-success"></i>Link URL
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-link text-success"></i>
+                    </span>
+                    <input type="url" 
+                           class="form-control" 
+                           formControlName="linkUrl"
+                           placeholder="https://example.com"
+                           [class.is-invalid]="advertisementForm.get('linkUrl')?.invalid && advertisementForm.get('linkUrl')?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="advertisementForm.get('linkUrl')?.invalid && advertisementForm.get('linkUrl')?.touched">
+                    <div *ngIf="advertisementForm.get('linkUrl')?.errors?.['pattern']">
+                      <i class="fas fa-exclamation-circle me-1"></i>Please enter a valid URL starting with http:// or https://
+                    </div>
+                  </div>
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Leave blank if no link is needed
+                  </small>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="form-label">
+                        <i class="fas fa-tag me-2 text-warning"></i>Type *
+                      </label>
+                      <select class="form-select" 
+                              formControlName="type"
+                              [class.is-invalid]="advertisementForm.get('type')?.invalid && advertisementForm.get('type')?.touched">
+                        <option *ngFor="let type of advertisementTypes" [value]="type.value">
+                          {{ type.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="form-label">
+                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>Position *
+                      </label>
+                      <select class="form-select" 
+                              formControlName="position"
+                              [class.is-invalid]="advertisementForm.get('position')?.invalid && advertisementForm.get('position')?.touched">
+                        <option *ngFor="let position of advertisementPositions" [value]="position.value">
+                          {{ position.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="form-label">
+                        <i class="fas fa-sort-numeric-up me-2 text-secondary"></i>Display Order *
+                      </label>
+                      <input type="number" 
+                             class="form-control" 
+                             formControlName="displayOrder"
+                             placeholder="0"
+                             min="0"
+                             [class.is-invalid]="advertisementForm.get('displayOrder')?.invalid && advertisementForm.get('displayOrder')?.touched">
+                      <div class="invalid-feedback" *ngIf="advertisementForm.get('displayOrder')?.invalid && advertisementForm.get('displayOrder')?.touched">
+                        <div *ngIf="advertisementForm.get('displayOrder')?.errors?.['required']">
+                          <i class="fas fa-exclamation-circle me-1"></i>Display order is required.
+                        </div>
+                        <div *ngIf="advertisementForm.get('displayOrder')?.errors?.['min']">
+                          <i class="fas fa-exclamation-circle me-1"></i>Display order must be 0 or greater.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="form-label">
+                        <i class="fas fa-calendar me-2 text-primary"></i>Start Date *
+                      </label>
+                      <input type="date" 
+                             class="form-control" 
+                             formControlName="startDate"
+                             [class.is-invalid]="advertisementForm.get('startDate')?.invalid && advertisementForm.get('startDate')?.touched">
+                      <div class="invalid-feedback" *ngIf="advertisementForm.get('startDate')?.errors?.['required']">
+                        <i class="fas fa-exclamation-circle me-1"></i>Start date is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label">
+                    <i class="fas fa-calendar-times me-2 text-muted"></i>End Date
+                  </label>
+                  <input type="date" 
+                         class="form-control" 
+                         formControlName="endDate"
+                         placeholder="Leave blank for no end date">
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Optional end date for the advertisement
+                  </small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" 
+                           type="checkbox" 
+                           id="isActive" 
+                           formControlName="isActive"
+                           style="width: 3rem; height: 1.5rem;">
+                    <label class="form-check-label" for="isActive">
+                      <i class="fas fa-toggle-on me-2 text-info"></i>Active Status
+                    </label>
+                  </div>
+                  <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Active advertisements will be visible on your public pages
+                  </small>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               id="showOnHomepage" 
+                               formControlName="showOnHomepage">
+                        <label class="form-check-label" for="showOnHomepage">
+                          <i class="fas fa-home me-2 text-primary"></i>Show on Homepage
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               id="showOnNewsPage" 
+                               formControlName="showOnNewsPage">
+                        <label class="form-check-label" for="showOnNewsPage">
+                          <i class="fas fa-newspaper me-2 text-info"></i>Show on News Page
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               id="showOnEventsPage" 
+                               formControlName="showOnEventsPage">
+                        <label class="form-check-label" for="showOnEventsPage">
+                          <i class="fas fa-calendar-alt me-2 text-success"></i>Show on Events Page
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               id="showOnClubsPage" 
+                               formControlName="showOnClubsPage">
+                        <label class="form-check-label" for="showOnClubsPage">
+                          <i class="fas fa-users me-2 text-warning"></i>Show on Clubs Page
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group mb-3">
+                  <label class="form-label">
+                    <i class="fas fa-image me-2 text-warning"></i>Advertisement Image *
+                  </label>
+                  <div class="image-upload-container">
+                    <input type="file" 
+                           class="form-control" 
+                           accept="image/*"
+                           (change)="onImageSelected($event)"
+                           [class.is-invalid]="!imagePreview && advertisementForm.get('imagePath')?.invalid">
+                    <div class="image-preview mt-2" *ngIf="imagePreview">
+                      <img [src]="imagePreview" 
+                           alt="Advertisement preview" 
+                           class="img-fluid rounded"
+                           style="max-width: 100%; max-height: 200px;">
+                    </div>
+                    <div class="invalid-feedback" *ngIf="!imagePreview && advertisementForm.get('imagePath')?.invalid">
+                      <i class="fas fa-exclamation-circle me-1"></i>Advertisement image is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions mt-4">
+              <button type="submit" 
+                      class="btn btn-primary me-2"
+                      [disabled]="advertisementForm.invalid || submitting">
+                <i class="fas fa-save me-2"></i>
+                {{ submitting ? 'Saving...' : (isEditMode ? 'Update' : 'Create') }}
+              </button>
+              <button type="button" 
+                      class="btn btn-secondary"
+                      (click)="cancelEdit()"
+                      [disabled]="submitting">
+                <i class="fas fa-times me-2"></i>Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advertisement List -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Advertisements</h5>
+          <button class="btn btn-primary btn-sm" (click)="openModal()">
+            <i class="fas fa-plus me-2"></i>New Advertisement
+          </button>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <div *ngIf="!loading && advertisements.length === 0" class="text-center py-4">
+            <i class="fas fa-ad fa-3x text-muted mb-3"></i>
+            <p class="text-muted">No advertisements found</p>
+            <button class="btn btn-primary btn-sm" (click)="openModal()">
+              <i class="fas fa-plus me-2"></i>Create First Advertisement
+            </button>
+          </div>
+
+          <div *ngIf="!loading && advertisements.length > 0" class="advertisement-list">
+            <div *ngFor="let advertisement of advertisements" 
+                 class="advertisement-item mb-3 p-3 border rounded"
+                 [class.border-success]="advertisement.isActive"
+                 [class.border-secondary]="!advertisement.isActive">
+              
+              <div class="d-flex align-items-start">
+                <div class="advertisement-image me-3">
+                  <img [src]="getAdvertisementImage(advertisement)" 
+                       [alt]="advertisement.title"
+                       class="img-fluid rounded"
+                       style="width: 60px; height: 60px; object-fit: cover;">
+                </div>
+                
+                <div class="advertisement-details flex-grow-1">
+                  <h6 class="mb-1">{{ advertisement.title }}</h6>
+                  <p class="text-muted small mb-2" *ngIf="advertisement.description">
+                    {{ advertisement.description }}
+                  </p>
+                  
+                  <div class="advertisement-meta small text-muted mb-2">
+                    <span class="badge bg-primary me-2">{{ advertisement.type }}</span>
+                    <span class="badge bg-info me-2">{{ advertisement.position }}</span>
+                    <span class="badge" [class]="advertisement.isActive ? 'bg-success' : 'bg-secondary'">
+                      {{ advertisement.isActive ? 'Active' : 'Inactive' }}
+                    </span>
+                  </div>
+                  
+                  <div class="advertisement-stats small text-muted mb-2">
+                    <span class="me-3">
+                      <i class="fas fa-eye me-1"></i>{{ advertisement.viewCount }} views
+                    </span>
+                    <span class="me-3">
+                      <i class="fas fa-mouse-pointer me-1"></i>{{ advertisement.clickCount }} clicks
+                    </span>
+                    <span>
+                      <i class="fas fa-sort-numeric-up me-1"></i>Order: {{ advertisement.displayOrder }}
+                    </span>
+                  </div>
+                  
+                  <div class="advertisement-dates small text-muted mb-2">
+                    <span class="me-3">
+                      <i class="fas fa-calendar-plus me-1"></i>Start: {{ getAdvertisementDate(advertisement.startDate) }}
+                    </span>
+                    <span *ngIf="advertisement.endDate">
+                      <i class="fas fa-calendar-minus me-1"></i>End: {{ getAdvertisementDate(advertisement.endDate) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="advertisement-actions mt-3 d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm" 
+                        (click)="openModal(advertisement)"
+                        title="Edit Advertisement">
+                  <i class="fas fa-edit"></i>
+                </button>
+                
+                <button class="btn btn-outline-success btn-sm" 
+                        *ngIf="!advertisement.isActive"
+                        (click)="toggleStatus(advertisement)"
+                        title="Activate Advertisement">
+                  <i class="fas fa-check"></i>
+                </button>
+                
+                <button class="btn btn-outline-warning btn-sm" 
+                        *ngIf="advertisement.isActive"
+                        (click)="toggleStatus(advertisement)"
+                        title="Deactivate Advertisement">
+                  <i class="fas fa-pause"></i>
+                </button>
+                
+                <button class="btn btn-outline-danger btn-sm" 
+                        (click)="deleteAdvertisement(advertisement.id)"
+                        title="Delete Advertisement">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

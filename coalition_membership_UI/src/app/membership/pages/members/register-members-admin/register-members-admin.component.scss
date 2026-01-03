@@ -1,0 +1,53 @@
+
+@keyframes bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  .bounce-image {
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .animated-heading {
+    animation: fadeInDown 1s ease-in-out;
+    color: #000;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .animated-paragraph {
+    animation: fadeInUp 1s ease-in-out;
+    color: #000;
+    font-size: 16px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn-primary {
+    background-color: #01784E;
+    border-color: #01784E;
+  }
+
+  .btn-primary:hover {
+    background-color: #026442;
+    border-color: #026442;
+  }
+
+  .btn-link {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+
+  

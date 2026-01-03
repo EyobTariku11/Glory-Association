@@ -1,0 +1,69 @@
+// Custom animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// Progress bar animations
+.progress-bar {
+  transition: width 0.6s ease;
+}
+
+// Card hover effects
+.card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Button hover effects
+.btn {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+// Modal animations
+.modal {
+  animation: fadeIn 0.3s ease-out;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .text-4xl {
+    font-size: 1.75rem;
+  }
+  
+  .p-6 {
+    padding: 1rem;
+  }
+} 

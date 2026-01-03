@@ -1,0 +1,176 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title"><span class="text-success" style="font-size: 18px;font-weight: bolder;">
+        {{associationData?'Update':'Register'}}
+        Association
+      </span>
+    </h5>
+    <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+      aria-label="Close"></button>
+  </div>
+
+  <div class="card">
+    <div class="card p-4">
+      <form [formGroup]="associationForm" (ngSubmit)="onSubmit()">
+        <div class="row g-3">
+          <!-- Name (English) -->
+          <div class="col-md-4">
+            <label for="name" class="form-label">Name (EN)</label>
+            <input id="name" formControlName="name" class="form-control" required />
+          </div>
+
+          <!-- Name (Amharic) -->
+          <div class="col-md-4">
+            <label for="amharicName" class="form-label">Name (AM)</label>
+            <input id="amharicName" formControlName="amharicName" class="form-control" required />
+          </div>
+
+          <!-- ArifPay Key -->
+          <div class="col-md-4">
+            <label for="arifPayKey" class="form-label">ArifPay Key</label>
+            <input id="arifPayKey" formControlName="arifPayKey" class="form-control" />
+          </div>
+
+          <!-- Logo Upload -->
+          <div class="col-md-4">
+            <label for="logoPath" class="form-label">Logo</label>
+            <input type="file" (change)="onFileSelected($event)" class="form-control" />
+            <img *ngIf="previewUrl" [src]="previewUrl" class="mt-2 rounded shadow" style="height: 40px;" appImageError>
+          </div>
+          <div class="col-md-4">
+            <label for="logoPath" class="form-label">Signiture</label>
+            <input type="file" (change)="onFileSelected2($event)" class="form-control" />
+            <img *ngIf="previewUrl1" [src]="previewUrl1" class="mt-2 rounded shadow" style="height: 40px;"
+              appImageError>
+          </div>
+
+          <div class="col-md-4">
+            <label for="logoPath" class="form-label">Stamp</label>
+            <input type="file" (change)="onFileSelected3($event)" class="form-control" />
+            <img *ngIf="previewUrl2" [src]="previewUrl2" class="mt-2 rounded shadow" style="height: 40px;"
+              appImageError>
+          </div>
+
+          <div class="col-md-6">
+            <label for="logoPath" class="form-label">Stamp2</label>
+            <input type="file" (change)="onFileSelected4($event)" class="form-control" />
+            <img *ngIf="previewUrl3" [src]="previewUrl3" class="mt-2 rounded shadow" style="height: 40px;"
+              appImageError>
+          </div>
+
+          <!-- Background Image -->
+          <div class="col-md-6">
+            <label for="backgroundImage" class="form-label">Background Image</label>
+            <input type="file" (change)="onFileSelected5($event)" class="form-control" />
+            <img *ngIf="previewUrl4" [src]="previewUrl4" class="mt-2 rounded shadow" style="height: 40px;"
+              appImageError>
+          </div>
+
+          <!-- Photo Stamp -->
+          <div class="col-md-6">
+            <label for="photoStamp" class="form-label">Photo Stamp</label>
+            <input type="file" (change)="onFileSelected6($event)" class="form-control" />
+            <img *ngIf="previewUrl5" [src]="previewUrl5" class="mt-2 rounded shadow" style="height: 40px;"
+              appImageError>
+          </div>
+
+          <!-- Phone Numbers -->
+          <div class="col-6">
+            <label class="form-label">Phone Numbers *</label>
+            <div *ngFor="let phone of phoneNumbers.controls; let i = index" class="input-group mb-2">
+              <input [formControl]="getPhoneControl(i)" class="form-control"
+                placeholder="Phone Number (e.g., +251912345678 or 0912345678)" maxlength="15" />
+              <button type="button" class="btn btn-outline-danger" (click)="removePhoneNumber(i)"
+                [disabled]="phoneNumbers.length === 1">
+                Remove
+              </button>
+            </div>
+
+            <!-- Phone number validation errors -->
+            <div *ngFor="let phone of phoneNumbers.controls; let i = index" class="mb-2">
+              <div *ngIf="getPhoneControl(i).invalid && (getPhoneControl(i).touched || getPhoneControl(i).dirty)"
+                class="text-danger small">
+                <small *ngIf="getPhoneControl(i).hasError('required')">
+                  Phone number {{i + 1}} is required
+                </small>
+                <small *ngIf="getPhoneControl(i).hasError('pattern')">
+                  Phone number {{i + 1}} must be a valid Ethiopian phone number
+                </small>
+                <small *ngIf="getPhoneControl(i).hasError('maxlength')">
+                  Phone number {{i + 1}} must not exceed 15 characters
+                </small>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addPhoneNumber()">
+              + Add Phone
+            </button>
+            <small class="text-muted d-block mt-1">
+              Format: +251912345678 or 0912345678 (Ethiopian numbers only)
+            </small>
+          </div>
+
+          <!-- Website -->
+          <div class="col-4">
+            <label for="websiteLink" class="form-label">Website</label>
+            <input id="websiteLink" formControlName="websiteLink" class="form-control" />
+          </div>
+
+          <!-- Colors -->
+          <div class="col-md-4">
+            <label for="primaryColor" class="form-label">Primary Color</label>
+            <input id="primaryColor" type="color" formControlName="primaryColor"
+              class="form-control form-control-color" />
+          </div>
+
+          <div class="col-md-4">
+            <label for="secondaryColor" class="form-label">Secondary Color</label>
+            <input id="secondaryColor" type="color" formControlName="secondaryColor"
+              class="form-control form-control-color" />
+          </div>
+
+          <!-- Description with Quill Editor -->
+          <div class="col-12">
+            <label for="description" class="form-label">Description</label>
+            <quill-editor formControlName="description" [modules]="quillModules"
+              placeholder="Enter association description..." style="height: 200px;">
+            </quill-editor>
+          </div>
+
+          <!-- About with Quill Editor -->
+          <div class="col-12">
+            <label for="about" class="form-label">About</label>
+            <quill-editor formControlName="about" [modules]="quillModules"
+              placeholder="Enter detailed information about the association..." style="height: 200px;">
+            </quill-editor>
+          </div>
+
+          <!-- Social Media Links -->
+          <div class="col-md-4">
+            <label for="facebook" class="form-label">Facebook</label>
+            <input id="facebook" formControlName="facebook" class="form-control"
+              placeholder="https://facebook.com/..." />
+          </div>
+
+          <div class="col-md-4">
+            <label for="telegram" class="form-label">Telegram</label>
+            <input id="telegram" formControlName="telegram" class="form-control" placeholder="https://t.me/..." />
+          </div>
+
+          <div class="col-md-4">
+            <label for="tiktok" class="form-label">TikTok</label>
+            <input id="tiktok" formControlName="tiktok" class="form-control" placeholder="https://tiktok.com/..." />
+          </div>
+
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end mt-4">
+          <button type="submit" class="btn btn-primary px-4" [disabled]="associationForm.invalid">
+            {{associationData?'Update':'Register'}} Association
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+.me-0 {
+  margin: 0 0 0 16px !important;
+}
+
+// Responsive styling for greeting and user name
+.greeting-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.2;
+  
+  @media (max-width: 576px) {
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+}
+
+.user-name {
+  display: inline-block;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  
+  @media (max-width: 576px) {
+    font-size: 0.8rem;
+    max-width: 200px;
+  }
+  
+  @media (max-width: 768px) {
+    max-width: 250px;
+  }
+}
+
+// Ensure dropdown header is responsive
+.dropdown-header {
+  @media (max-width: 576px) {
+    padding: 0.5rem;
+    max-height: 150px;
+  }
+}
+
+// Make dropdown menu responsive
+.dropdown-menu {
+  @media (max-width: 576px) {
+    min-width: 280px;
+    max-width: 90vw;
+  }
+  
+  @media (max-width: 768px) {
+    min-width: 320px;
+  }
+}
+
+// Ensure user avatar is responsive
+.user-avtar {
+  @media (max-width: 576px) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// Additional responsive improvements
+.pc-h-item {
+  @media (max-width: 576px) {
+    margin-left: 0.5rem;
+  }
+}
+
+// Ensure dropdown positioning is responsive
+.dropdown-menu-end {
+  @media (max-width: 576px) {
+    right: 0;
+    left: auto;
+    transform: none;
+  }
+}
+
+// Improve text wrapping for very long content
+.dropdown-header {
+  @media (max-width: 576px) {
+    padding: 0.5rem;
+    max-height: 150px;
+    
+    h4 {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+// Ensure proper spacing in dropdown items
+.dropdown-item {
+  @media (max-width: 576px) {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}

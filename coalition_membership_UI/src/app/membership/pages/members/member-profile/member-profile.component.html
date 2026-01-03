@@ -1,0 +1,147 @@
+<div class="page-header ng-star-inserted">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title"><!----><!---->
+                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a _>Members</a></li>
+                    <li class="breadcrumb-item ng-star-inserted">
+                        <a href="javascript:">
+                            Profile
+                        </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card p-4">
+
+    <form [formGroup]="updateProfileForm" (submit)="submit()">
+
+        <div class="row">
+
+            <div class="col-xl-3">
+
+
+
+                                            <img [src]="getImage2()" alt="Profile" style="width: 100%;" appImageError>
+                <input #file (change)="onUpload($event)" type="file" style="display: none;" accept="image/*" />
+                <div class="pt-2">
+                    <a (click)="file.click()" style="width: 100%;" class="btn btn-outline-primary btn-sm"
+                        title="Upload new profile image">
+                        <i class="bi bi-upload"></i> Upload Image
+                    </a>
+                </div>
+
+
+            </div>
+            <div class="col-xl-9">
+
+
+                <hr />
+
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" disabled [value]="member&&member.fullName"
+                                id="fullName" />
+                            <label for="fullName">Full Name </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" disabled readonly
+                                [value]="member&&member.phoneNumber" id="phoneNumber" />
+                            <label for="phoneNumber">Phonenumber </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" disabled readonly [value]="member&&member.memberId"
+                                id="memberId" />
+                            <label for="memberId">MemberId </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+
+                            <select class="form-control" formControlName="gender">
+
+                                <option></option>
+                                <option value="MALE">MALE
+                                </option>
+                                <option value="FEMALE">FEMALE
+                                </option>
+
+                            </select>
+                            <label for="educationalLeevels">Gender</label>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="woreda" id="woreda" />
+                            <label for="woreda">Woreda </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" formControlName="email" id="email" />
+                            <label for="email">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" formControlName="birthDate" id="birthDate" />
+                            <label for="birthDate">Birth Date</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-12 text-end mt-4">
+                    <button type="submit" [disabled]="!updateProfileForm.valid"
+                        class="btn btn-outline-warning">Update</button>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+
+        <hr />
+    </form>
+
+</div>

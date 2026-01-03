@@ -1,0 +1,308 @@
+<!-- Donation Topbar Section -->
+<section class="bg-gradient-to-r from-blue-100 to-blue-50 text-gray-800 py-8 donation-topbar">
+  <div class="container mx-auto px-4">
+   
+ 
+ 
+
+<!-- Main Events Content -->
+<div class="container mx-auto px-4 py-8">
+  <!-- Header Section -->
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ 'events.upcomingEvents' | transloco }}</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      {{ 'events.discoverEventsDescription' | transloco }}
+    </p>
+  </div>
+
+  <!-- Event Category Tabs -->
+  <div class="flex justify-center mb-8">
+    <div class="bg-white rounded-lg shadow-md p-1">
+      <div class="flex space-x-1">
+        <button 
+          (click)="setActiveTab('upcoming')"
+          [class]="activeTab === 'upcoming' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-6 py-3 rounded-md font-medium transition-all duration-200">
+          <i class="fas fa-calendar-plus mr-2"></i>Upcoming
+          <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">{{ upcomingEvents.length }}</span>
+        </button>
+        <button 
+          (click)="setActiveTab('latest')"
+          [class]="activeTab === 'latest' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-6 py-3 rounded-md font-medium transition-all duration-200">
+          <i class="fas fa-clock mr-2"></i>Latest
+          <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">{{ latestEvents.length }}</span>
+        </button>
+        <button 
+          (click)="setActiveTab('happening')"
+          [class]="activeTab === 'happening' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-6 py-3 rounded-md font-medium transition-all duration-200">
+          <i class="fas fa-play-circle mr-2"></i>Currently Happening
+          <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">{{ currentlyHappeningEvents.length }}</span>
+        </button>
+        <button 
+          (click)="setActiveTab('past')"
+          [class]="activeTab === 'past' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-6 py-3 rounded-md font-medium transition-all duration-200">
+          <i class="fas fa-history mr-2"></i>Past
+          <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">{{ pastEvents.length }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  </div>
+
+  <!-- Events Grid -->
+  <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div 
+      *ngFor="let event of getActiveTabEvents()" 
+      class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
+      
+      <!-- Event Image -->
+      <div class="relative h-48 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <img 
+          *ngIf="event.imagePath" 
+          [src]="getNewsImage(event.imagePath)" 
+          [alt]="event.title"
+          class="w-full h-full object-cover">
+        <div 
+          *ngIf="!event.imagePath" 
+          class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+          <div class="text-white text-center">
+            <i class="fas fa-calendar-alt text-4xl mb-2"></i>
+            <p class="text-sm">{{ event.eventType || ('common.event' | transloco) }}</p>
+          </div>
+        </div>
+        
+        <!-- Status Badges -->
+        <div class="absolute top-4 right-4 space-y-2">
+          <!-- Approval Status -->
+          <div class="flex justify-end">
+            <span 
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              [class]="event.isApproved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'">
+              <i class="fas" [class]="event.isApproved ? 'fa-check-circle' : 'fa-clock'"></i>
+              {{ event.isApproved ? ('common.approved' | transloco) : ('common.pending' | transloco) }}
+            </span>
+          </div>
+          <!-- Event Status -->
+          <div class="flex justify-end">
+            <span 
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              [class]="getEventStatusClass(event)">
+              {{ getEventStatus(event) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Content -->
+      <div class="p-6">
+        <!-- Association Info -->
+        <div class="flex items-center mb-3">
+          <img 
+            *ngIf="event.associationLogoPath" 
+            [src]="getNewsImage(event.associationLogoPath)" 
+            [alt]="event.associationName"
+            class="w-8 h-8 rounded-full mr-3 border-2 border-gray-200">
+          <span class="text-sm font-medium text-blue-600">{{ event.associationName }}</span>
+        </div>
+
+        <!-- Event Title -->
+        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ event.title }}</h3>
+        <p *ngIf="event.subTitle" class="text-gray-600 text-sm mb-3">{{ event.subTitle }}</p>
+
+        <!-- Event Details -->
+        <div class="space-y-2 mb-4">
+          <div class="flex items-center text-sm text-gray-600">
+            <i class="fas fa-calendar-alt w-4 mr-2 text-blue-500"></i>
+            <span>{{ event.eventDate | date:'mediumDate' }}</span>
+          </div>
+          <div class="flex items-center text-sm text-gray-600">
+            <i class="fas fa-map-marker-alt w-4 mr-2 text-blue-500"></i>
+            <span>{{ event.location }}</span>
+          </div>
+          <div *ngIf="event.eventType" class="flex items-center text-sm text-gray-600">
+            <i class="fas fa-tag w-4 mr-2 text-blue-500"></i>
+            <span>{{ event.eventType }}</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <p class="text-gray-700 text-sm mb-4 line-clamp-3">{{ event.description }}</p>
+
+        <!-- Donation Section -->
+        <div *ngIf="event.isDonationEnabled" class="mb-4">
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
+            <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
+              <i class="fas fa-heart text-pink-500 mr-2"></i>
+              {{ 'events.supportThisEvent' | transloco }}
+            </h4>
+            
+            <!-- Progress Bar -->
+            <div class="mb-3">
+              <div class="flex justify-between text-sm text-gray-600 mb-1">
+                <span>{{ 'common.progress' | transloco }}</span>
+                <span>{{ getProgressPercentage(event) | number:'1.0-0' }}%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div 
+                  class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-300"
+                  [style.width.%]="getCappedProgress(getProgressPercentage(event))">
+                </div>
+              </div>
+              <!-- Show exceeded amount if raised > target -->
+              <p *ngIf="getProgressPercentage(event) > 100" class="text-xs text-green-600 mt-1 font-medium text-center">
+                🎉 Target exceeded by {{ ((event.amountCollected || 0) - (event.targetAmount || 0)) | number }} ETB!
+              </p>
+            </div>
+
+            <!-- Amounts -->
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span class="text-gray-600">{{ 'common.target' | transloco }}:</span>
+                                        <span class="font-semibold text-gray-900">{{ (event.targetAmount || 0) | currency:'ETB' }}</span>
+              </div>
+              <div>
+                <span class="text-gray-600">{{ 'common.raised' | transloco }}:</span>
+                                        <span class="font-semibold text-green-600">{{ (event.amountCollected || 0) | currency:'ETB' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex space-x-3">
+          <button 
+            *ngIf="event.isDonationEnabled"
+            (click)="openDonationModal(event)"
+            class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-md">
+            <i class="fas fa-heart mr-2"></i>
+            {{ 'events.donate' | transloco }}
+          </button>
+          <button 
+            class="flex-1 border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200">
+            <i class="fas fa-info-circle mr-2"></i>
+            {{ 'common.details' | transloco }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && getActiveTabEvents().length === 0" class="text-center py-12">
+    <div class="text-gray-400 mb-4">
+      <i class="fas fa-calendar-times text-6xl"></i>
+    </div>
+    <h3 class="text-xl font-semibold text-gray-900 mb-2">
+      <span *ngIf="activeTab === 'upcoming'">No upcoming events available</span>
+      <span *ngIf="activeTab === 'latest'">No recent events available</span>
+      <span *ngIf="activeTab === 'happening'">No events currently happening</span>
+      <span *ngIf="activeTab === 'past'">No past events available</span>
+    </h3>
+    <p class="text-gray-600">
+      <span *ngIf="activeTab === 'upcoming'">Check back later for new upcoming events</span>
+      <span *ngIf="activeTab === 'latest'">Check back later for recent events</span>
+      <span *ngIf="activeTab === 'happening'">Check back later for live events</span>
+      <span *ngIf="activeTab === 'past'">Check back later for past events</span>
+    </p>
+  </div>
+</div>
+
+<!-- Donation Modal -->
+<div 
+  *ngIf="showDonationModal" 
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-900">{{ 'events.makeDonation' | transloco }}</h3>
+      <button 
+        (click)="closeDonationModal()"
+        class="text-gray-400 hover:text-gray-600 transition-colors">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div *ngIf="selectedEvent" class="mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+      <h4 class="font-semibold text-gray-900">{{ selectedEvent.title }}</h4>
+      <p class="text-sm text-gray-600">{{ selectedEvent.associationName }}</p>
+    </div>
+
+    <form [formGroup]="donationForm" (ngSubmit)="submitDonation()">
+      <div class="space-y-4">
+        <div>
+          <label for="donorName" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ 'common.fullName' | transloco }} *
+          </label>
+          <input 
+            type="text" 
+            id="donorName"
+            formControlName="donorName"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            [placeholder]="'common.enterYourFullName' | transloco">
+        </div>
+
+        <div>
+          <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ 'common.phoneNumber' | transloco }} *
+          </label>
+          <input 
+            type="tel" 
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            [placeholder]="'common.enterYourPhoneNumber' | transloco">
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ 'common.emailAddress' | transloco }} *
+          </label>
+          <input 
+            type="email" 
+            id="email"
+            formControlName="email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            [placeholder]="'common.enterYourEmailAddress' | transloco">
+        </div>
+
+        <div>
+          <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ 'common.amount' | transloco }} (ETB) *
+          </label>
+          <input 
+            type="number" 
+            id="amount"
+            formControlName="amount"
+            min="1"
+            step="0.01"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            [placeholder]="'common.enterAmount' | transloco">
+        </div>
+      </div>
+
+      <div class="flex space-x-3 mt-6">
+        <button 
+          type="button"
+          (click)="closeDonationModal()"
+          class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200">
+          {{ 'common.cancel' | transloco }}
+        </button>
+        <button 
+          type="submit"
+          [disabled]="donationForm.invalid"
+          class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md">
+          <i class="fas fa-heart mr-2"></i>
+          {{ 'events.donateNow' | transloco }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</section>

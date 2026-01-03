@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{message?"Update":"Add"}} Message
+
+    </h5>
+    <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+        aria-label="Close"></button>
+</div>
+
+<div class="card p-4">
+
+
+
+    <form [formGroup]="messageForm">
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <div class="form-floating">
+                    <textarea id="content" formControlName="content" style="height: auto;" class="form-control"
+                        placeholder="Enter message content" rows="5"></textarea>
+
+                    <label for="content">Message Content</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <select id="messageType" formControlName="messageTypes" class="form-control" multiple
+                        style="height: auto;">
+
+                        <option *ngFor="let type of messageTypes" [value]="type.code">
+                            {{ type.value }}
+                        </option>
+                    </select>
+
+                    <label for="messageType">Message Type</label>
+                </div>
+            </div>
+
+            <div class="row mb-3" *ngIf="message">
+                <div class="col-md-4">
+                    <label class="form-check-label" for="toggleControl">Approve</label>
+                    <div class="form-check form-switch">
+                        <input id="toggleControl" type="checkbox" formControlName="isApproved"
+                            class="form-check-input" />
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </form>
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()" [disabled]="isLoading">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="messageForm.invalid || isLoading" (click)="submitMessage()">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            {{isLoading ? 'Processing...' : (message?'Update':'Add') + ' Message'}}
+        </button>
+
+    </div>
+</div>

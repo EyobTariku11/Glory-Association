@@ -1,0 +1,92 @@
+<!-- Breaking News Banner -->
+<div *ngIf="breakingNews.length > 0"
+  class="bg-red-600 text-white py-3 px-6 text-center text-sm font-semibold animate-pulse">
+  <div class="flex items-center justify-center space-x-2">
+    <span class="text-lg">🚨</span>
+    <span>{{ 'common.breaking' | transloco }}: {{ breakingNews[0].title }}</span>
+    <span class="text-lg">🚨</span>
+  </div>
+</div>
+
+<!-- Breaking News Section -->
+<section *ngIf="breakingNews.length > 0" class="bg-red-50 py-8 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h3 class="text-2xl font-bold text-red-800 mb-6 text-center">
+      {{ 'common.breakingNews' | transloco }}
+    </h3>
+
+    <!-- BREAKING NEWS GRID -->
+    <div #breakingScroll class="breaking-news-grid scrollbar-hide mobile-scroll-container">
+      <div *ngFor="let news of displayedBreakingNews"
+        class="breaking-news-card bg-white rounded-lg shadow-md p-4 border-l-4 border-red-600">
+
+        <h4 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+          {{ news.title }}
+        </h4>
+
+        <p *ngIf="news.subTitle" class="text-gray-600 text-sm mb-3 line-clamp-2">
+          {{ news.subTitle }}
+        </p>
+
+        <p class="text-gray-700 text-sm mb-4 line-clamp-3">
+          {{ news.content }}
+        </p>
+
+        <div class="flex items-center justify-between text-xs text-gray-500 mb-4">
+          <span>{{ news.associationName }}</span>
+          <span>{{ news.createdDate | date:'MMM dd, yyyy' }}</span>
+        </div>
+
+        <button (click)="readMore(news)" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
+          {{ 'news.readMore' | transloco }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- News Section -->
+<section id="latest-news" class="bg-white text-gray-800 py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold mb-6 text-center">
+      {{ 'news.title' | transloco }}
+    </h2>
+
+    <!-- NEWS GRID -->
+    <div #newsScroll class="news-grid scrollbar-hide mobile-scroll-container">
+      <div *ngFor="let news of displayedNews"
+        class="news-card bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+
+        <!-- Image -->
+        <div class="relative h-48 bg-gradient-to-br from-red-50 to-pink-100">
+          <img [src]="getNewsImage(news)" [alt]="news.title" class="w-full h-full object-cover news-image"
+            (error)="onImageError($event)" />
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
+            {{ news.title }}
+          </h3>
+
+          <p *ngIf="news.subTitle" class="text-gray-600 text-sm mb-3 line-clamp-2">
+            {{ news.subTitle }}
+          </p>
+
+          <p class="text-gray-700 text-sm mb-4 line-clamp-3">
+            {{ news.content }}
+          </p>
+
+          <div class="flex items-center justify-between text-xs text-gray-500 mb-4">
+            <span>{{ news.associationName }}</span>
+            <span>{{ news.createdDate | date:'MMM dd, yyyy' }}</span>
+          </div>
+
+          <button (click)="readMore(news)" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
+            {{ 'news.readMore' | transloco }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

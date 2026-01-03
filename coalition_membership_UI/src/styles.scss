@@ -1,0 +1,225 @@
+/* You can add global styles to this file, and also import other style files */
+/**======================================================================
+=========================================================================
+Template Name: berry - Most Complete Bootstrap Admin Template
+Author: CodedThemes
+Support: https://codedthemes.support-hub.io/
+File: style.css
+=========================================================================
+=================================================================================== */
+
+// main framework
+// main framework
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/variables-dark';
+
+@import 'scss/settings/color-variables';
+@import 'scss/settings/theme-variables';
+@import 'scss/settings/bootstrap-variables.scss';
+
+@import 'scss/bootstrap/bootstrap.scss';
+
+@import 'node_modules/bootstrap/scss/utilities';
+@import 'node_modules/bootstrap/scss/utilities/api';
+
+// main framework
+@import 'scss/themes/generic.scss';
+@import 'scss/themes/general.scss';
+
+// Layouts
+@import 'scss/themes/layouts/layouts';
+
+// Componants
+@import 'scss/themes/components/components';
+
+// pages
+@import 'scss/themes/pages/page.scss';
+
+@import 'scss/themes/customizer';
+@import 'scss/style-preset.scss';
+
+// fonts
+@import url('scss/fonts/berry/berry-icons.css');
+/** custom font icons - berry **/
+@import 'scss/fonts/tabler-icons.min.css';
+@import 'scss/fonts/phosphor/duotone/style.css';
+
+// Quill Editor Styles
+@import 'node_modules/quill/dist/quill.snow.css';
+
+
+
+.custom-table {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table thead th {
+    background-color: #3333339a;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+
+.custom-table tbody td {
+    padding: 10px;
+    text-align: center;
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+
+.custom-modal-width .modal-dialog {
+    max-width: 1400px;
+    /* Adjust the width value as needed */
+}
+
+input.ng-invalid,
+select.ng-invalid,
+textarea.ng-invalid {
+    border: 1px solid red;
+}
+
+.custom-modal-width .modal-dialog {
+    width: 1200px;
+    /* Adjust the width value as needed */
+}
+
+.focus-green {
+    outline: green
+}
+
+.custom-modal-width .modal-dialog {
+    max-width: 1500px;
+    /* Adjust the width value as needed */
+}
+
+.larger-text {
+    font-size: 16px;
+    /* Adjust the font size as needed */
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #09653a !important;
+    --bs-btn-border-color: #09653a !important;
+    -bs-btn-color: #09653a !important;
+    --bs-btn-border-color: #09653a !important;
+
+    --bs-btn-hover-bg: #09653a !important;
+}
+
+// Custom Quill Editor Styles
+.ql-editor {
+    min-height: 200px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ql-toolbar.ql-snow {
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+    background-color: #f8f9fa;
+}
+
+.ql-container.ql-snow {
+    border: 1px solid #ccc;
+    border-radius: 0 0 4px 4px;
+    border-top: none;
+}
+
+.ql-editor.ql-blank::before {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.ql-editor p {
+    margin-bottom: 0.5rem;
+}
+
+.ql-editor h1, .ql-editor h2 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.ql-editor ul, .ql-editor ol {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.ql-editor blockquote {
+    border-left: 4px solid #dee2e6;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* Fix modal display issues */
+.modal {
+    display: block !important;
+    z-index: 1050 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+    opacity: 0.5 !important;
+    display: block !important;
+}
+
+.modal.show {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+.modal-dialog {
+    z-index: 1055 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.modal-content {
+    z-index: 1056 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Ensure complete profile modal displays properly */
+.full-width-modal .modal-dialog {
+    max-width: 95vw !important;
+    width: 95vw !important;
+    margin: 1rem auto !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.full-width-modal .modal-content {
+    height: 90vh !important;
+    overflow-y: auto !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Force modal to be visible */
+.modal.fade.show {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+.modal.fade .modal-dialog {
+    transform: translate(0, 0) !important;
+}

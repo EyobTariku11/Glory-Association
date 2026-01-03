@@ -1,0 +1,67 @@
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.color-preview {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-control-plaintext {
+  padding: 0.375rem 0;
+  margin-bottom: 0;
+  color: #212529;
+  background-color: transparent;
+  border: solid transparent;
+  border-width: 1px 0;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+// Social media links styling
+.social-media-links a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-media-links a:hover {
+  text-decoration: underline;
+}
+
+.social-media-links i {
+  font-size: 1.1em;
+}
+
+// About section styling
+.about-content {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+}
+
+// Form label styling
+.form-label.fw-bold {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+// Card styling improvements
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 0.5rem 0.5rem 0 0;
+} 

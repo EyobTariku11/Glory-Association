@@ -1,0 +1,63 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">{{Announcment?"Update":"Add"}} Announcment</h5>
+        <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form class="" [formGroup]="AnnouncmentForm" (ngSubmit)="Announcment?update():submit()">
+                <div class="row">
+
+                    <div class="col-4">
+
+
+
+                        <img [src]="getImage2()" alt="Profile" style="width: 100%;" appImageError>
+                        <input #file (change)="onUpload($event)" type="file" style="display: none;" accept="image/*" />
+                        <div class="pt-2">
+                            <a (click)="file.click()" style="width: 100%;" class="btn btn-outline-primary btn-sm"
+                                title="Upload new profile image">
+                                <i class="bi bi-upload"></i> Upload Image
+                            </a>
+                        </div>
+
+
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" formControlName="title" id="floatingInput" />
+                                    <label for="floatingInput">Title</label>
+                                </div>
+                            </div>
+        
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" formControlName="epiredDate" id="floatingInput" />
+                                    <label for="floatingInput">Expired Date</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+        
+                                    <textarea class="form-control" formControlName="description" style="height: 100px;">
+        
+                                    </textarea>
+        
+                                   
+                                    <label for="floatingInput">Description </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"> <button type="button" class="btn btn-outline-secondary"
+                    (click)="closeModal()">Close</button> <button type="button" type="submit"
+                    [disabled]="!AnnouncmentForm.valid"   
+                    class="btn btn-outline-success">{{Announcment?"Update":"Create"}}</button></div>
+            </form>
+        </div>
+    </div>

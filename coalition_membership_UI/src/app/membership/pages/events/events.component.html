@@ -1,0 +1,833 @@
+<div class="container-fluid">
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-12 col-md-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Events Management</a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">Events</li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-12">
+          <div class="page-header-title">
+            <h2 class="mb-0">Events Management</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] end -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h4 class="card-title">Events</h4>
+          <button class="btn btn-primary" (click)="onCreateEvent()">
+            <i class="fas fa-plus"></i> Create Event
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Search and Filter Section -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search events..."
+                  [(ngModel)]="searchTerm"
+                  (input)="onSearchChange()"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select
+                class="form-select"
+                [(ngModel)]="selectedEventType"
+                (change)="onEventTypeChange()"
+              >
+                <option value="all">All Event Types</option>
+                <option
+                  *ngFor="let type of getUniqueEventTypes()"
+                  [value]="type"
+                >
+                  {{ type }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select
+                class="form-select"
+                [(ngModel)]="selectedStatus"
+                (change)="onStatusChange()"
+              >
+                <option value="all">All Status</option>
+                <option value="approved">Approved</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button
+                class="btn btn-outline-secondary w-100"
+                (click)="clearFilters()"
+              >
+                <i class="fas fa-times"></i> Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Pending Approval Section (Coalition Only) -->
+          <div
+            *ngIf="isCoalition && filteredPendingEvents.length > 0"
+            class="mb-4"
+          >
+            <h5 class="text-warning">
+              <i class="fas fa-clock"></i> Pending Approval ({{
+                filteredPendingEvents.length
+              }})
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-warning">
+                  <tr>
+                    <th>Title</th>
+                    <th>Association</th>
+                    <th>Event Date</th>
+                    <th>Location</th>
+                    <th>Donation Enabled</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let event of filteredPendingEvents">
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.associationName }}</td>
+                    <td>{{ event.eventDate | date : "mediumDate" }}</td>
+                    <td>{{ event.location }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [class]="
+                          event.isDonationEnabled
+                            ? 'badge-success'
+                            : 'badge-secondary'
+                        "
+                      >
+                        {{ event.isDonationEnabled ? "Yes" : "No" }}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-success btn-sm me-2"
+                        (click)="onApproveEvent(event.id)"
+                      >
+                        <i class="fas fa-check"></i> Approve
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        (click)="onRejectEvent(event.id)"
+                      >
+                        <i class="fas fa-times"></i> Reject
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Events List -->
+          <div class="mb-3" *ngIf="isAssociation">
+            <button
+              class="btn btn-primary"
+              (click)="onCreateEvent()"
+              [disabled]="showCreateForm || showEditForm"
+            >
+              <i class="fas fa-plus"></i> Create New Event
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>Title</th>
+                  <th>Association</th>
+                  <th>Event Date</th>
+                  <th>Location</th>
+                  <th>Event Type</th>
+                  <th>Status</th>
+                  <th>Donation</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let event of filteredEvents">
+                  <td>
+                    <strong>{{ event.title }}</strong>
+                    <div *ngIf="event.subTitle" class="text-muted small">
+                      {{ event.subTitle }}
+                    </div>
+                  </td>
+                  <td>{{ event.associationName }}</td>
+                  <td>{{ event.eventDate | date : "mediumDate" }}</td>
+                  <td>{{ event.location }}</td>
+                  <td>
+                    <span class="badge badge-info" *ngIf="event.eventType">{{
+                      event.eventType
+                    }}</span>
+                    <span class="text-muted" *ngIf="!event.eventType">-</span>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="getStatusBadgeClass(event)">
+                      {{ getStatusText(event) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div *ngIf="event.isDonationEnabled">
+                      <div class="small">
+                        <strong>Target:</strong>
+                        {{ event.targetAmount | currency : "ETB" }}
+                      </div>
+                      <div class="small">
+                        <strong>Collected:</strong>
+                        {{ event.amountCollected | currency : "ETB" }}
+                      </div>
+                      <div
+                        class="progress mt-1"
+                        style="height: 5px; overflow: hidden"
+                      >
+                        <div
+                          class="progress-bar"
+                          [style.width.%]="getDonationProgress(event)"
+                          [class]="getDonationProgressClass(event)"
+                        ></div>
+                      </div>
+                    </div>
+                    <span class="text-muted" *ngIf="!event.isDonationEnabled"
+                      >-</span
+                    >
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <button
+                        class="btn btn-info btn-sm me-1"
+                        (click)="onViewEvent(event)"
+                        title="View Details"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="btn btn-warning btn-sm me-1"
+                        *ngIf="event.isDonationEnabled"
+                        (click)="onViewDonations(event.id)"
+                        title="View Donations"
+                      >
+                        <i class="fas fa-hand-holding-usd"></i>
+                      </button>
+                      <button
+                        class="btn btn-primary btn-sm me-1"
+                        *ngIf="isAssociation && !event.isApproved"
+                        (click)="onEditEvent(event)"
+                        title="Edit Event"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        *ngIf="isAssociation && !event.isApproved"
+                        (click)="onDeleteEvent(event.id)"
+                        title="Delete Event"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading events...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!loading && events.length === 0" class="text-center py-4">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No events found</h5>
+            <p class="text-muted">
+              There are no events to display at the moment.
+            </p>
+          </div>
+
+          <!-- No Search Results -->
+          <div
+            *ngIf="!loading && events.length > 0 && filteredEvents.length === 0"
+            class="text-center py-4"
+          >
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No events match your search</h5>
+            <p class="text-muted">
+              Try adjusting your search criteria or clear the filters.
+            </p>
+            <button class="btn btn-outline-primary" (click)="clearFilters()">
+              <i class="fas fa-times"></i> Clear Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Details Modal -->
+  <div
+    class="modal fade"
+    id="eventDetailsModal"
+    tabindex="-1"
+    aria-labelledby="eventDetailsModalLabel"
+    aria-hidden="true"
+    [class.show]="showViewModal"
+    [style.display]="showViewModal ? 'block' : 'none'"
+    (click)="onModalBackdropClick($event)"
+  >
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventDetailsModalLabel">
+            <i class="fas fa-calendar-alt text-primary me-2"></i>
+            Event Details
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeViewModal()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedEventForView">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="text-primary mb-3">
+                {{ selectedEventForView.title }}
+              </h4>
+              <div *ngIf="selectedEventForView.subTitle" class="mb-3">
+                <h6 class="text-muted">{{ selectedEventForView.subTitle }}</h6>
+              </div>
+              <div class="mb-4">
+                <p class="text-justify">
+                  {{ selectedEventForView.description }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h6 class="card-title">
+                    <i class="fas fa-info-circle text-info me-2"></i>
+                    Event Information
+                  </h6>
+                  <div class="mb-2">
+                    <strong>Date:</strong><br />
+                    <i class="fas fa-calendar text-primary me-2"></i>
+                    {{ selectedEventForView.eventDate | date : "fullDate" }}
+                  </div>
+                  <div class="mb-2">
+                    <strong>Location:</strong><br />
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    {{ selectedEventForView.location }}
+                  </div>
+                  <div class="mb-2" *ngIf="selectedEventForView.eventType">
+                    <strong>Type:</strong><br />
+                    <i class="fas fa-tag text-warning me-2"></i>
+                    {{ selectedEventForView.eventType }}
+                  </div>
+                  <div class="mb-2">
+                    <strong>Association:</strong><br />
+                    <i class="fas fa-building text-success me-2"></i>
+                    {{ selectedEventForView.associationName }}
+                  </div>
+                  <div class="mb-2">
+                    <strong>Status:</strong><br />
+                    <span
+                      class="badge"
+                      [class]="getStatusBadgeClass(selectedEventForView)"
+                    >
+                      {{ getStatusText(selectedEventForView) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Donation Information -->
+          <div *ngIf="selectedEventForView.isDonationEnabled" class="mt-4">
+            <div class="card border-primary">
+              <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">
+                  <i class="fas fa-hand-holding-usd me-2"></i>
+                  Donation Information
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="text-center">
+                      <h5 class="text-primary">Target Amount</h5>
+                      <h3 class="text-success">
+                        {{
+                          selectedEventForView.targetAmount | currency : "ETB"
+                        }}
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="text-center">
+                      <h5 class="text-primary">Amount Collected</h5>
+                      <h3 class="text-info">
+                        {{
+                          selectedEventForView.amountCollected
+                            | currency : "ETB"
+                        }}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <div class="d-flex justify-content-between mb-1">
+                    <small>Progress</small>
+                    <small
+                      >{{
+                        getDonationProgress(selectedEventForView)
+                          | number : "1.0-0"
+                      }}%</small
+                    >
+                  </div>
+                  <div class="progress" style="height: 10px; overflow: hidden">
+                    <div
+                      class="progress-bar"
+                      [style.width.%]="
+                        getDonationProgress(selectedEventForView)
+                      "
+                      [class]="getDonationProgressClass(selectedEventForView)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeViewModal()"
+          >
+            <i class="fas fa-times me-2"></i>Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donations Modal -->
+  <div
+    class="modal fade"
+    id="donationsModal"
+    tabindex="-1"
+    aria-labelledby="donationsModalLabel"
+    aria-hidden="true"
+    [class.show]="showDonationsModal"
+    [style.display]="showDonationsModal ? 'block' : 'none'"
+    (click)="onModalBackdropClick($event)"
+  >
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="donationsModalLabel">
+            <i class="fas fa-hand-holding-usd text-success me-2"></i>
+            Event Donations
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeDonationsModal()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="eventDonations.length === 0" class="text-center py-4">
+            <i class="fas fa-hand-holding-usd fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No Donations Found</h5>
+            <p class="text-muted">There are no donations for this event yet.</p>
+          </div>
+
+          <div *ngIf="eventDonations.length > 0">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead class="table-success">
+                  <tr>
+                    <th>Donor Name</th>
+                    <th>Amount</th>
+                    <th>Payment Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let donation of eventDonations">
+                    <td>
+                      <i class="fas fa-user text-primary me-2"></i>
+                      {{ donation.donorName || "Anonymous" }}
+                    </td>
+                    <td>
+                      <span class="badge bg-success fs-6">
+                        {{ donation.amount | currency : "ETB" }}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        class="badge"
+                        [class]="donation.isPaid ? 'bg-success' : 'bg-warning'"
+                      >
+                        <i
+                          class="fas"
+                          [class]="
+                            donation.isPaid ? 'fa-check-circle' : 'fa-clock'
+                          "
+                        ></i>
+                        {{ donation.isPaid ? "Paid" : "Pending" }}
+                      </span>
+                    </td>
+                    <td>
+                      <i class="fas fa-calendar text-info me-2"></i>
+                      {{ donation.createdDate | date : "mediumDate" }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-3 text-center">
+              <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Total Donations:</strong>
+                {{ eventDonations.length }} donor(s)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeDonationsModal()"
+          >
+            <i class="fas fa-times me-2"></i>Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Event Modal -->
+  <div
+    class="modal fade"
+    id="eventFormModal"
+    tabindex="-1"
+    aria-labelledby="eventFormModalLabel"
+    aria-hidden="true"
+    [class.show]="showCreateForm || showEditForm"
+    [style.display]="showCreateForm || showEditForm ? 'block' : 'none'"
+    (click)="onModalBackdropClick($event)"
+  >
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventFormModalLabel">
+            {{ showEditForm ? "Edit Event" : "Create New Event" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="cancelForm()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="eventForm">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="title" class="form-label">Event Title *</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    formControlName="title"
+                    [class.is-invalid]="
+                      eventForm.get('title')?.invalid &&
+                      eventForm.get('title')?.touched
+                    "
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
+                      eventForm.get('title')?.invalid &&
+                      eventForm.get('title')?.touched
+                    "
+                  >
+                    Title is required
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="subTitle" class="form-label">Subtitle</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="subTitle"
+                    formControlName="subTitle"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="description" class="form-label"
+                    >Description *</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="description"
+                    rows="4"
+                    formControlName="description"
+                    [class.is-invalid]="
+                      eventForm.get('description')?.invalid &&
+                      eventForm.get('description')?.touched
+                    "
+                  >
+                  </textarea>
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
+                      eventForm.get('description')?.invalid &&
+                      eventForm.get('description')?.touched
+                    "
+                  >
+                    Description is required
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="eventDate" class="form-label">Event Date *</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="eventDate"
+                    formControlName="eventDate"
+                    [class.is-invalid]="
+                      eventForm.get('eventDate')?.invalid &&
+                      eventForm.get('eventDate')?.touched
+                    "
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
+                      eventForm.get('eventDate')?.invalid &&
+                      eventForm.get('eventDate')?.touched
+                    "
+                  >
+                    Event date is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="endDate" class="form-label">End Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="endDate"
+                    formControlName="endDate"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="location" class="form-label">Location *</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="location"
+                    formControlName="location"
+                    [class.is-invalid]="
+                      eventForm.get('location')?.invalid &&
+                      eventForm.get('location')?.touched
+                    "
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
+                      eventForm.get('location')?.invalid &&
+                      eventForm.get('location')?.touched
+                    "
+                  >
+                    Location is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="eventType" class="form-label">Event Type</label>
+                  <select
+                    class="form-control"
+                    id="eventType"
+                    formControlName="eventType"
+                  >
+                    <option value="">Select Event Type</option>
+                    <option value="Tournament">Tournament</option>
+                    <option value="Training">Training</option>
+                    <option value="Meeting">Meeting</option>
+                    <option value="Fundraiser">Fundraiser</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="imageFile" class="form-label">Event Image</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="imageFile"
+                    (change)="onFileSelected($event)"
+                    accept="image/*"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="isDonationEnabled"
+                      formControlName="isDonationEnabled"
+                    />
+                    <label class="form-check-label" for="isDonationEnabled">
+                      Enable Donations
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3" *ngIf="eventForm.get('isDonationEnabled')?.value">
+              <label for="targetAmount" class="form-label"
+                >Target Amount (ETB) *</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="targetAmount"
+                formControlName="targetAmount"
+                min="1"
+                step="0.01"
+                [class.is-invalid]="
+                  eventForm.get('targetAmount')?.invalid &&
+                  eventForm.get('targetAmount')?.touched
+                "
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  eventForm.get('targetAmount')?.invalid &&
+                  eventForm.get('targetAmount')?.touched
+                "
+              >
+                <span
+                  *ngIf="eventForm.get('targetAmount')?.errors?.['required']"
+                  >Target amount is required when donation is enabled</span
+                >
+                <span *ngIf="eventForm.get('targetAmount')?.errors?.['min']"
+                  >Target amount must be at least 1 ETB</span
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelForm()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="onSubmitEvent()"
+            [disabled]="eventForm.invalid"
+          >
+            {{ showEditForm ? "Update Event" : "Create Event" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Backdrops -->
+  <div
+    class="modal-backdrop fade"
+    [class.show]="showViewModal"
+    [style.display]="showViewModal ? 'block' : 'none'"
+    (click)="closeViewModal()"
+  ></div>
+
+  <div
+    class="modal-backdrop fade"
+    [class.show]="showDonationsModal"
+    [style.display]="showDonationsModal ? 'block' : 'none'"
+    (click)="closeDonationsModal()"
+  ></div>
+
+  <div
+    class="modal-backdrop fade"
+    [class.show]="showCreateForm || showEditForm"
+    [style.display]="showCreateForm || showEditForm ? 'block' : 'none'"
+    (click)="cancelForm()"
+  ></div>
+</div>

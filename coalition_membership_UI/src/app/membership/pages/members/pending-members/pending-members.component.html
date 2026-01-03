@@ -1,0 +1,159 @@
+<div class="row ">
+    <div class="col-lg-8 col-12" style="background-color: white;">
+        <div class="card ">
+            <div class="card-body">
+                <div class="row">
+                    <div class="d-flex justify-content-center">
+                        <div class="auth-header">
+                            <h2>{{memberTelegram&&memberTelegram.member.fullName.toUpperCase()}} <b>(
+                                    {{memberTelegram&&memberTelegram.member.memberId}} )</b>
+                            </h2>
+
+
+                            <h4 *ngIf="memberTelegram.status=='PENDING'">{{memberTelegram&&memberTelegram.message}}
+                            </h4>
+
+                            <h4 *ngIf="memberTelegram.status=='EXPIRED'" class="text-center">Your Membership Type on
+                                <span class="text-success">{{member&&member.membershipType}}</span> Status has
+                                expired
+                            </h4>
+
+                            <!-- <h4 *ngIf="memberTelegram.status=='EXPIRED'" class="text-center"> <span
+                                        style="color: red;">{{ member&&member.expiredDate|date:"dd MMM YYY"}}</span> on
+                                    Please renew to login !!! </h4> -->
+
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="memberTelegram.status=='PAID'" class="p-4 text-center">
+
+                    <h3 class="mb-3"><b>
+                            you have previously completed the registration process using the provided phone number
+                            and
+                            have successfully made the necessary payment and
+                            <span class="text-success"> <b>{{memberTelegram&&memberTelegram.message}}</b> </span>.
+                            We kindly request you to log in using your assigned membership ID to access the desired
+                            services.</b>
+
+                    </h3>
+                    <button class="btn btn-outline-primary" (click)="closeModal()"
+                        routerLink="/auth/membership-login">Login</button>
+                </div>
+
+
+                <form *ngIf="memberTelegram.status=='EXPIRED'">
+
+
+
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" disabled
+                                    [value]="memberTelegram&&memberTelegram.member.fullName" id="fullName" />
+                                <label for="fullName">Full Name </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" disabled readonly
+                                    [value]="memberTelegram&&memberTelegram.member.phoneNumber" id="phoneNumber" />
+                                <label for="phoneNumber">Phonenumber </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" disabled readonly
+                                    [value]="memberTelegram&&memberTelegram.member.memberId" id="memberId" />
+                                <label for="memberId">MemberId </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+
+                                <select class="form-control" #category (change)="getMembershipTypes(category.value)">
+                                    <option></option>
+                                    <option value=0>WEEKLY</option>
+                                    <option value=1>MONTHLY</option>
+                                    <option value=2>YEARLY</option>
+
+                                </select>
+                                <label for="fullName">Membership Category</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+
+                                <select class="form-control" #membership
+                                    (change)="onMembershipSelcted(membership.value)">
+                                    <option></option>
+                                    <option *ngFor="let item of membershipTypes" value="{{item.id}}/{{item.amount}}">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                                <label for="fullName">Membership Type</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button [disabled]="!selectedMembership&&!selectedAmount" (click)="renewMembership()"
+                            class="btn btn-secondary">{{memberTelegram.status=="EXPIRED"?'Renew':
+                            'Continue to Payment'}}</button>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button [disabled]="!selectedMembership&&!selectedAmount" (click)="renewMembershipArifPay()"
+                            class="btn btn-primary">{{memberTelegram.status=="EXPIRED"?'Renew with ArifPay':
+                            'Continue to Payment with ArifPay'}}</button>
+                    </div>
+
+                    <hr />
+                </form>
+                <div *ngIf="(memberTelegram.status=='PENDING' && memberTelegram.member.text_Rn!=null)">
+
+                    <div class="d-grid mt-4">
+                        <button (click)="renewMembership2()" class="btn btn-secondary">Continue to Payment</button>
+                    </div>
+
+                </div>
+
+                <div *ngIf="(memberTelegram.status=='PENDING' && memberTelegram.member.text_Rn==null)">
+
+                    <div class="d-grid mt-4">
+                        <button (click)="renewMembership3()" class="btn btn-secondary">Continue to Payment</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-4 col-12 p-2  flex justify-content-center">
+        <div class="member-info text-center bg-white">
+
+            <img src="assets/logo-remove.png" alt="Member Image" style="max-height: 150px;"
+                class="img-fluid bounce-image" appImageError>
+            <h2 class="text-primary mt-2"><b>
+                    EPLFFC  Coalition!</b></h2>
+            <p class="text-center animated-paragraph p-2">
+
+                Become part of the Ethiopian Premier League Fans Coalition and enjoy exclusive benefits.
+            </p>
+            <div class="partner-logo mt-4 text-end me-2">
+                <img src="assets/arifpay.svg" alt="Partner Logo" class="w-32 h-auto" appImageError>
+            </div>
+            <div class="d-grid mt-4 p-4">
+                <button type="button" (click)="closeModal()" class="btn btn-outline-danger">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<app-celebration *ngIf="member&&member.isBirthDate" [memberName]="member&&member.fullName.split(' ')[0]" />
+
+<div class="row">
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-secondary-dark dashnum-card text-white overflow-hidden">
+            <span class="round small"></span>
+            <span class="round big"></span>
+            <div class="card-body">
+                <div class="row">
+                </div>
+                <span class="text-white d-block fs-1 fw-bold my-2">{{member&&member.membershipType.toUpperCase()}} <i
+                        class="ti ti-user opacity-50"></i></span>
+                <p class="mb-0 opacity-50">Membership Type </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-6">
+        <div class="card bg-white dashnum-card  overflow-hidden">
+            <span class="round small"></span>
+            <span class="round big"></span>
+            <div class="card-body">
+                <div class="row">
+                </div>
+                <span class="text-secondary d-block fs-1 fw-bold my-2">{{member&&member.paymentStatus}} <i
+                        class="ti ti-credit-card opacity-50"></i></span>
+                <p class="mb-0 opacity-50">Membership Status</p>
+            </div>
+        </div>
+
+        
+
+  
+    </div>
+    <div class="col-xl-4 col-md-12">
+        <div class="card dashnum-card bg-white  dashnum-card-small text-primary overflow-hidden" >
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="ms-2">
+                        <!-- Check if the user is connected to Telegram -->
+                        <div *ngIf="chatId; else connectTelegram">
+                            <p>You are connected to Telegram. Notifications will be sent to you.</p>
+                            <button class="btn btn-success" disabled>
+                                Connected to Telegram
+                            </button>
+                        </div>
+        
+                        <!-- If not connected, show the connect button -->
+                        <ng-template #connectTelegram>
+                            <p>Become a Telegram member to receive notifications.</p>
+                            <button class="btn btn-primary d-flex align-items-center" (click)="connectTelegramc()">
+                                <i class="fas fa-paper-plane me-2"></i> <!-- Telegram Icon -->
+                                Connect with Telegram
+                            </button>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-light-dangerdashnum-card dashnum-card-small overflow-hidden">
+            <span class="round bg-warning small"></span>
+            <span class="round bg-warning big"></span>
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="avtar bg-light-warning">
+                        <i class="text-warning ti ti-calendar"></i>
+                    </div>
+                    <div class="ms-2">
+                        <h4 class="mb-1"> {{member&&member.expiredDate|date:"dd MMM YYY"}} </h4>
+                        <span class="text-end" style="color: red;">{{daysLeft>0?daysLeft:(-1*daysLeft)}}
+                            {{daysLeft>0?'Days Left':'Days Passed'}}</span>
+                        <p class="mb-0 opacity-50 text-sm">Expired Date</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-xl-12">
+        <app-generate-id-card *ngIf="member" [member]="member"></app-generate-id-card>
+    </div>
+
+
+
+
+
+
+
+
+</div>

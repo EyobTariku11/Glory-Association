@@ -1,0 +1,42 @@
+// Contact component styles
+.contact-section {
+  .contact-icon {
+    transition: transform 0.2s ease-in-out;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  .map-container {
+    iframe {
+      border-radius: 0.5rem;
+    }
+  }
+  
+  .contact-card {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .contact-section {
+    .grid {
+      gap: 2rem;
+    }
+    
+    .text-4xl {
+      font-size: 2rem;
+    }
+    
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+  }
+} 
