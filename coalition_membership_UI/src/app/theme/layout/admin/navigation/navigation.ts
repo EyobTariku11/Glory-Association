@@ -83,11 +83,11 @@ const NavigationItems = [
       },
 
       {
-        id: "data",
-        title: "Fans Associations",
+        id: "manage-admins",
+        title: "Manage Admins",
         type: "item",
         role: ["Coalition"],
-        icon: "ti ti-shirt",
+        icon: "ti ti-users",
         url: "/admin/coaliation/association",
         breadcrumbs: false,
       },
@@ -119,83 +119,82 @@ const NavigationItems = [
         url: "/admin/members/unsent-messages",
         breadcrumbs: false,
       },
-      {
-        id: "events-management",
-        title: "Events Management",
-        type: "collapse",
-        role: ["Coalition", "Association"],
-        icon: "ti ti-calendar",
-        children: [
-          {
-            id: "events",
-            title: "Events",
-            type: "item",
-            role: ["Coalition", "Association"],
-            url: "/admin/events",
-            icon: "ti ti-calendar-event",
-            breadcrumbs: false,
-          },
+      // {
+      //   id: "events-management",
+      //   title: "Events Management",
+      //   type: "collapse",
+      //   role: ["Coalition", "Association"],
+      //   icon: "ti ti-calendar",
+      //   children: [
+      //     {
+      //       id: "events",
+      //       title: "Events",
+      //       type: "item",
+      //       role: ["Coalition", "Association"],
+      //       url: "/admin/events",
+      //       icon: "ti ti-calendar-event",
+      //       breadcrumbs: false,
+      //     },
+      //     {
+      //       id: "donation-targets",
+      //       title: "Donation Targets",
+      //       type: "item",
+      //       role: ["Coalition", "Association"],
+      //       url: "/admin/donation-targets",
+      //       icon: "ti ti-target",
+      //       breadcrumbs: false,
+      //     },
+      //   ],
+      // },
 
-          {
-            id: "donation-targets",
-            title: "Donation Targets",
-            type: "item",
-            role: ["Coalition", "Association"],
-            url: "/admin/donation-targets",
-            icon: "ti ti-target",
-            breadcrumbs: false,
-          },
-        ],
-      },
+      // {
+      //   id: "news-management",
+      //   title: "News Management",
+      //   type: "collapse",
+      //   role: ["Coalition"],
+      //   icon: "ti ti-news",
+      //   children: [
+      //   
+      //     {
+      //       id: "news-approval",
+      //       title: "News Approval",
+      //       type: "item",
+      //       role: ["Coalition"],
+      //       url: "/admin/news/approval",
+      //       icon: "ti ti-check",
+      //       breadcrumbs: false,
+      //     },
+      //     {
+      //       id: "all-news",
+      //       title: "All News",
+      //       type: "item",
+      //       role: ["Coalition"],
+      //       url: "/admin/news/all",
+      //       icon: "ti ti-list",
+      //       breadcrumbs: false,
+      //     },
+      //   ],
+      // },
 
-      {
-        id: "news-management",
-        title: "News Management",
-        type: "collapse",
-        role: ["Coalition"],
-        icon: "ti ti-news",
-        children: [
-        
-          {
-            id: "news-approval",
-            title: "News Approval",
-            type: "item",
-            role: ["Coalition"],
-            url: "/admin/news/approval",
-            icon: "ti ti-check",
-            breadcrumbs: false,
-          },
-          {
-            id: "all-news",
-            title: "All News",
-            type: "item",
-            role: ["Coalition"],
-            url: "/admin/news/all",
-            icon: "ti ti-list",
-            breadcrumbs: false,
-          },
-        ],
-      },
-
-      {
-        id: "news-management",
-        title: "News Management",
-        type: "collapse",
-        role: [ "Association"],
-        icon: "ti ti-news",
-        children: [
-          {
-            id: "my-news",
-            title: "My News",
-            type: "item",
-            role: ["Association"],
-            url: "/admin/news/my-news",
-            icon: "ti ti-file-text",
-            breadcrumbs: false,
-          }
-         
-        ],
-      },
+      // {
+      //   id: "news-management",
+      //   title: "News Management",
+      //   type: "collapse",
+      //   role: [ "Association"],
+      //   icon: "ti ti-news",
+      //   children: [
+      //     {
+      //       id: "my-news",
+      //       title: "My News",
+      //       type: "item",
+      //       role: ["Association"],
+      //       url: "/admin/news/my-news",
+      //       icon: "ti ti-file-text",
+      //       breadcrumbs: false,
+      //     }
+      //    
+      //   ],
+      // },
 
       {
         id: "reports",
@@ -250,7 +249,7 @@ const NavigationItems = [
         role: ["Coalition"],
         icon: "ti ti-settings",
         children: [
-         
+
           {
             id: "data",
             title: "Regions",
@@ -315,7 +314,7 @@ const NavigationItems = [
         children: [
           {
             id: "data",
-            title: "Membership Types", 
+            title: "Membership Types",
             type: "item",
             role: ["Association"],
             url: "/admin/configuration/membership-types",

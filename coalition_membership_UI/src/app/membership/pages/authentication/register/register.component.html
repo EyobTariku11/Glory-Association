@@ -6,25 +6,9 @@
         <div class="card-body p-5">
           <!-- Header -->
           <div class="text-center mb-4">
-            <h2 *ngIf="!selectedAssociationName" class="text-primary mb-3 display-6"><strong> EPLFFC Coalition </strong>
-            </h2>
+            <h2 class="text-primary mb-3 display-6"><strong> Glory Foundation </strong></h2>
 
-            <div *ngIf="selectedAssociationName" class="selected-association-card">
-              <div class="selected-association-content">
-                <div class="association-logo-container">
-                  <img *ngIf="selectedAssociationImagePath" [src]="getCurrentLogoPath()" alt="Association Logo"
-                    class="association-logo" appImageError>
-                  <div class="check-badge">
-                    <i class="ti ti-check"></i>
-                  </div>
-                </div>
-                <div class="association-info">
-                  <h6 class="association-label">Selected Association</h6>
-                  <h5 class="association-name">{{ selectedAssociationName }}</h5>
-                  <p class="association-description">You're joining this amazing community!</p>
-                </div>
-              </div>
-            </div>
+            <!-- Selected Association Card Removed for single-association view -->
 
             <!-- Amharic Text - Always visible after logo/association -->
             <div class="amharic-text-container">
@@ -111,15 +95,7 @@
             </div>
 
             <div class="row mb-3">
-              <div class="col-md-6 mt-2">
-                <div class="form-floating mb-3">
-                  <select class="form-control" formControlName="associationId" (change)="onAssociationChange($event)">
-                    <option value=""></option>
-                    <option *ngFor="let item of associations" [value]="item.id">{{ item.name }}</option>
-                  </select>
-                  <label for="associationId">Fans Associations</label>
-                </div>
-              </div>
+              <!-- Association Dropdown Removed -->
               <div class="col-md-6 mt-2">
                 <div class="form-floating">
                   <select class="form-control " formControlName="membershipType">

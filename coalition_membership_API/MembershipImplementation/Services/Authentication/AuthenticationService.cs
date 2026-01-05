@@ -19,6 +19,7 @@ using System.Text;
 
 using static MembershipInfrustructure.Data.EnumList;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Linq;
 
 namespace Implementation.Services.Authentication
 {
@@ -439,6 +440,31 @@ namespace Implementation.Services.Authentication
                 return new ResponseMessage { Success = true, Message = "Succesfully Changed Status of User", Data = curentUser.Id };
             }
             return new ResponseMessage { Success = false, Message = "User Not Found" };
+        }
+
+        public async Task<ResponseMessage> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(changePasswordDto.UserId);
+                if (user == null)
+                {
+                    return new ResponseMessage { Success = false, Message = "User Not Found" };
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+                if (result.Succeeded)
+                {
+                    return new ResponseMessage { Success = true, Message = "Password updated successfully" };
+                }
+
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                return new ResponseMessage { Success = false, Message = errors };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseMessage { Success = false, Message = ex.Message };
+            }
         }
     }
 }

@@ -8,8 +8,8 @@ import { DropDownService } from 'src/app/services/dropDown.service';
 import { UserService } from 'src/app/services/user.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { AssociationService } from 'src/app/services/AssociationService';
-import { 
-  DashboardNumericalDTo, 
+import {
+  DashboardNumericalDTo,
   FilterCriteriaDto,
   CoalitionOverviewDto,
   AssociationSummaryDto,
@@ -38,7 +38,7 @@ export class CoalitionDashboardComponent implements OnInit {
   femaleNumbers: number;
 
   currentYear: number;
- 
+
   genderData: any[];
   chartOptions2: any;
   loading2: boolean = true;
@@ -78,8 +78,8 @@ export class CoalitionDashboardComponent implements OnInit {
     private dropDownService: DropDownService,
     private userService: UserService,
     private dashboardService: DashboardService,
-    private associationService: AssociationService
-  ) {}
+    private associationService: AssociationService,
+  ) { }
 
   ngOnInit(): void {
     const currentDate = new Date();
@@ -252,12 +252,12 @@ export class CoalitionDashboardComponent implements OnInit {
       acc[item.gender] = (acc[item.gender] || 0) + 1;
       return acc;
     }, {});
-  
+
     this.genderData = Object.keys(genderCounts).map((key) => ({
       value: genderCounts[key],
       name: key
     }));
-  
+
     this.chartOptions2 = {
       tooltip: {
         trigger: 'item',
@@ -316,7 +316,7 @@ export class CoalitionDashboardComponent implements OnInit {
         itemGap: 5
       }
     };
-  
+
     this.loading2 = false;
   }
 
@@ -461,12 +461,12 @@ export class CoalitionDashboardComponent implements OnInit {
       acc[item.paymentStatus] = (acc[item.paymentStatus] || 0) + 1;
       return acc;
     }, {});
-  
+
     this.paymentStatusData = Object.keys(paymentStatusCounts).map((key) => ({
       value: paymentStatusCounts[key],
       name: key
     }));
-  
+
     this.chartOptions = {
       tooltip: {
         trigger: 'item',
@@ -518,7 +518,7 @@ export class CoalitionDashboardComponent implements OnInit {
         }
       }
     };
-  
+
     this.loading = false;
   }
 
@@ -527,23 +527,23 @@ export class CoalitionDashboardComponent implements OnInit {
     const monthData = new Map(monthNames.map((month) => [month, 0]));
     let minYear = Infinity;
     let maxYear = -Infinity;
-  
+
     this.filterdMembers.forEach((member) => {
       const createdDate = new Date(member.createdByDate);
       const year = createdDate.getFullYear();
       const month = monthNames[createdDate.getMonth()];
-  
+
       minYear = Math.min(minYear, year);
       maxYear = Math.max(maxYear, year);
-  
+
       if (!passedYear || year.toString() === passedYear) {
         monthData.set(month, (monthData.get(month) || 0) + 1);
       }
     });
-  
+
     const selectedYear = passedYear || maxYear.toString();
     const data = monthNames.map((month) => monthData.get(month) || 0);
-  
+
     this.chartOptions4 = {
       title: {
         text: `Monthly Data for ${selectedYear}`,
@@ -578,13 +578,13 @@ export class CoalitionDashboardComponent implements OnInit {
       }
     };
   }
-  
+
   generateYear() {
     const currentYear = new Date().getFullYear();
     const yearCounts = {};
     let minYear = currentYear;
     let maxYear = 0;
-  
+
     this.filterdMembers.forEach((member) => {
       const createdDate = new Date(member.createdByDate);
       const year = createdDate.getFullYear();
@@ -592,14 +592,14 @@ export class CoalitionDashboardComponent implements OnInit {
       minYear = Math.min(minYear, year);
       maxYear = Math.max(maxYear, year);
     });
-  
+
     const years = [];
     const data = [];
     for (let year = minYear; year <= maxYear; year++) {
       years.push(year.toString());
       data.push(yearCounts[year] || 0);
     }
-  
+
     this.chartOptions5 = {
       xAxis: {
         type: 'category',
@@ -630,30 +630,30 @@ export class CoalitionDashboardComponent implements OnInit {
       }
     };
   }
-  
+
   generateQuarter(passedYear?: string) {
     const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
     const quarterData = new Map(quarters.map((quarter) => [quarter, 0]));
     let minYear = Infinity;
     let maxYear = -Infinity;
-  
+
     this.filterdMembers.forEach((member) => {
       const createdDate = new Date(member.createdByDate);
       const year = createdDate.getFullYear();
       const month = createdDate.getMonth();
       const quarter = quarters[Math.floor(month / 3)];
-  
+
       minYear = Math.min(minYear, year);
       maxYear = Math.max(maxYear, year);
-  
+
       if (!passedYear || year.toString() === passedYear) {
         quarterData.set(quarter, (quarterData.get(quarter) || 0) + 1);
       }
     });
-  
+
     const selectedYear = passedYear || maxYear.toString();
     const data = quarters.map((quarter) => quarterData.get(quarter) || 0);
-  
+
     this.chartOptions7 = {
       title: {
         text: `Quarterly Data for ${selectedYear}`,
@@ -691,16 +691,16 @@ export class CoalitionDashboardComponent implements OnInit {
 
   generateChapterChart() {
     const chapterCounts = new Map(this.chapters.map(chapter => [chapter.id, 0]));
-    
+
     this.filterdMembers.forEach((member) => {
       if (chapterCounts.has(member.regionId)) {
         chapterCounts.set(member.regionId, chapterCounts.get(member.regionId)! + 1);
       }
     });
-    
+
     const chapterNames = this.chapters.map(chapter => chapter.name.replace(/chapter/gi, '').trim());
     const data = this.chapters.map(chapter => chapterCounts.get(chapter.id) || 0);
-    
+
     this.chartOptions6 = {
       title: {
         text: '',

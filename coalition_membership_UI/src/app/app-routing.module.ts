@@ -19,7 +19,8 @@ import { DonationTargetsComponent } from "./membership/pages/donation-targets/do
 export const appRoutes: Routes = [
   {
     path: "",
-    component: AdminDashbordComponent,
+    pathMatch: "full",
+    redirectTo: "auth/register",
   },
   {
     path: "football-coalition",
@@ -89,7 +90,7 @@ export const appRoutes: Routes = [
             (m) => m.MembersModule
           ),
         canActivate: [AuthGuard],
-        data: { permittedRoles: ["Coalition", "Association","Member"] }
+        data: { permittedRoles: ["Coalition", "Association", "Member"] }
       },
       {
         path: "coaliation",
@@ -167,4 +168,4 @@ export const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

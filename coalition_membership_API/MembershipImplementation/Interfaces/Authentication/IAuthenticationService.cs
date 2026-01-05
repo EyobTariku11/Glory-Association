@@ -14,5 +14,6 @@ namespace Implementation.Interfaces.Authentication
         Task<ResponseMessage> RevokeRole(UserRoleDto userRole);
         //Task<ResponseMessage> ChangeStatusOfUser(string userId);
         Task<ResponseMessage> AddUser(AddUSerDto addUSer);
+        Task<ResponseMessage> ChangePassword(ChangePasswordDto changePasswordDto);
     }
 }

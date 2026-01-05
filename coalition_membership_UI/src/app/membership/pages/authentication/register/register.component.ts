@@ -183,8 +183,20 @@ export default class RegisterComponent implements OnInit {
         if (res.success) {
           this.associations = res.data;
 
-          // Auto-select association if ID is provided in URL
-          if (this.selectedAssociationId) {
+          // Auto-select Glory Foundation
+          const gloryAssociation = this.associations.find(a => a.name.toLowerCase().includes('glory'));
+
+          if (gloryAssociation) {
+            this.selectedAssociationId = gloryAssociation.id;
+            this.selectedAssociationName = gloryAssociation.name;
+            this.selectedAssociationImagePath = gloryAssociation.imagePath || null;
+            this.registerForm.patchValue({
+              associationId: this.selectedAssociationId
+            });
+            // Trigger membership types loading
+            this.getMemberships(this.selectedAssociationId);
+          } else if (this.selectedAssociationId) {
+            // Fallback to URL param if Glory not found (though goal is Glory)
             const selectedAssociation = this.associations.find(assoc => assoc.id === this.selectedAssociationId);
             if (selectedAssociation) {
               this.selectedAssociationName = selectedAssociation.name;
@@ -192,7 +204,6 @@ export default class RegisterComponent implements OnInit {
               this.registerForm.patchValue({
                 associationId: this.selectedAssociationId
               });
-              // Trigger membership types loading
               this.getMemberships(this.selectedAssociationId);
             }
           }

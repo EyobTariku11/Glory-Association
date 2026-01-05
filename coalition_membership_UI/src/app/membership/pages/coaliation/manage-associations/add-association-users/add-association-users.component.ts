@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AssociationService } from "src/app/services/AssociationService";
 import { successToast, errorToast } from "src/app/services/toast.service";
 
 @Component({
   selector: "app-add-association-users",
-
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: "./add-association-users.component.html",
   styleUrl: "./add-association-users.component.scss",
 })
@@ -21,7 +23,7 @@ export class AddAssociationUsersComponent implements OnInit {
     private fb: FormBuilder,
     private activeModal: NgbActiveModal,
     private associationService: AssociationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.associationUserForm = this.fb.group({
@@ -29,10 +31,10 @@ export class AddAssociationUsersComponent implements OnInit {
       email: ["", Validators.required],
       userName: ["", Validators.required],
       password: [null, Validators.required],
-      rowStatus: ["ACTIVE", Validators.required], 
+      rowStatus: ["ACTIVE", Validators.required],
     });
 
-    
+
 
     if (this.userData) {
       this.isEditMode = true;
@@ -51,7 +53,7 @@ export class AddAssociationUsersComponent implements OnInit {
     this.activeModal.close();
   }
 
-onSubmit() {
+  onSubmit() {
 
 
     if (this.associationUserForm.valid) {

@@ -12,8 +12,6 @@ import { QuillModule } from "ngx-quill";
   declarations: [
     ManageAssociationsComponent,
     AddAssociationComponent,
-    AddAssociationUsersComponent,
-    AssociationUsersComponent,
   ],
   imports: [
     CommonModule,
@@ -21,6 +19,8 @@ import { QuillModule } from "ngx-quill";
     ReactiveFormsModule,
     FormsModule,
     QuillModule,
+    AddAssociationUsersComponent,
+    AssociationUsersComponent,
   ],
 })
-export class CoaliationModule {}
+export class CoaliationModule { }

@@ -24,13 +24,18 @@ export class ManageAssociationsComponent implements OnInit {
     private modalService: NgbModal,
     private associationService: AssociationService,
     private commonService: CommonService
-  ) {}
+  ) { }
 
   RegisterAssociation() {
     let modalRef = this.modalService.open(AddAssociationComponent, {
       size: "xl",
       backdrop: "static",
     });
+
+    // Default name if it's the first time
+    if (this.associations.length === 0) {
+      modalRef.componentInstance.associationData = { name: 'Glory Foundation' };
+    }
 
     modalRef.result.then(() => {
       this.getAssociations();

@@ -17,6 +17,7 @@ import { ConfigurationService } from "src/app/services/configuration.service";
 import { DonationEventService } from "src/app/services/donationevent.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { UserService } from "src/app/services/user.service";
+import { ChangePasswordComponent } from "src/app/components/change-password/change-password.component"; // Import
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -27,11 +28,20 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./nav-right.component.scss"],
 })
 export class NavRightComponent implements OnInit {
+
+  openChangePassword() {
+    this.modalService.open(ChangePasswordComponent, {
+      backdrop: 'static',
+      size: 'md',
+      centered: true
+    });
+  }
+
   currentUser: UserView;
   events: DonationEventGetDto[] = [];
   returnUrl = environment.clienUrl + "/auth/donation-verfication/";
   greeting: string = '';
- 
+
   ngOnInit(): void {
     try {
       this.currentUser = this.userService.getCurrentUser();
@@ -52,9 +62,9 @@ export class NavRightComponent implements OnInit {
     private router: Router,
     private authGuard: AuthGuard,
     private userService: UserService,
-    private commonService : CommonService,
+    private commonService: CommonService,
     private paymentService: PaymentService
-  ) {}
+  ) { }
 
   // getImage(){
   //   return this.commonService.createImgPath(this.currentUser.photo)
@@ -64,7 +74,7 @@ export class NavRightComponent implements OnInit {
     this.donationEventService.getAll().subscribe({
       next: (res) => {
         if (res.success) {
-          this.events = res.data.slice(0,10);
+          this.events = res.data.slice(0, 10);
         } else {
         }
       },
@@ -112,46 +122,46 @@ export class NavRightComponent implements OnInit {
     return fullName;
   }
 
-    onDonate(event: DonationEventGetDto): void {
-      var donationDto: IDonationData = {
-        amount: event.amount,
-        currency: "ETB",
-        return_url: this.returnUrl,
-      };
-  
-  
-  
-      this.paymentService.donation(donationDto).subscribe({
-        next: (res) => {
-          var mapayment: IMakeDonation = {
-            eventId: event.id,
-            payment: event.amount,
-            text_Rn: res.response.tx_ref,
-            url: res.response.data.checkout_url,
-          };
-          var url = res.response.data.checkout_url;
-          this.makePayment(mapayment, url);
-        },
-        error: (err) => {
-          //this.messageService.add({ severity: 'error', summary: 'Something went wron!!!', detail: err.message });
-        },
-      });
-    }
-    makePayment(makePay: IMakeDonation, url: string) {
-      this.paymentService.MakeDonation(makePay).subscribe({
-        next: (res) => {
-          if (res.success) {
-            //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
-            window.location.href = url;
-          } else {
-            //this.messageService.add({ severity: 'error', summary: 'Authentication failed.', detail: res.message });
-          }
-        },
-        error: (err) => {
-          //this.messageService.add({ severity: 'error', summary: 'Something went wron!!!', detail: err.message });
-        },
-      });
-    }
+  onDonate(event: DonationEventGetDto): void {
+    var donationDto: IDonationData = {
+      amount: event.amount,
+      currency: "ETB",
+      return_url: this.returnUrl,
+    };
+
+
+
+    this.paymentService.donation(donationDto).subscribe({
+      next: (res) => {
+        var mapayment: IMakeDonation = {
+          eventId: event.id,
+          payment: event.amount,
+          text_Rn: res.response.tx_ref,
+          url: res.response.data.checkout_url,
+        };
+        var url = res.response.data.checkout_url;
+        this.makePayment(mapayment, url);
+      },
+      error: (err) => {
+        //this.messageService.add({ severity: 'error', summary: 'Something went wron!!!', detail: err.message });
+      },
+    });
+  }
+  makePayment(makePay: IMakeDonation, url: string) {
+    this.paymentService.MakeDonation(makePay).subscribe({
+      next: (res) => {
+        if (res.success) {
+          //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
+          window.location.href = url;
+        } else {
+          //this.messageService.add({ severity: 'error', summary: 'Authentication failed.', detail: res.message });
+        }
+      },
+      error: (err) => {
+        //this.messageService.add({ severity: 'error', summary: 'Something went wron!!!', detail: err.message });
+      },
+    });
+  }
 
   logOut() {
     this.authGuard.logout();

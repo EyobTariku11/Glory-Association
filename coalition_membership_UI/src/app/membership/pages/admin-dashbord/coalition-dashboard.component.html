@@ -126,7 +126,7 @@
     <div class="alert alert-info">
       <h5 class="mb-0">
         <i class="ti ti-search me-2"></i>
-        SEARCH RESULT: {{ (selectedChapter!='all'&&chapters) ? getName():''}} 
+        SEARCH RESULT: {{ (selectedChapter!='all'&&chapters) ? getName():''}}
         {{selectPaymentStatus!='all'? ' - '+selectPaymentStatus:''}}
         {{selectedGender!='all'? ' -' +selectedGender:''}}
       </h5>
@@ -187,7 +187,8 @@
       </div>
       <div *ngIf="selectedReport==='yearly'" echarts [options]="chartOptions5" [loading]="loading" class="demo-chart">
       </div>
-      <div *ngIf="selectedReport==='quarterly'" echarts [options]="chartOptions7" [loading]="loading" class="demo-chart">
+      <div *ngIf="selectedReport==='quarterly'" echarts [options]="chartOptions7" [loading]="loading"
+        class="demo-chart">
       </div>
     </div>
   </div>
@@ -218,4 +219,5 @@
       </div>
     </div>
   </div>
-</div> 
+
+</div>

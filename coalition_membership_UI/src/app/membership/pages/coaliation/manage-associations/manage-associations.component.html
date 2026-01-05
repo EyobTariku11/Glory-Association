@@ -2,116 +2,120 @@
     <div class="page-block">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <div class="page-header-title"><!----><!---->
-                    <h5 class="mb-2 ng-star-inserted"> Membership</h5>
+                <div class="page-header-title">
+                    <h5 class="mb-2">Manage System Admins</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a _> </a></li>
-                    <li class="breadcrumb-item ng-star-inserted">
-                        <a href="javascript:">
-                            List
-                        </a>
+                    <li class="breadcrumb-item"><a href="javascript:">Administration</a></li>
+                    <li class="breadcrumb-item">Admins</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-<div class="card">
-    <div class="col-md-12 p-4 ">
-        <div class="col-md-12 text-end">
-            <span style="font-size: 18px;color:#3b2413"> Total :
-                {{associations.length}}
-            </span>
+<div class="container-fluid px-4">
+    <!-- Initial State: No Foundation Created -->
+    <div class="card shadow-sm border-0 mb-4" *ngIf="associations.length === 0">
+        <div class="card-body text-center py-5">
+            <div class="avtar avtar-xl bg-light-primary mx-auto mb-4">
+                <i class="ti ti-building-community fs-1 text-primary"></i>
+            </div>
+            <h3 class="fw-bold">Welcome, Super Admin</h3>
+            <p class="text-muted mb-4">To start managing admins, you first need to initialize the Glory Foundation.</p>
+            <button class="btn btn-primary btn-lg" (click)="RegisterAssociation()">
+                <i class="ti ti-plus me-2"></i> Initialize Glory Foundation
+            </button>
         </div>
+    </div>
+
+    <!-- Active State: Glory Foundation Exists -->
+    <div *ngIf="associations.length > 0">
         <div class="row">
-            <div class="col-xl-3 ">
-                <!-- <input type="text" placeholder="search ..." class="form-control" style="font-size: 18px;"
-                    [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search"> -->
+            <div class="col-xl-4 col-md-6" *ngFor="let association of associations">
+                <div class="card shadow-sm border-0 h-100 overflow-hidden">
+                    <div class="card-header bg-primary text-white py-4 text-center border-0 position-relative">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <button class="btn btn-link text-white p-0 opacity-75 hover-opacity-100"
+                                (click)="updateAssociation(association)">
+                                <i class="ti ti-settings fs-4"></i>
+                            </button>
+                        </div>
+                        <div class="avtar avtar-xl bg-white text-primary mx-auto mb-3 shadow">
+                            <img *ngIf="association.logoPath" [src]="getImage(association.logoPath)" alt="Logo"
+                                class="img-fluid rounded" appImageError>
+                            <i *ngIf="!association.logoPath" class="ti ti-building fs-1"></i>
+                        </div>
+                        <h4 class="text-white mb-0 fw-bold">{{ association.name }}</h4>
+                        <small class="opacity-75">{{ association.amharicName }}</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="avtar avtar-s bg-light-info me-3">
+                                <i class="ti ti-world text-info fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <p class="mb-0 text-muted small">Website</p>
+                                <a [href]="association.websiteLink" target="_blank"
+                                    class="text-dark text-truncate d-block">{{ association.websiteLink || 'Not set'
+                                    }}</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="avtar avtar-s bg-light-warning me-3">
+                                <i class="ti ti-phone text-warning fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <p class="mb-0 text-muted small">Contact</p>
+                                <p class="mb-0 text-dark text-truncate">{{ association.phoneNumbers[0] || 'Not set' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" (click)="AssociationUserList(association.id)">
+                                <i class="ti ti-users-group me-2"></i> Manage Admin Users
+                            </button>
+                            <div class="d-flex gap-2 mt-2">
+                                <button class="btn btn-outline-secondary flex-grow-1 btn-sm"
+                                    (click)="updateAssociation(association)">
+                                    <i class="ti ti-edit me-1"></i> Edit Details
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm"
+                                    (click)="removeAssociation(association.id)" title="Delete Foundation">
+                                    <i class="ti ti-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-12 text-end">
-                <button class="btn btn-sm btn-outline-primary text-end" (click)="RegisterAssociation()"><i
-                        class="bi bi-plust"></i> Register </button>
 
+            <!-- Optional: Help Section -->
+            <div class="col-xl-8 col-md-6" *ngIf="associations.length === 1">
+                <div class="card border-0 shadow-sm border-start border-primary border-4">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-3">Super Admin Instructions</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2 d-flex">
+                                <i class="ti ti-circle-check text-success me-2 mt-1"></i>
+                                <span>Click <b>Manage Admin Users</b> to add or remove administrators for the Glory
+                                    Foundation.</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="ti ti-circle-check text-success me-2 mt-1"></i>
+                                <span>Admins you add here will be able to manage members and configuration for the
+                                    foundation.</span>
+                            </li>
+                            <li class="mb-0 d-flex">
+                                <i class="ti ti-circle-check text-success me-2 mt-1"></i>
+                                <span>Use <b>Edit Details</b> to update foundation information like logos, contact info,
+                                    and ArifPay keys.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-
-
-        <div class="table-responsive mt-3">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>Name (EN)</th>
-                        <th>Name (AM)</th>
-                        <th>ArifPay Key</th>
-                        <th>Logo</th>
-                        <th>Phone Numbers</th>
-                        
-                        <th>Website</th>
-                        <th>Primary Color</th>
-                        <th>Secondary Color</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let association of associations">
-                        <td>{{ association.name }}</td>
-                        <td>{{ association.amharicName }}</td>
-                        <td>{{ association.arifPayKey }}</td>
-                        <td>
-                            <img [src]="getImage(association.logoPath)" alt="Logo" style="height: 40px;" appImageError>
-                        </td>
-                        <td>
-                            <span *ngFor="let phone of association.phoneNumbers; let last = last">
-                                {{ phone }}<span *ngIf="!last">, </span>
-                            </span>
-                        </td>
-                       
-                        <td>
-                            <a [href]="association.websiteLink" target="_blank">{{ association.websiteLink }}</a>
-                        </td>
-                        <td>
-                            <div [style.background]="association.primaryColor" class="rounded px-2 text-white">
-                                {{ association.primaryColor }}
-                            </div>
-                        </td>
-                        <td>
-                            <div [style.background]="association.secondaryColor" class="rounded px-2 text-white">
-                                {{ association.secondaryColor }}
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center gap-2">
-                              <!-- Users Button -->
-                              <button class="btn btn-sm btn-outline-primary rounded-circle" 
-                                      (click)="AssociationUserList(association.id)" 
-                                      title="View Users">
-                                <i class="ti ti-user"></i>
-                              </button>
-                          
-                              <!-- Edit Button -->
-                              <button type="button" 
-                                      class="btn btn-sm btn-outline-warning rounded-circle" 
-                                      (click)="updateAssociation(association)" 
-                                      title="Edit Association">
-                                <i class="ti ti-pencil"></i>
-                              </button>
-                          
-                              <!-- Delete Button -->
-                              <button type="button" 
-                                      class="btn btn-sm btn-outline-danger rounded-circle" 
-                                      (click)="removeAssociation(association.id)" 
-                                      title="Delete Association">
-                                <i class="ti ti-trash"></i>
-                              </button>
-                            </div>
-                          </td>
-                          
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
