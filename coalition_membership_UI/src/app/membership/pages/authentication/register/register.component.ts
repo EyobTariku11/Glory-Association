@@ -180,39 +180,32 @@ export default class RegisterComponent implements OnInit {
   getAssociationDropDown() {
     this.associationService.getAssociationDropDown().subscribe({
       next: (res) => {
-        if (res.success) {
+        if (res.success && res.data && res.data.length > 0) {
           this.associations = res.data;
 
-          // Auto-select Glory Foundation
-          const gloryAssociation = this.associations.find(a => a.name.toLowerCase().includes('glory'));
+          // Auto-select Glory Foundation or the first available association
+          let selectedAssoc = this.associations.find(a => a.name.toLowerCase().includes('glory'));
 
-          if (gloryAssociation) {
-            this.selectedAssociationId = gloryAssociation.id;
-            this.selectedAssociationName = gloryAssociation.name;
-            this.selectedAssociationImagePath = gloryAssociation.imagePath || null;
+          if (!selectedAssoc) {
+            selectedAssoc = this.associations[0];
+          }
+
+          if (selectedAssoc) {
+            this.selectedAssociationId = selectedAssoc.id;
+            this.selectedAssociationName = selectedAssoc.name;
+            this.selectedAssociationImagePath = selectedAssoc.imagePath || null;
             this.registerForm.patchValue({
               associationId: this.selectedAssociationId
             });
             // Trigger membership types loading
             this.getMemberships(this.selectedAssociationId);
-          } else if (this.selectedAssociationId) {
-            // Fallback to URL param if Glory not found (though goal is Glory)
-            const selectedAssociation = this.associations.find(assoc => assoc.id === this.selectedAssociationId);
-            if (selectedAssociation) {
-              this.selectedAssociationName = selectedAssociation.name;
-              this.selectedAssociationImagePath = selectedAssociation.imagePath || null;
-              this.registerForm.patchValue({
-                associationId: this.selectedAssociationId
-              });
-              this.getMemberships(this.selectedAssociationId);
-            }
           }
         } else {
           errorToast(res.message);
         }
       },
       error: (err) => {
-        errorToast(err);
+        errorToast("Failed to load organizations");
       },
     });
   }
@@ -254,12 +247,12 @@ export default class RegisterComponent implements OnInit {
     const rawPhoneNumber = this.registerForm.value.phoneNumber.e164Number;
     const phoneNumber = this.getPhoneNumberWithDefault(rawPhoneNumber);
 
-    var registerFor: IMembersPostDto = {
+    var registerFor: any = {
       firstName: this.registerForm.value.firstName,
       lastName: this.registerForm.value.lastName,
       phoneNumber: phoneNumber,
       gender: this.registerForm.value.gender,
-      associationId: this.registerForm.value.associationId,
+      associationId: null,
       RegionId: this.registerForm.value.RegionId,
       membershipTypeId: this.registerForm.value.membershipType,
     };
@@ -267,19 +260,21 @@ export default class RegisterComponent implements OnInit {
     this.userService.register(registerFor).subscribe({
       next: (res) => {
         if (res.success) {
-          var payment: IPaymentData = {
-            amount: res.data.amount,
-            currency: res.data.currency,
-            email: res.data.phoneNumber + "@eplffc.et", // Use phone number as email placeholder
-            first_name: res.data.fullName,
-            last_name: "",
-            phone_number: res.data.phoneNumber,
-            return_url: this.returnUrl,
-            title: `Payment for Membership`,
-            description: res.data.id,
-          };
+          // var payment: IPaymentData = {
+          //   amount: res.data.amount,
+          //   currency: res.data.currency,
+          //   email: res.data.phoneNumber + "@eplffc.et", // Use phone number as email placeholder
+          //   first_name: res.data.fullName,
+          //   last_name: "",
+          //   phone_number: res.data.phoneNumber,
+          //   return_url: this.returnUrl,
+          //   title: `Payment for Membership`,
+          //   description: res.data.id,
+          // };
 
-          this.goTOPayment(payment, res.data);
+          // this.goTOPayment(payment, res.data);
+          successToast("Registration Successful");
+          this.router.navigate(['/auth/membership-login', res.data.phoneNumber]);
         } else {
           errorToast(res.errorCode! || res.message, res.message);
         }
@@ -453,9 +448,9 @@ export default class RegisterComponent implements OnInit {
 
   // Helper function to get phone number with default if not Ethiopian
   getPhoneNumberWithDefault(phoneNumber: string): string {
-    if (this.isEthiopianPhoneNumber(phoneNumber)) {
+    if (phoneNumber) {
       return phoneNumber.replace(/\s+/g, "").replace(/^\+/, "");
     }
-    return "251911121314"; // Default Ethiopian phone number
+    return "251911121314"; // Absolute fallback if no number exists
   }
 }

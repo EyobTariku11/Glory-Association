@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ManageAssociationsComponent } from "./manage-associations/manage-associations.component";
+import { ManageAdminsComponent } from "./manage-admins/manage-admins.component";
 
 const routes: Routes = [
   {
@@ -9,6 +10,10 @@ const routes: Routes = [
       {
         path: "association",
         component: ManageAssociationsComponent,
+      },
+      {
+        path: "admins",
+        component: ManageAdminsComponent,
       },
       // {
       //   path: "member-profile",
@@ -35,9 +40,9 @@ const routes: Routes = [
       //   component: UnsentMessagesComponent,
       // },
 
-   
 
-      
+
+
     ],
   },
 ];
@@ -46,4 +51,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CoaliationRoutingModule {}
+export class CoaliationRoutingModule { }

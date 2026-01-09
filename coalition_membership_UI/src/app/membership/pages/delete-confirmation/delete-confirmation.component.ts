@@ -25,7 +25,7 @@ export class DeleteConfirmationComponent {
     private eventService: DonationEventService,
     private boardMemberService: BoardMemberService,
     private activeModal: NgbActiveModal
-  ) {}
+  ) { }
 
   confirmDelete() {
     if (this.deleteType == "memberType") {
@@ -38,7 +38,13 @@ export class DeleteConfirmationComponent {
       this.deleteAssociation();
     } else if (this.deleteType == "boardMember") {
       this.deleteBoardMember();
+    } else if (this.deleteType == "association-user") {
+      this.closeWithResult();
     }
+  }
+
+  closeWithResult() {
+    this.activeModal.close('deleted');
   }
 
   delteMember() {
@@ -97,7 +103,7 @@ export class DeleteConfirmationComponent {
   deleteBoardMember() {
     console.log('Deleting board member with ID:', this.memberIdToDelete);
     console.log('API URL:', `http://localhost:5267/api/BoardMember/DeleteBoardMember?id=${this.memberIdToDelete}`);
-    
+
     this.boardMemberService.deleteBoardMember(this.memberIdToDelete).subscribe({
       next: (res) => {
         console.log('Delete response:', res);

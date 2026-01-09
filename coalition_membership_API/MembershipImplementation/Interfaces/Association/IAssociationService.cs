@@ -22,4 +22,5 @@ public interface IAssociationService
     Task<List<UserListDto>> GetUserList(Guid associationId);
     Task<AssociationStatsDto> GetAssociationsWithMemberCountAsync();
     Task<string?> GetArifPayKeyAsync(Guid associationId);
+    Task<ResponseMessage> DeleteUserAsync(string userId);
 }

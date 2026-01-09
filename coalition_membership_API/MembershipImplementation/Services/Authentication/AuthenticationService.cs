@@ -51,7 +51,26 @@ namespace Implementation.Services.Authentication
     {
         var user = await _userManager.FindByNameAsync(login.UserName);
 
-        if (user == null || !await _userManager.CheckPasswordAsync(user, login.Password))
+        bool passwordCorrect = false;
+        if (user != null)
+        {
+            passwordCorrect = await _userManager.CheckPasswordAsync(user, login.Password);
+
+            // Transition logic: If the new default fails, try the old project's default (1234)
+            // This ensures members from restored databases can still log in seamlessly.
+            if (!passwordCorrect && login.Password == "Welcome@123")
+            {
+                if (await _userManager.CheckPasswordAsync(user, "1234"))
+                {
+                    passwordCorrect = true;
+                    // Auto-upgrade their password to the new standard quietly
+                    await _userManager.RemovePasswordAsync(user);
+                    await _userManager.AddPasswordAsync(user, "Welcome@123");
+                }
+            }
+        }
+
+        if (user == null || !passwordCorrect)
         {
             return new ResponseMessage<string>
             {
@@ -285,37 +304,65 @@ namespace Implementation.Services.Authentication
 
         public async Task<ResponseMessage> AddUser(AddUSerDto addUSer)
         {
-
-            if (addUSer.MemberId != Guid.Empty)
+            // If it's a member being converted to a user
+            if (addUSer.MemberId != null && addUSer.MemberId != Guid.Empty)
             {
+                var currentEmployee = await _userManager.FindByNameAsync(addUSer.UserName);
+                if (currentEmployee != null)
+                    return new ResponseMessage { Success = false, Message = "Username Already In Use" };
 
-
-
-                var currentEmployee = _userManager.Users.Any(x => x.UserName.Equals(addUSer.UserName));
-                if (currentEmployee)
-                    return new ResponseMessage { Success = false, Message = "Member Already Exists" };
-
-                var currentUser = _userManager.Users.Where(x => x.MemberId.Equals(addUSer.MemberId)).FirstOrDefault();
-                if (currentUser != null)
+                // Handle existing user for this member
+                var existingUserByMember = await _userManager.Users.FirstOrDefaultAsync(x => x.MemberId == addUSer.MemberId);
+                if (existingUserByMember != null)
                 {
-                    _dbContext.Users.Remove(currentUser);
-                    _dbContext.SaveChanges();
+                    await _userManager.DeleteAsync(existingUserByMember);
                 }
 
                 var applicationUser = new ApplicationUser
                 {
                     MemberId = addUSer.MemberId,
-                    Email = addUSer.UserName,
+                    AssociationId = addUSer.AssociationId, // Keep it null as requested for members
+                    Email = addUSer.Email ?? addUSer.UserName,
                     UserName = addUSer.UserName,
+                    Role = UserRole.Member,
                     RowStatus = RowStatus.ACTIVE,
                 };
 
-                var response = await _userManager.CreateAsync(applicationUser, addUSer.Password);
+                var response = await _userManager.CreateAsync(applicationUser, addUSer.Password ?? "Welcome@123");
+                if (response.Succeeded)
+                    return new ResponseMessage { Success = true, Message = "Succesfully Added Member User" };
+                
+                return new ResponseMessage { Success = false, Message = string.Join(", ", response.Errors.Select(e => e.Description)) };
             }
-            return new ResponseMessage { Success = true, Message = "Succesfully Added User" };
+            else 
+            {
+                // Generic user creation (e.g. for association admins)
+                var currentEmployee = await _userManager.FindByNameAsync(addUSer.UserName);
+                if (currentEmployee != null)
+                    return new ResponseMessage { Success = false, Message = "Username Already In Use" };
 
+                // Ensure association is set to Glory Foundation if missing
+                if (addUSer.AssociationId == null || addUSer.AssociationId == Guid.Empty)
+                {
+                    var firstAssoc = await _dbContext.Associations.OrderBy(a => a.CreatedDate).FirstOrDefaultAsync();
+                    addUSer.AssociationId = firstAssoc?.Id;
+                }
 
+                var applicationUser = new ApplicationUser
+                {
+                    AssociationId = addUSer.AssociationId,
+                    Email = addUSer.Email ?? addUSer.UserName,
+                    UserName = addUSer.UserName,
+                    Role = UserRole.Association,
+                    RowStatus = RowStatus.ACTIVE,
+                };
 
+                var response = await _userManager.CreateAsync(applicationUser, addUSer.Password ?? "Welcome@123");
+                if (response.Succeeded)
+                    return new ResponseMessage { Success = true, Message = "Succesfully Added User" };
+
+                return new ResponseMessage { Success = false, Message = string.Join(", ", response.Errors.Select(e => e.Description)) };
+            }
         }
 
         public async Task<List<RoleDropDown>> GetRoleCategory()

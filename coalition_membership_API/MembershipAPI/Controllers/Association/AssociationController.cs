@@ -173,4 +173,14 @@ public class AssociationController : ControllerBase
         }
     }
 
+    [HttpDelete("DeleteUser/{userId}")]
+    public async Task<IActionResult> DeleteUser(string userId)
+    {
+        var result = await _service.DeleteUserAsync(userId);
+        if (result.Success)
+            return Ok(result);
+
+        return BadRequest(result);
+    }
 }
+

@@ -83,12 +83,22 @@ const NavigationItems = [
       },
 
       {
+        id: "manage-association",
+        title: "Manage Association",
+        type: "item",
+        role: ["Coalition"],
+        icon: "ti ti-building",
+        url: "/admin/coaliation/association",
+        breadcrumbs: false,
+      },
+
+      {
         id: "manage-admins",
         title: "Manage Admins",
         type: "item",
         role: ["Coalition"],
         icon: "ti ti-users",
-        url: "/admin/coaliation/association",
+        url: "/admin/coaliation/admins",
         breadcrumbs: false,
       },
 

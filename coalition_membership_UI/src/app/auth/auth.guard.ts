@@ -17,19 +17,19 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private service: UserService,
     private debugService: DebugService
-  ) {}
+  ) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
     this.debugService.logAuthEvent(`AuthGuard checking route: ${state.url}`);
-    
+
     const token = sessionStorage.getItem("token");
     this.debugService.logAuthEvent(`Token: ${token}`);
     const hasToken = token != null && token !== "";
-    
+
     this.debugService.logAuthEvent(`Has token: ${hasToken}`);
-    
+
     if (hasToken) {
       // Get roles directly from the current route
       let roles = next.data["permittedRoles"] as Array<string>;
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
         try {
           const roleMatch = this.service.roleMatch(roles);
           this.debugService.logAuthEvent(`Role match result: ${roleMatch}`);
-          
+
           if (roleMatch) {
             this.debugService.logAuthEvent(`Access granted to ${state.url}`);
             return true;
@@ -75,12 +75,12 @@ export class AuthGuard implements CanActivate {
       if (token) {
         const payload = JSON.parse(window.atob(token.split(".")[1]));
         const userRole = payload.role;
-        
+
         this.debugService.logAuthEvent(`Redirecting user with role: ${userRole}`);
-        
+
         if (userRole === "Member") {
-          this.debugService.logAuthEvent(`Redirecting Member to /auth/membership-login`);
-          this.router.navigate(["/auth/membership-login"]);
+          this.debugService.logAuthEvent(`Redirecting Member to /admin/member-dashboard`);
+          this.router.navigate(["/admin/member-dashboard"]);
         } else {
           // Coalition and Association users - redirect to admin dashboard
           this.debugService.logAuthEvent(`Redirecting ${userRole} to /admin`);

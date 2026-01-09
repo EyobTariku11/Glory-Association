@@ -15,7 +15,7 @@ import { errorToast, successToast } from "src/app/services/toast.service";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 @Component({
   selector: "app-membership-login",
-  standalone: true, 
+  standalone: true,
   imports: [
     CommonModule,
     RouterModule,
@@ -50,7 +50,7 @@ export default class MembershipLoginComponent implements OnInit {
 
     this.loginForm = this.formBuilder.group({
       userName: [userNameFromRoute, Validators.required],
-      password: ["1234", Validators.required],
+      password: ["Welcome@123", Validators.required],
       IsEncryptChecked: [false, Validators.required],
     });
     if (userNameFromRoute) {

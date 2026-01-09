@@ -47,7 +47,7 @@ namespace MembershipImplementation.Services.Configuration
         {
           
             var membershipTypes = await _dbContext.MembershipTypes
-                .Where(x => x.AssociationId == associationId && x.Money!=0)
+                .Where(x => x.AssociationId == associationId)
                 .AsNoTracking()
                 .Select(x => new SelectListDto
                 {
@@ -58,7 +58,8 @@ namespace MembershipImplementation.Services.Configuration
                            (
                                x.Category == MemberShipTypeCategory.MONTHLY ? "Months" :
                                "Years"),
-                    Amount = x.Money
+                    Amount = x.Money,
+                    Currency = (int)x.Currency
                 })
                 .ToListAsync();
 

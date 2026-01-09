@@ -106,6 +106,10 @@ export class AssociationService {
     return this.http.put(`${this.baseUrl}/UpdateUser/${userId}`, formData);
   }
 
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/DeleteUser/${userId}`);
+  }
+
   getAssociationUsers(associationId: string): Observable<any[]> {
     return this.http.get<AssociationGetDto[]>(
       `${this.baseUrl}/Get_Users?associationId=${associationId}`

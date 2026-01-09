@@ -267,28 +267,44 @@ public class AssociationService :IAssociationService
 
     public async Task<ResponseMessage> AddUser(AddUSerDto addUSer)
     {
-
-        if (addUSer.MemberId != Guid.Empty)
+        // Ensure the user is linked to the primary association (Glory Foundation) if not specified
+        if (addUSer.AssociationId == null || addUSer.AssociationId == Guid.Empty)
         {
+            var firstAssociation = await _context.Associations
+                .Where(a => a.RowStatus == EnumList.RowStatus.ACTIVE)
+                .OrderBy(a => a.CreatedDate)
+                .FirstOrDefaultAsync();
             
-            var currentEmployee = _userManager.Users.Any(x => x.UserName.Equals(addUSer.UserName));
-            if (currentEmployee)
-                return new ResponseMessage { Success = false, Message = "User Already Exists" };
-
-          
-
-            var applicationUser = new ApplicationUser
+            if (firstAssociation != null)
             {
-                AssociationId = addUSer.AssociationId,
-                Email = addUSer.Email,
-                UserName = addUSer.UserName,
-                RowStatus = EnumList.RowStatus.ACTIVE,
-            };
-
-            var response = await _userManager.CreateAsync(applicationUser, addUSer.Password);
+                addUSer.AssociationId = firstAssociation.Id;
+            }
         }
-        return new ResponseMessage { Success = true, Message = "Succesfully Added User" };
+
+        var currentEmployee = await _userManager.FindByNameAsync(addUSer.UserName);
+        if (currentEmployee != null)
+            return new ResponseMessage { Success = false, Message = "User Already Exists" };
+
+        var applicationUser = new ApplicationUser
+        {
+            AssociationId = addUSer.AssociationId,
+            MemberId = addUSer.MemberId != Guid.Empty ? addUSer.MemberId : null,
+            Email = addUSer.Email,
+            UserName = addUSer.UserName,
+            Role = UserRole.Association,
+            RowStatus = EnumList.RowStatus.ACTIVE,
+        };
+
+        var response = await _userManager.CreateAsync(applicationUser, addUSer.Password ?? "Welcome@123");
         
+        if (response.Succeeded)
+            return new ResponseMessage { Success = true, Message = "Succesfully Added User" };
+
+        return new ResponseMessage 
+        { 
+            Success = false, 
+            Message = string.Join(", ", response.Errors.Select(e => e.Description)) 
+        };
     }
     
     
@@ -446,5 +462,16 @@ public class AssociationService :IAssociationService
         };
     }
 
+    public async Task<ResponseMessage> DeleteUserAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            return new ResponseMessage { Success = false, Message = "User not found." };
 
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+            return new ResponseMessage { Success = true, Message = "User deleted successfully." };
+
+        return new ResponseMessage { Success = false, Message = "Failed to delete user." };
+    }
 }

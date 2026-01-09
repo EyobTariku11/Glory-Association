@@ -12,6 +12,7 @@ namespace MembershipImplementation.DTOS.Configuration
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public double Amount { get; set; }
+        public int Currency { get; set; }
         public string ? ImagePath{ get; set; }
     }
 }
