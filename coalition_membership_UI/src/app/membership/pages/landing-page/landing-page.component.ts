@@ -117,6 +117,14 @@ export class LandingPageComponent implements OnInit {
   navigateToRegister() {
     this.router.navigateByUrl("/auth/register");
   }
+
+  navigateToAdmin() {
+    this.router.navigateByUrl("/auth/login");
+  }
+
+  navigateToMemberLogin() {
+    this.router.navigateByUrl("/auth/membership-login");
+  }
   contactSales() {
     throw new Error("Method not implemented.");
   }
