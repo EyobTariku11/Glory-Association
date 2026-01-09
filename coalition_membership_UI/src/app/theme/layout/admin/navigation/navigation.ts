@@ -26,7 +26,7 @@ const NavigationItems = [
     children: [
       {
         id: "coalition-dashboard",
-        title: "Coalition Dashboard",
+        title: "Glory Dashboard",
         type: "item",
         classes: "nav-item",
         role: ["Coalition"],
@@ -36,7 +36,7 @@ const NavigationItems = [
       },
       {
         id: "association-dashboard",
-        title: "Association Dashboard",
+        title: "Glory Admin Dashboard",
         type: "item",
         classes: "nav-item",
         role: ["Association"],

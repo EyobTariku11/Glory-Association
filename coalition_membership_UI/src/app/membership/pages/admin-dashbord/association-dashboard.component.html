@@ -5,7 +5,7 @@
       <div class="card-body">
         <h2 class="mb-0">
           <i class="ti ti-building me-2"></i>
-          Association Dashboard
+          Glory Admin Dashboard
         </h2>
         <p class="mb-0 opacity-75">{{ userView.region }} - Member Analytics</p>
       </div>
@@ -42,9 +42,7 @@
   </div>
 
   <div class="col-xl-3 col-md-6 col-sm-12 mb-3">
-    <div
-      class="card bg-primary-dark dashnum-card dashnum-card-small text-white overflow-hidden"
-    >
+    <div class="card bg-primary-dark dashnum-card dashnum-card-small text-white overflow-hidden">
       <span class="round bg-primary small"></span>
       <span class="round bg-primary big"></span>
       <div class="card-body p-3">
@@ -56,19 +54,14 @@
             <h4 class="text-white mb-1">
               ETB
               {{
-                isVisible
-                  ? dashboardNumericalDTo && dashboardNumericalDTo.revenue
-                  : hideRevenue()
+              isVisible
+              ? dashboardNumericalDTo && dashboardNumericalDTo.revenue
+              : hideRevenue()
               }}
-              <i
-                class="ti"
-                style="font-size: 24px"
-                [ngClass]="{
+              <i class="ti" style="font-size: 24px" [ngClass]="{
                   'ti-eye  fs-24': !isVisible,
                   'ti-eye-off opacity-50 fs-24': isVisible
-                }"
-                (click)="toggleVisibility()"
-              ></i>
+                }" (click)="toggleVisibility()"></i>
             </h4>
             <p class="mb-0 opacity-50 text-sm">Association Revenue</p>
           </div>
@@ -78,9 +71,7 @@
   </div>
 
   <div class="col-xl-3 col-md-6 col-sm-12 mb-3">
-    <div
-      class="card bg-light-dangerdashnum-card dashnum-card-small overflow-hidden"
-    >
+    <div class="card bg-light-dangerdashnum-card dashnum-card-small overflow-hidden">
       <span class="round bg-warning small"></span>
       <span class="round bg-warning big"></span>
       <div class="card-body p-3">
@@ -92,19 +83,14 @@
             <h4 class="mb-1">
               ETB
               {{
-                isVisible2
-                  ? dashboardNumericalDTo && dashboardNumericalDTo.receivable
-                  : hideReciveable()
+              isVisible2
+              ? dashboardNumericalDTo && dashboardNumericalDTo.receivable
+              : hideReciveable()
               }}
-              <i
-                class="ti"
-                style="font-size: 24px"
-                [ngClass]="{
+              <i class="ti" style="font-size: 24px" [ngClass]="{
                   'ti-eye  fs-24': !isVisible2,
                   'ti-eye-off opacity-50 fs-24': isVisible2
-                }"
-                (click)="toggleVisibility2()"
-              ></i>
+                }" (click)="toggleVisibility2()"></i>
             </h4>
             <p class="mb-0 opacity-50 text-sm">Receivable</p>
           </div>
@@ -115,11 +101,7 @@
       <div class="row mt-3">
         <div class="col-md-7 col-12 mb-2">
           <div class="form-floating mb-3">
-            <select
-              class="form-control"
-              [(ngModel)]="selectPaymentStatus"
-              (change)="applyFilter()"
-            >
+            <select class="form-control" [(ngModel)]="selectPaymentStatus" (change)="applyFilter()">
               <option value="all">ALL</option>
               <option value="PENDING">PENDING</option>
               <option value="PAID">PAID</option>
@@ -130,11 +112,7 @@
         </div>
         <div class="col-md-5 col-12 mb-2">
           <div class="form-floating mb-3">
-            <select
-              class="form-control"
-              [(ngModel)]="selectedGender"
-              (change)="applyFilter()"
-            >
+            <select class="form-control" [(ngModel)]="selectedGender" (change)="applyFilter()">
               <option value="all">ALL</option>
               <option value="MALE">MALE</option>
               <option value="FEMALE">FEMALE</option>
@@ -147,10 +125,7 @@
   </div>
 
   <!-- Search Result Header -->
-  <div
-    class="col-12"
-    *ngIf="selectPaymentStatus != 'all' || selectedGender != 'all'"
-  >
+  <div class="col-12" *ngIf="selectPaymentStatus != 'all' || selectedGender != 'all'">
     <div class="alert alert-info">
       <h5 class="mb-0">
         <i class="ti ti-search me-2"></i>
@@ -170,12 +145,7 @@
           Gender Distribution
         </h2>
       </div>
-      <div
-        echarts
-        [options]="chartOptions2"
-        [loading]="loading2"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions2" [loading]="loading2" class="demo-chart"></div>
     </div>
   </div>
 
@@ -187,12 +157,7 @@
           Payment Status
         </h2>
       </div>
-      <div
-        echarts
-        [options]="chartOptions"
-        [loading]="loading"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions" [loading]="loading" class="demo-chart"></div>
     </div>
   </div>
 
@@ -204,12 +169,7 @@
           Membership Types
         </h2>
       </div>
-      <div
-        echarts
-        [options]="chartOptions3"
-        [loading]="loading3"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions3" [loading]="loading3" class="demo-chart"></div>
     </div>
   </div>
 
@@ -231,12 +191,7 @@
             </select>
           </div>
         </div>
-        <div
-          echarts
-          [options]="chartOptions4"
-          [loading]="loading"
-          class="demo-chart"
-        ></div>
+        <div echarts [options]="chartOptions4" [loading]="loading" class="demo-chart"></div>
       </div>
     </div>
   </div>
@@ -249,12 +204,7 @@
           Yearly Growth
         </h2>
       </div>
-      <div
-        echarts
-        [options]="chartOptions5"
-        [loading]="loading"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions5" [loading]="loading" class="demo-chart"></div>
     </div>
   </div>
 
@@ -286,10 +236,7 @@
             </a>
           </div>
           <div class="col-md-3 col-12 mb-2">
-            <a
-              href="/configuration/company-profile"
-              class="btn btn-warning w-100"
-            >
+            <a href="/configuration/company-profile" class="btn btn-warning w-100">
               <i class="ti ti-building me-2"></i>
               Association Profile
             </a>

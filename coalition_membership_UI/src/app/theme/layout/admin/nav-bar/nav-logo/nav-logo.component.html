@@ -1,12 +1,9 @@
 <div class="m-header">
   <a [routerLink]="userView&&userView.role.toUpperCase() == 'MEMBER'?['/member-dashboard'] :['/admin-dashboard']"
-    class="b-brand">
+    class="b-brand" style="display: flex; justify-content: center; flex: 1;">
     <!-- ========   change your logo hear   ============ -->
     <!-- <img src="assets/logoo.png" alt="" height="40px" class="logo logo-lg" appImageError> -->
-    <img src="assets/logo-remove.png" alt="" height="70px" class=" logo-lg logo-size " style="margin-right: 10px;"
-      title="logo" appImageError>
-    <span class="text-center text-primary" style="font-size: 18px">Glory Foundation</span>
-
+    <img src="assets/logo-remove.png" alt="" height="70px" class=" logo-lg logo-size " title="logo" appImageError>
   </a>
   <div class="pc-h-item">
     <a href="javascript:" class="pc-head-link head-link-secondary m-0 mobile-menu" [ngClass]="{ on: navCollapsed }"

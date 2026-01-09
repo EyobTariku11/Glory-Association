@@ -45,122 +45,127 @@ namespace Implementation.Services.Authentication
 
 
         public async Task<ResponseMessage<string>> Login(LoginDto login)
-    
-{
-    try
-    {
-        var user = await _userManager.FindByNameAsync(login.UserName);
-
-        bool passwordCorrect = false;
-        if (user != null)
         {
-            passwordCorrect = await _userManager.CheckPasswordAsync(user, login.Password);
-
-            // Transition logic: If the new default fails, try the old project's default (1234)
-            // This ensures members from restored databases can still log in seamlessly.
-            if (!passwordCorrect && login.Password == "Welcome@123")
+            try
             {
-                if (await _userManager.CheckPasswordAsync(user, "1234"))
+                var user = await _userManager.FindByNameAsync(login.UserName);
+                
+                // Alias 'Glory' to the superadmin user
+                if (user == null && (login.UserName == "Glory" || login.UserName == "glory"))
                 {
-                    passwordCorrect = true;
-                    // Auto-upgrade their password to the new standard quietly
-                    await _userManager.RemovePasswordAsync(user);
-                    await _userManager.AddPasswordAsync(user, "Welcome@123");
+                    user = await _userManager.Users.FirstOrDefaultAsync(x => x.CoalitionId != null);
                 }
-            }
-        }
 
-        if (user == null || !passwordCorrect)
-        {
-            return new ResponseMessage<string>
-            {
-                Success = false,
-                Message = "Invalid username or password."
-            };
-        }
-
-        if (user.RowStatus == RowStatus.INACTIVE)
-        {
-            return new ResponseMessage<string>
-            {
-                Success = false,
-                Message = "Your account is inactive. Please contact your administrator."
-            };
-        }
-
-        // Generate JWT token from claims
-        string GenerateJwtToken(IEnumerable<Claim> claims)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["ApplicationSetting:Jwt_Secret"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7), // Token expires in 7 days
-                IssuedAt = DateTime.UtcNow,
-                NotBefore = DateTime.UtcNow,
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature
-                )
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        // Login as Coalition Admin
-        if (user.CoalitionId != null)
-        {
-            var coalition = await _dbContext.Coalition
-                .FirstOrDefaultAsync(x => x.Id == user.CoalitionId);
-
-            if (coalition != null)
-            {
-                var claims = new List<Claim>
+                bool passwordCorrect = false;
+                if (user != null)
                 {
-                    new Claim("userId", user.Id.ToString()),
-                    new Claim("loginId", user.CoalitionId.ToString() ?? string.Empty),
-                    new Claim("fullName", coalition.Name),
-                    new Claim("photo", coalition.LogoPath ?? string.Empty),
-                    new Claim("isProfileCompleted", true.ToString()),
-                    //new Claim("role","Coalition"),
-                    new Claim("isExpired", false.ToString()),
-                    new Claim(ClaimTypes.Role, UserRole.Coalition.ToString())
-                };
+                    passwordCorrect = await _userManager.CheckPasswordAsync(user, login.Password);
 
-                var token = GenerateJwtToken(claims);
+                    // Transition logic: If the new default fails, try the old project's default (1234)
+                    // This ensures members from restored databases can still log in seamlessly.
+                    if (!passwordCorrect && login.Password == "Welcome@123")
+                    {
+                        if (await _userManager.CheckPasswordAsync(user, "1234"))
+                        {
+                            passwordCorrect = true;
+                            // Auto-upgrade their password to the new standard quietly
+                            await _userManager.RemovePasswordAsync(user);
+                            await _userManager.AddPasswordAsync(user, "Welcome@123");
+                        }
+                    }
+                }
 
-                return new ResponseMessage<string>
+                if (user == null || !passwordCorrect)
                 {
-                    Success = true,
-                    Message = "Login successful.",
-                    Data = token
-                };
-            }
+                    return new ResponseMessage<string>
+                    {
+                        Success = false,
+                        Message = "Invalid username or password."
+                    };
+                }
 
-            return new ResponseMessage<string>
-            {
-                Success = false,
-                Message = "Coalition not found for this user."
-            };
-        }
-
-        // Login as Association Admin
-        if (user.AssociationId != null)
-        {
-            var association = await _dbContext.Associations
-                .FirstOrDefaultAsync(x => x.Id == user.AssociationId);
-
-            if (association != null)
-            {
-                var claims = new List<Claim>
+                if (user.RowStatus == RowStatus.INACTIVE)
                 {
-                    new Claim("userId", user.Id.ToString()),
-                    new Claim("loginId", user.AssociationId.ToString() ?? string.Empty),
-                    new Claim("fullName", association.Name),
-                    new Claim("photo", association.LogoPath ?? string.Empty),
+                    return new ResponseMessage<string>
+                    {
+                        Success = false,
+                        Message = "Your account is inactive. Please contact your administrator."
+                    };
+                }
+
+                // Generate JWT token from claims
+                string GenerateJwtToken(IEnumerable<Claim> claims)
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.UTF8.GetBytes(_configuration["ApplicationSetting:Jwt_Secret"]);
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.UtcNow.AddDays(7), // Token expires in 7 days
+                        IssuedAt = DateTime.UtcNow,
+                        NotBefore = DateTime.UtcNow,
+                        SigningCredentials = new SigningCredentials(
+                            new SymmetricSecurityKey(key),
+                            SecurityAlgorithms.HmacSha256Signature
+                        )
+                    };
+
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    return tokenHandler.WriteToken(token);
+                }
+
+                // Login as Coalition Admin
+                if (user.CoalitionId != null)
+                {
+                    var coalition = await _dbContext.Coalition
+                        .FirstOrDefaultAsync(x => x.Id == user.CoalitionId);
+
+                    if (coalition != null)
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim("userId", user.Id.ToString()),
+                            new Claim("loginId", user.CoalitionId.ToString() ?? string.Empty),
+                            new Claim("fullName", "Glory"), // Force display name to 'Glory'
+                            new Claim("photo", coalition.LogoPath ?? string.Empty),
+                            new Claim("isProfileCompleted", true.ToString()),
+                            //new Claim("role","Coalition"),
+                            new Claim("isExpired", false.ToString()),
+                            new Claim(ClaimTypes.Role, UserRole.Coalition.ToString())
+                        };
+
+                        var token = GenerateJwtToken(claims);
+
+                        return new ResponseMessage<string>
+                        {
+                            Success = true,
+                            Message = "Login successful.",
+                            Data = token
+                        };
+                    }
+
+                    return new ResponseMessage<string>
+                    {
+                        Success = false,
+                        Message = "Coalition not found for this user."
+                    };
+                }
+
+                // Login as Association Admin
+                if (user.AssociationId != null)
+                {
+                    var association = await _dbContext.Associations
+                        .FirstOrDefaultAsync(x => x.Id == user.AssociationId);
+
+                    if (association != null)
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim("userId", user.Id.ToString()),
+                            new Claim("loginId", user.AssociationId.ToString() ?? string.Empty),
+                            new Claim("fullName", user.UserName), // Use UserName for personalized greeting
+                            new Claim("photo", association.LogoPath ?? string.Empty),
                     
                     new Claim("isProfileCompleted", true.ToString()),
                     new Claim("isExpired", false.ToString()),

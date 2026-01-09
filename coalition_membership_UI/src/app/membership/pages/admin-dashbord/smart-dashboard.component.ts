@@ -28,7 +28,7 @@ import { AssociationDashboardComponent } from './association-dashboard.component
           <div class="spinner-border text-success mb-2" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <p class="text-muted">Loading Coalition Dashboard...</p>
+          <p class="text-muted">Loading Glory Dashboard...</p>
         </div>
       </div>
       <app-coalition-dashboard 
@@ -44,7 +44,7 @@ import { AssociationDashboardComponent } from './association-dashboard.component
           <div class="spinner-border text-info mb-2" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <p class="text-muted">Loading Association Dashboard...</p>
+          <p class="text-muted">Loading Glory Foundation Dashboard...</p>
         </div>
       </div>
       <app-association-dashboard 
@@ -65,21 +65,21 @@ export class SmartDashboardComponent implements OnInit {
   userView: UserView;
   isCoalitionUser = false;
   isAssociationUser = false;
-  
+
   // Dashboard loading states
   coalitionDashboardLoaded = false;
   associationDashboardLoaded = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.userView = this.userService.getCurrentUser();
     this.determineUserType();
-    
+
     // Simulate loading time for better UX
     setTimeout(() => {
       this.isLoading = false;
-      
+
       // Trigger dashboard loading based on user type
       if (this.isCoalitionUser) {
         this.loadCoalitionDashboard();
@@ -95,7 +95,7 @@ export class SmartDashboardComponent implements OnInit {
     }
 
     const role = this.userView.role.toUpperCase();
-    
+
     // Coalition users (super admin)
     if (role === 'COALITION' || role === 'SUPERADMIN') {
       this.isCoalitionUser = true;
@@ -121,10 +121,10 @@ export class SmartDashboardComponent implements OnInit {
   }
 
   onCoalitionDashboardLoaded(): void {
-    console.log('Coalition dashboard loaded');
+    console.log('Glory dashboard loaded');
   }
 
   onAssociationDashboardLoaded(): void {
-    console.log('Association dashboard loaded');
+    console.log('Glory Foundation dashboard loaded');
   }
 } 
