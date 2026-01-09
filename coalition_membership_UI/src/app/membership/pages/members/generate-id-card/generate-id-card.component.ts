@@ -142,7 +142,7 @@ export class GenerateIdCardComponent implements OnInit {
   // Generate verification URL for QR code
   getVerificationUrl(): string {
     if (!this.member?.memberId) return "";
-    return `https://eplffc.et/membership_id/${this.member.memberId}`;
+    return `https://gloryfoundation.et/membership_id/${this.member.memberId}`;
   }
 
   // Convert image URL -> Base64

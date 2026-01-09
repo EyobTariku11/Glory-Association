@@ -263,7 +263,7 @@ export default class RegisterComponent implements OnInit {
           // var payment: IPaymentData = {
           //   amount: res.data.amount,
           //   currency: res.data.currency,
-          //   email: res.data.phoneNumber + "@eplffc.et", // Use phone number as email placeholder
+          //   email: res.data.phoneNumber + "@gloryfoundation.et", // Use phone number as email placeholder
           //   first_name: res.data.fullName,
           //   last_name: "",
           //   phone_number: res.data.phoneNumber,

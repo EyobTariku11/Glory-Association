@@ -80,14 +80,16 @@
                 <h1 class="display-3 fw-bold text-gradient mb-3">
 
                   {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.title)|| "Welcome to
-                  EPLFFC"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ EPLFFC እንኳን በደህና መጡ") }}
+                  Glory Foundation"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ Glory Foundation እንኳን በደህና
+                  መጡ") }}
 
                   <span class="highlight-bar"></span>
                 </h1>
                 <p class="lead mb-4 text-secondary fw-medium">
                   {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.description)|| "Empowering
                   professionals through collaboration and growth. Join our community of innovators and leaders."):
-                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ EPLFFC እንኳን በደህና መጡ በትብብር እና በማደግ
+                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ Glory Foundation እንኳን በደህና መጡ በትብብር እና
+                  በማደግ
                   ባለሙያዎችን ማበረታታት. የፈጠራ ባለሙያዎች እና መሪዎች ማህበረሰባችንን ይቀላቀሉ።") }}
                 </p>
                 <div class="hero-buttons">
@@ -144,14 +146,16 @@
                 <h1 class="display-3 fw-bold text-gradient mb-3">
 
                   {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.title)|| "Welcome to
-                  EPLFFC"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ EPLFFC እንኳን በደህና መጡ") }}
+                  Glory Foundation"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ Glory Foundation እንኳን በደህና
+                  መጡ") }}
 
                   <span class="highlight-bar"></span>
                 </h1>
                 <p class="lead mb-4 text-secondary fw-medium">
                   {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.description)|| "Empowering
                   professionals through collaboration and growth. Join our community of innovators and leaders."):
-                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ EPLFFC እንኳን በደህና መጡ በትብብር እና በማደግ
+                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ Glory Foundation እንኳን በደህና መጡ በትብብር እና
+                  በማደግ
                   ባለሙያዎችን ማበረታታት. የፈጠራ ባለሙያዎች እና መሪዎች ማህበረሰባችንን ይቀላቀሉ።") }}
                 </p>
                 <div class="hero-buttons">
@@ -208,14 +212,16 @@
                 <h1 class="display-3 fw-bold text-gradient mb-3">
 
                   {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.title)|| "Welcome to
-                  EPLFFC"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ EPLFFC እንኳን በደህና መጡ") }}
+                  Glory Foundation"):((companyProfileDto&&companyProfileDto.localTitle)|| "ወደ Glory Foundation እንኳን በደህና
+                  መጡ") }}
 
                   <span class="highlight-bar"></span>
                 </h1>
                 <p class="lead mb-4 text-secondary fw-medium">
                   {{selectedLanguage=='en'? ((companyProfileDto&&companyProfileDto.description)|| "Empowering
                   professionals through collaboration and growth. Join our community of innovators and leaders."):
-                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ EPLFFC እንኳን በደህና መጡ በትብብር እና በማደግ
+                  ((companyProfileDto&&companyProfileDto.localDescription)|| "ወደ Glory Foundation እንኳን በደህና መጡ በትብብር እና
+                  በማደግ
                   ባለሙያዎችን ማበረታታት. የፈጠራ ባለሙያዎች እና መሪዎች ማህበረሰባችንን ይቀላቀሉ።") }}
                 </p>
                 <div class="hero-buttons">
@@ -310,24 +316,24 @@
           <div *ngIf="!companyProfileDto&&selectedLanguage=='en'">
 
             <p>
-               is dedicated to fostering professional growth and excellence in our community.
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community.
               We bring together industry leaders, experts, and ambitious professionals.
-               is dedicated to fostering professional growth and excellence in our community.
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community.
               We bring together industry leaders, experts, and ambitious professionals.
             </p>
             <br />
             <p>
-               is dedicated to fostering professional growth and excellence in our community.
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community.
               We bring together industry leaders, experts, and ambitious professionals.
-               is dedicated to fostering professional growth and excellence in our community.
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community.
               We bring together industry leaders, experts, and ambitious professionals.
-               is dedicated to fostering professional growth and excellence in our community. </p>
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community. </p>
             <br />
             <p>
               We bring together industry leaders, experts, and ambitious professionals.
-               is dedicated to fostering professional growth and excellence in our community.
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community.
               We bring together industry leaders, experts, and ambitious professionals.
-               is dedicated to fostering professional growth and excellence in our community.
+              Glory Foundation is dedicated to fostering professional growth and excellence in our community.
               We bring together industry leaders, experts, and ambitious professionals.</p>
           </div>
           <div *ngIf="!companyProfileDto&&selectedLanguage=='am'">
@@ -494,43 +500,41 @@
     </div>
   </section>
 
-  <section id="donation-box" class="section-padding bg-light  rounded" 
-        style="padding: 50px 0;"
-        >
-          <div class="container">
-            <div class="section-header text-center mb-5">
-              <h2 class="fw-bold text-primary display-5">
-                <i class="fas fa-hand-holding-heart me-2"></i> {{ 'Make_a_Donation' | translate }}
-              </h2>
-              <p class="text-muted fs-5">{{ 'Select an amount or enter your own.' | translate }}</p>
-              <hr class="divider mx-auto" style="width: 60px; border-top: 3px solid #007bff;">
-            </div>
-      
-            <div class="donation-options text-center">
-              <div class="amount-boxes d-flex justify-content-center flex-wrap gap-3">
-                <button class="amount-box btn btn-outline-primary btn-lg px-4 py-2 rounded-pill shadow-sm"
-                  *ngFor="let amount of presetAmounts" (click)="selectAmount(amount)"
-                  [class.selected]="selectedAmount === amount">
-                  {{ amount | currency:'ETB':'symbol-narrow' }}
-                </button>
-              </div>
-      
-              <div class="custom-amount my-4">
-                <label for="customAmount" class="form-label fw-semibold">
-                  {{ 'Enter a Custom Amount' | translate }}
-                </label>
-                <input type="number" id="customAmount" class="form-control form-control-lg text-center rounded-pill"
-                  placeholder="{{ 'Enter amount in Ethiopian Birr' | translate }}" [(ngModel)]="customAmount"
-                  (input)="clearSelectedAmount()" />
-              </div>
-      
-              <button class="btn btn-success btn-lg mt-3 px-5 py-2 rounded-pill shadow-lg"
-                [disabled]="!isDonationValid()" (click)="donate()">
-                <i class="fas fa-donate me-2"></i> {{ 'Donate' | translate }}
-              </button>
-            </div>
-          </div>
-        </section>
+  <section id="donation-box" class="section-padding bg-light  rounded" style="padding: 50px 0;">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h2 class="fw-bold text-primary display-5">
+          <i class="fas fa-hand-holding-heart me-2"></i> {{ 'Make_a_Donation' | translate }}
+        </h2>
+        <p class="text-muted fs-5">{{ 'Select an amount or enter your own.' | translate }}</p>
+        <hr class="divider mx-auto" style="width: 60px; border-top: 3px solid #007bff;">
+      </div>
+
+      <div class="donation-options text-center">
+        <div class="amount-boxes d-flex justify-content-center flex-wrap gap-3">
+          <button class="amount-box btn btn-outline-primary btn-lg px-4 py-2 rounded-pill shadow-sm"
+            *ngFor="let amount of presetAmounts" (click)="selectAmount(amount)"
+            [class.selected]="selectedAmount === amount">
+            {{ amount | currency:'ETB':'symbol-narrow' }}
+          </button>
+        </div>
+
+        <div class="custom-amount my-4">
+          <label for="customAmount" class="form-label fw-semibold">
+            {{ 'Enter a Custom Amount' | translate }}
+          </label>
+          <input type="number" id="customAmount" class="form-control form-control-lg text-center rounded-pill"
+            placeholder="{{ 'Enter amount in Ethiopian Birr' | translate }}" [(ngModel)]="customAmount"
+            (input)="clearSelectedAmount()" />
+        </div>
+
+        <button class="btn btn-success btn-lg mt-3 px-5 py-2 rounded-pill shadow-lg" [disabled]="!isDonationValid()"
+          (click)="donate()">
+          <i class="fas fa-donate me-2"></i> {{ 'Donate' | translate }}
+        </button>
+      </div>
+    </div>
+  </section>
 
 
   <!-- Membership Section -->
@@ -651,18 +655,18 @@
         <h5 class="text-white">{{'Contact_Info'|translate}}</h5>
         <ul class="footer-contact list-unstyled">
           <li><fa-icon [icon]="faMapMarkerAlt"></fa-icon> Bisrate Gebriel Addis Ababa, Ethiopia</li>
-          <li><fa-icon [icon]="faPhone"></fa-icon> +251 911 393 123 
-           +251 939 003 838 
+          <li><fa-icon [icon]="faPhone"></fa-icon> +251 911 393 123
+            +251 939 003 838
             +251 925 121 314</li>
-          <li><fa-icon [icon]="faEnvelope"></fa-icon> <a
-              href="mailto:abizeerfamily@gmail.com"> abizeerfamily&#64;gmail.com</a></li>
+          <li><fa-icon [icon]="faEnvelope"></fa-icon> <a href="mailto:abizeerfamily@gmail.com">
+              abizeerfamily&#64;gmail.com</a></li>
         </ul>
 
       </div>
     </div>
     <hr class="bg-light">
     <div class="text-center">
-      <p class="mb-0">&copy; 2025 EPLFFC Football Associatoins. All rights reserved.</p>
+      <p class="mb-0">&copy; 2025 Glory Foundation. All rights reserved.</p>
       <br />
       <p class="m-0"> Powerd By <a style="color:white">DAF-TECH Computer Engineering</a> </p>
 

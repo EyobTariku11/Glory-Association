@@ -1,5 +1,5 @@
 {
-  "EPLFFC_COMMUNITY": "EPLFFC",
+  "EPLFFC_COMMUNITY": "Glory Foundation",
   "Home": "Home",
   "About_Us": "About Us",
   "Services": "Services",
@@ -25,7 +25,6 @@
   "Counseling": "Counseling",
   "Providing_emotional_and_psychological_support_for_orphans": "Providing emotional and psychological support for orphans.",
   "Membership_Subscriptions": "Membership Subscriptions",
-
   "ETB": "ETB",
   "Week": "Week",
   "Month": "Month",
@@ -52,7 +51,6 @@
   "Contact_Info": "Contact Info",
   "Quick_Links": "Quick Links",
   "Empowering_professionals_through_collaboration_and_growth": "Empowering professionals through collaboration and growth.",
-
   "Donation": "Donation",
   "Donation_Events": "Donation Events",
   "Amount": "Allocated Funds for Collection",
@@ -60,9 +58,7 @@
   "Donate": "Donate",
   "Amount_Collected": "Amount Collected",
   "Show_All": "Show All",
-
-  "Join_Abizeer_Community": "JOIN EPLFFC",
-
+  "Join_Abizeer_Community": "JOIN Glory Foundation",
   "Fill_Information_Below": "Fill in the information below to become a member",
   "First_Name": "First Name",
   "Last_Name": "Last Name",
@@ -82,10 +78,8 @@
   "Woreda": "Woreda",
   "Register": "Register",
   "Already_Have_Account": "Already have an account?",
-
-  "Welcome_Message": "Welcome to EPLFFC  Coalition!",
-  "Join_Community_Description": "Join the EPLFFC and gain access to resources, opportunities to connect, collaborate, and grow within a supportive professional network.",
-
+  "Welcome_Message": "Welcome to Glory Foundation!",
+  "Join_Community_Description": "Join the Glory Foundation and gain access to resources, opportunities to connect, collaborate, and grow within a supportive professional network.",
   "Welcome_Back": "Welcome Back",
   "Login_Message": "Log in to your account to continue",
   "Email_Username": "Email address / Username",
@@ -96,17 +90,12 @@
   "No_Account": "Don’t have an account?",
   "Sign_Up_Member": "Sign in as a Member!",
   "Join_Community_Description2": "Discover the benefits of being part of our community, designed for midwifery professionals:",
-
-  
-    "Join_Fans_Association": "Join the ",
-    "Fans_Association_Benefits": "Become part of the Ethiopian Premier League Fans Coalition and enjoy exclusive benefits.",
-    "Easy_Registration": "Easy Registration Process",
-    "Access_Tickets_And_Merch": "Access Match Tickets and Official Merchandise",
-    "Support_Your_Club": "Support Your Favorite Football Club",
-    "Be_Part_Of_Coalition": "Be Part of a Nationwide Fans Coalition",
-  
-  
-
+  "Join_Fans_Association": "Join the ",
+  "Fans_Association_Benefits": "Become part of the Glory Foundation and enjoy exclusive benefits.",
+  "Easy_Registration": "Easy Registration Process",
+  "Access_Tickets_And_Merch": "Access Match Tickets and Official Merchandise",
+  "Support_Your_Club": "Support Your Favorite Football Club",
+  "Be_Part_Of_Coalition": "Be Part of a Nationwide Fans Coalition",
   "Login_Message2": "Enter your Membership ID to continue",
   "Membership_ID": "Membership ID",
   "Register_Now": "Register Now!",

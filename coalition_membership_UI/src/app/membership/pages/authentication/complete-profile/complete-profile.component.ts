@@ -56,7 +56,7 @@ export class CompleteProfileComponent implements OnInit {
     private paymentService: PaymentService,
     private associationService: AssociationService,
     private imageHandlerService: ImageHandlerService
-  ) {}
+  ) { }
 
   educationalFields: SelectList[];
   educationalLelvels: SelectList[];
@@ -111,17 +111,17 @@ export class CompleteProfileComponent implements OnInit {
     this.associationService.getArifPayKey(this.memberVar.associationId).subscribe({
       next: (arifPayKey) => {
         const paymentPayload: IPaymentDataArifPay = {
-          cancelUrl: "https://eplffc.et/admin/auth/complete-profile",
+          cancelUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
           phone: payment.phone_number,
           email: payment.email,
           nonce: `txn_${Date.now()}`,
-          errorUrl: "https://eplffc.et/admin/auth/complete-profile",
-          notifyUrl: "https://eplffc.et/admin/auth/complete-profile",
+          errorUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
+          notifyUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
           successUrl: payment.return_url + payment.description,
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://gloryfoundation.et/assets/images/logos/logo-remove.jpg",
               name: "Payment for Membership " + (this.memberVar.membershipTypeName || this.memberVar.membershipType || "Membership") + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -186,17 +186,17 @@ export class CompleteProfileComponent implements OnInit {
     this.associationService.getArifPayKey(this.memberVar.associationId).subscribe({
       next: (arifPayKey) => {
         const paymentPayload: IPaymentDataArifPay = {
-          cancelUrl: "https://eplffc.et/admin/auth/complete-profile",
+          cancelUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
           phone: payment.phone_number,
           email: payment.email,
           nonce: `txn_${Date.now()}`,
-          errorUrl: "https://eplffc.et/admin/auth/complete-profile",
-          notifyUrl: "https://eplffc.et/admin/auth/complete-profile",
+          errorUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
+          notifyUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
           successUrl: payment.return_url + payment.description,
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://gloryfoundation.et/assets/images/logos/logo-remove.jpg",
               name: "Payment for Membership " + (this.memberVar.membershipTypeName || this.memberVar.membershipType || "Membership") + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -393,19 +393,19 @@ export class CompleteProfileComponent implements OnInit {
     this.associationService.getArifPayKey(member.associationId).subscribe({
       next: (arifPayKey) => {
         const phoneNumber = this.getPhoneNumberWithDefault(payment.phone_number);
-        
+
         const paymentPayload: IPaymentDataArifPay = {
-          cancelUrl: "https://eplffc.et/admin/auth/complete-profile",
+          cancelUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
           phone: phoneNumber,
           email: payment.email,
           nonce: `txn_${Date.now()}`,
-          errorUrl: "https://eplffc.et/admin/auth/complete-profile",
-          notifyUrl: "https://eplffc.et/admin/auth/complete-profile",
+          errorUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
+          notifyUrl: "https://gloryfoundation.et/admin/auth/complete-profile",
           successUrl: payment.return_url + payment.description,
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://gloryfoundation.et/assets/images/logos/logo-remove.jpg",
               name: "Payment for Membership " + member.membershipTypeName + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -439,7 +439,7 @@ export class CompleteProfileComponent implements OnInit {
               errorToast("Arif pay Error", res.response.msg);
             }
           },
-          error: (err) => {},
+          error: (err) => { },
         });
       },
       error: (err) => {

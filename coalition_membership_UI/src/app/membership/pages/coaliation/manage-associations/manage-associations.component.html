@@ -45,15 +45,14 @@
                     <tbody>
                         <tr *ngFor="let assoc of associations">
                             <td class="ps-4">
-                                <div class="avtar avtar-s bg-light-primary rounded overflow-hidden">
-                                    <img *ngIf="assoc.logoPath" [src]="getImage(assoc.logoPath)" alt="Logo"
-                                        class="img-fluid">
-                                    <i *ngIf="!assoc.logoPath" class="ti ti-building"></i>
+                                <div class="assoc-logo-container">
+                                    <img *ngIf="assoc.logoPath" [src]="getImage(assoc.logoPath)" alt="Logo">
+                                    <i *ngIf="!assoc.logoPath" class="ti ti-building text-primary"></i>
                                 </div>
                             </td>
                             <td>
-                                <h6 class="mb-0 fw-bold">{{ assoc.name }}</h6>
-                                <small class="text-muted">{{ assoc.amharicName }}</small>
+                                <div class="assoc-name">{{ assoc.name }}</div>
+                                <div class="assoc-amharic">{{ assoc.amharicName }}</div>
                             </td>
                             <td>{{ assoc.websiteLink || 'N/A' }}</td>
                             <td>{{ assoc.phoneNumbers && assoc.phoneNumbers[0] || 'N/A' }}</td>

@@ -5,27 +5,32 @@
                 <div class="card-body">
                     <div class="auth-header text-center">
                         <h2>{{member && member.fullName.toUpperCase()}} <b>( {{member && member.memberId}} )</b></h2>
-                        <h4 class="text-center">Your Membership Type on <span class="text-success">{{member && member.membershipType}}</span> Status has expired</h4>
-                        <h4 class="text-center"> <span style="color: red;">{{ member && member.expiredDate | date:"dd MMM YYY"}}</span> on Please renew to login !!! </h4>
+                        <h4 class="text-center">Your Membership Type on <span class="text-success">{{member &&
+                                member.membershipType}}</span> Status has expired</h4>
+                        <h4 class="text-center"> <span style="color: red;">{{ member && member.expiredDate | date:"dd
+                                MMM YYY"}}</span> on Please renew to login !!! </h4>
                         <hr />
                     </div>
                     <form [formGroup]="completeProfileForm">
                         <div class="row mt-2">
                             <div class="col-md-4 col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" disabled [value]="member && member.fullName" id="fullName" />
+                                    <input type="text" class="form-control" disabled [value]="member && member.fullName"
+                                        id="fullName" />
                                     <label for="fullName">Full Name </label>
                                 </div>
                             </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" disabled readonly [value]="member && member.phoneNumber" id="phoneNumber" />
+                                    <input type="text" class="form-control" disabled readonly
+                                        [value]="member && member.phoneNumber" id="phoneNumber" />
                                     <label for="phoneNumber">Phone Number </label>
                                 </div>
                             </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" disabled readonly [value]="member && member.memberId" id="memberId" />
+                                    <input type="text" class="form-control" disabled readonly
+                                        [value]="member && member.memberId" id="memberId" />
                                     <label for="memberId">MemberId </label>
                                 </div>
                             </div>
@@ -33,33 +38,38 @@
                         <div class="row mt-2">
                             <div class="col-md-4 mt-2">
                                 <div class="form-floating mb-3">
-                
-                                  <select class="form-control" #category (change)="getMemberships(category.value)">
-                                    <option></option>
-                                    <option *ngFor="let item of associations" [value]="item.id">{{ item.name }}</option>
-                                 
-                                  </select>
-                                  <label for="email"></label>
+
+                                    <select class="form-control" #category (change)="getMemberships(category.value)">
+                                        <option></option>
+                                        <option *ngFor="let item of associations" [value]="item.id">{{ item.name }}
+                                        </option>
+
+                                    </select>
+                                    <label for="email"></label>
                                 </div>
-                              </div>
+                            </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-floating mb-3">
-                                    <select class="form-control" #membership (change)="onMembershipSelcted(membership.value)">
+                                    <select class="form-control" #membership
+                                        (change)="onMembershipSelcted(membership.value)">
                                         <option></option>
-                                        <option *ngFor="let item of membershipTypes" [value]="item.id + '/' + item.amount">{{item.name}}</option>
+                                        <option *ngFor="let item of membershipTypes"
+                                            [value]="item.id + '/' + item.amount">{{item.name}}</option>
                                     </select>
                                     <label for="fullName">Membership Type</label>
                                 </div>
                             </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" disabled readonly [value]="member && member.birthDate | date:'dd MMM yyyy'" id="phoneNumber" />
+                                    <input type="text" class="form-control" disabled readonly
+                                        [value]="member && member.birthDate | date:'dd MMM yyyy'" id="phoneNumber" />
                                     <label for="phoneNumber">Birth Date </label>
                                 </div>
                             </div>
                         </div>
                         <div class="d-grid mt-4">
-                            <button [disabled]="!selectedMembership && !selectedAmount" (click)="renewMembership()" class="btn btn-secondary">Renew</button>
+                            <button [disabled]="!selectedMembership && !selectedAmount" (click)="renewMembership()"
+                                class="btn btn-secondary">Renew</button>
                         </div>
                         <hr />
                     </form>
@@ -68,12 +78,13 @@
         </div>
         <div class="col-md-4 col-12 p-2">
             <div class="member-info text-center">
-                <img src="assets/logo-remove.png" alt="Member Image" style="max-height: 150px;" class="img-fluid bounce-image" appImageError>
-                <h2 class="text-secondary mt-2"><b>EPLFFC  Coalition </b></h2>
-                <p class="text-center animated-paragraph"> 
-                    "Become part of the Ethiopian Premier League  <br />
-                    Fans Coalition and enjoy exclusive benefits.
-                  
+                <img src="assets/logo-remove.png" alt="Member Image" style="max-height: 150px;"
+                    class="img-fluid bounce-image" appImageError>
+                <h2 class="text-secondary mt-2"><b>Glory Foundation </b></h2>
+                <p class="text-center animated-paragraph">
+                    Become part of the Glory Foundation <br />
+                    and enjoy exclusive benefits.
+
                 </p>
                 <div class="d-grid mt-4 p-4">
                     <button type="button" (click)="logout()" class="btn btn-outline-danger">Logout</button>

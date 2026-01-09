@@ -12,7 +12,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'EPLFFC MEMEBERSHIP';
+  title = 'Glory Foundation Membership';
 
   constructor(private translate: TranslateService) {
     translate.setDefaultLang('en');
