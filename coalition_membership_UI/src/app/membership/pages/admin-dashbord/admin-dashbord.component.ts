@@ -47,7 +47,7 @@ export default class AdminDashbordComponent implements OnInit {
   femaleNumbers: number;
 
   currentYear: number;
- 
+
   genderData: any[];
   chartOptions2: any;
   loading2: boolean = true;
@@ -69,7 +69,7 @@ export default class AdminDashbordComponent implements OnInit {
   selectedAssociationId: string = 'all';
   selectPaymentStatus: string = 'all';
   selectedGender: string = 'all';
-  selectedReport:string='yearly'
+  selectedReport: string = 'yearly'
 
   chapters: SelectList[];
 
@@ -78,7 +78,7 @@ export default class AdminDashbordComponent implements OnInit {
   dashboardNumericalDTo: DashboardNumericalDTo;
 
   yearOptions: { value: number; label: string }[] = [];
-  
+
 
   toggleVisibility() {
     this.isVisible = !this.isVisible;
@@ -114,11 +114,11 @@ export default class AdminDashbordComponent implements OnInit {
     private userService: UserService,
     private dashboardService: DashboardService,
     private associationService: AssociationService
-  ) {}
+  ) { }
 
   // Life cycle events
   ngOnInit(): void {
-    
+
     const currentDate = new Date();
     this.currentYear = currentDate.getFullYear();
     this.userView = this.userService.getCurrentUser();
@@ -131,7 +131,7 @@ export default class AdminDashbordComponent implements OnInit {
   private loadDashboardProgressively(): void {
     // Load essential data first
     this.loadEssentialData();
-    
+
     // Load charts and heavy data progressively
     setTimeout(() => this.loadChartsData(), 100);
     setTimeout(() => this.loadReportsData(), 200);
@@ -174,21 +174,21 @@ export default class AdminDashbordComponent implements OnInit {
       { value: this.currentYear - 3, label: (this.currentYear - 3).toString() },
       { value: this.currentYear - 2, label: (this.currentYear - 2).toString() },
       { value: this.currentYear - 1, label: (this.currentYear - 1).toString() },
-   
+
     ];
   }
 
 
   getNumbericData() {
     this.isLoadingDashboardData = true;
-    
+
     var FilterCriteriaDto: FilterCriteriaDto = {
       regionId: this.selectedChapter,
       associationId: this.selectedAssociationId,
       gender: this.selectedGender,
       paymentStatus: this.selectPaymentStatus
     };
-    
+
     this.dashboardService.getNumbericalData(FilterCriteriaDto).subscribe({
       next: (res) => {
         this.dashboardNumericalDTo = res;
@@ -206,12 +206,12 @@ export default class AdminDashbordComponent implements OnInit {
       acc[item.gender] = (acc[item.gender] || 0) + 1;
       return acc;
     }, {});
-  
+
     this.genderData = Object.keys(genderCounts).map((key) => ({
       value: genderCounts[key],
       name: key
     }));
-  
+
     // Define chart options
     this.chartOptions2 = {
       tooltip: {
@@ -271,7 +271,7 @@ export default class AdminDashbordComponent implements OnInit {
         itemGap: 5
       }
     };
-  
+
     this.loading2 = false; // Hide loading indicator once the chart is rendered
   }
   getMembershipTypeChart() {
@@ -334,7 +334,7 @@ export default class AdminDashbordComponent implements OnInit {
 
   getMembers() {
     this.isLoadingMembers = true;
-    
+
     // Determine associationId based on user role
     let associationId: string | undefined;
     if (this.userView?.role?.includes('Association')) {
@@ -350,10 +350,10 @@ export default class AdminDashbordComponent implements OnInit {
 
         if (this.userView.regionId != '') {
           this.selectedChapter = this.userView.region;
-          
+
           this.applyFilter();
         }
-        
+
         this.isLoadingMembers = false;
       },
       error: (err) => {
@@ -403,7 +403,7 @@ export default class AdminDashbordComponent implements OnInit {
 
   getAssociations() {
     this.isLoadingAssociations = true;
-    
+
     this.associationService.getAll().subscribe({
       next: (res) => {
         if (res && Array.isArray(res)) {
@@ -430,12 +430,12 @@ export default class AdminDashbordComponent implements OnInit {
       acc[item.paymentStatus] = (acc[item.paymentStatus] || 0) + 1;
       return acc;
     }, {});
-  
+
     this.paymentStatusData = Object.keys(paymentStatusCounts).map((key) => ({
       value: paymentStatusCounts[key],
       name: key
     }));
-  
+
     // Define chart options
     this.chartOptions = {
       tooltip: {
@@ -488,34 +488,34 @@ export default class AdminDashbordComponent implements OnInit {
         }
       }
     };
-  
+
     this.loading = false; // Hide loading indicator once the chart is rendered
   }
-  
-  
+
+
 
   generate(passedYear?: string) {
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const monthData = new Map(monthNames.map((month) => [month, 0]));
     let minYear = Infinity;
     let maxYear = -Infinity;
-  
+
     this.filterdMembers.forEach((member) => {
       const createdDate = new Date(member.createdByDate);
       const year = createdDate.getFullYear();
       const month = monthNames[createdDate.getMonth()];
-  
+
       minYear = Math.min(minYear, year);
       maxYear = Math.max(maxYear, year);
-  
+
       if (!passedYear || year.toString() === passedYear) {
         monthData.set(month, (monthData.get(month) || 0) + 1);
       }
     });
-  
+
     const selectedYear = passedYear || maxYear.toString();
     const data = monthNames.map((month) => monthData.get(month) || 0);
-  
+
     this.chartOptions4 = {
       title: {
         text: `Monthly Data for ${selectedYear}`,
@@ -558,13 +558,13 @@ export default class AdminDashbordComponent implements OnInit {
       }
     };
   }
-  
+
   generateYear() {
     const currentYear = new Date().getFullYear();
     const yearCounts = {};
     let minYear = currentYear;
     let maxYear = 0;
-  
+
     // Count members for each year
     this.filterdMembers.forEach((member) => {
       const createdDate = new Date(member.createdByDate);
@@ -573,7 +573,7 @@ export default class AdminDashbordComponent implements OnInit {
       minYear = Math.min(minYear, year);
       maxYear = Math.max(maxYear, year);
     });
-  
+
     // Generate arrays for x-axis and series data
     const years = [];
     const data = [];
@@ -581,7 +581,7 @@ export default class AdminDashbordComponent implements OnInit {
       years.push(year.toString());
       data.push(yearCounts[year] || 0);
     }
-  
+
     this.chartOptions5 = {
       xAxis: {
         type: 'category',
@@ -612,30 +612,30 @@ export default class AdminDashbordComponent implements OnInit {
       }
     };
   }
-  
+
   generateQuarter(passedYear?: string) {
     const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
     const quarterData = new Map(quarters.map((quarter) => [quarter, 0]));
     let minYear = Infinity;
     let maxYear = -Infinity;
-  
+
     this.filterdMembers.forEach((member) => {
       const createdDate = new Date(member.createdByDate);
       const year = createdDate.getFullYear();
       const month = createdDate.getMonth();
       const quarter = quarters[Math.floor(month / 3)];
-  
+
       minYear = Math.min(minYear, year);
       maxYear = Math.max(maxYear, year);
-  
+
       if (!passedYear || year.toString() === passedYear) {
         quarterData.set(quarter, (quarterData.get(quarter) || 0) + 1);
       }
     });
-  
+
     const selectedYear = passedYear || maxYear.toString();
     const data = quarters.map((quarter) => quarterData.get(quarter) || 0);
-  
+
     this.chartOptions7 = {
       title: {
         text: `Quarterly Data for ${selectedYear}`,
@@ -682,21 +682,21 @@ export default class AdminDashbordComponent implements OnInit {
   generateChapterChart() {
     // Create a map to store member counts for each chapter
     const chapterCounts = new Map(this.chapters.map(chapter => [chapter.id, 0]));
-    
+
     // Count members for each chapter
     this.filterdMembers.forEach((member) => {
       if (chapterCounts.has(member.regionId)) {
         chapterCounts.set(member.regionId, chapterCounts.get(member.regionId)! + 1);
       }
     });
-    
+
     // Generate arrays for x-axis and series data
     const chapterNames = this.chapters.map(chapter => chapter.name.replace(/chapter/gi, '').trim());
     const data = this.chapters.map(chapter => chapterCounts.get(chapter.id) || 0);
-    
+
     // Find the maximum chapter name length
     const maxNameLength = Math.max(...chapterNames.map(name => name.length));
-    
+
     this.chartOptions6 = {
       title: {
         text: '',
@@ -712,7 +712,7 @@ export default class AdminDashbordComponent implements OnInit {
       xAxis: {
         type: 'category',
         name: "Chapters",
-      
+
         nameGap: 35,
         data: chapterNames,
         axisLabel: {

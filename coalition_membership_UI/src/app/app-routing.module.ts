@@ -19,8 +19,8 @@ import { DonationTargetsComponent } from "./membership/pages/donation-targets/do
 export const appRoutes: Routes = [
   {
     path: "",
+    component: LandingPageComponent,
     pathMatch: "full",
-    redirectTo: "auth/register",
   },
   {
     path: "football-coalition",

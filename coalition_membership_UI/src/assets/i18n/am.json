@@ -1,5 +1,5 @@
 {
-  "EPLFFC_COMMUNITY": "አቢ-ዘር ማህበረሰብ አቀፍ የልማት ድርጅት",
+  "EPLFFC_COMMUNITY": "Glory Foundation",
   "Home": "መነሻ",
   "About_Us": "ስለ እኛ",
   "Services": "አገልግሎቶች",
@@ -25,7 +25,6 @@
   "Counseling": "አማካሪ አገልግሎት",
   "Providing_emotional_and_psychological_support_for_orphans": "ለድሆች ልጆች ስሜታዊና ስነ-ልቦና ድጋፍ መስጠት።",
   "Membership_Subscriptions": "አባልነት ግንዛቤዎች",
-
   "ETB": "ብር",
   "Week": "ሳምንት",
   "Month": "ወር",
@@ -50,10 +49,8 @@
   "Message": "መልእክት",
   "Send_Message": "መልእክት ላክ",
   "Empowering_professionals_through_collaboration_and_growth": "ሙያውያንን በመተባበርና በእድገት መበረታታት።",
-
   "Contact_Info": "የመገኛ መረጃ",
   "Quick_Links": "ፈጣን መስፈንጠሪያዎች",
-
   "Donation": "ድጋፍ",
   "Donation_Events": "የድጋፍ ክስተቶች",
   "Amount": "ለመሰብሰብ የታቀደ ገንዘብ",
@@ -61,9 +58,7 @@
   "Donate": "ስጦታ ስጡ",
   "Amount_Collected": "የተሰበሰበ መጠን",
   "Show_All": "ሁሉንም አሳይ",
-
   "Join_Abizeer_Community": "የአቢ-ዘር ማህበርን ይቀላቀሉ",
-
   "Fill_Information_Below": "አባል ለመሆን ከታች ያለውን መረጃ ይሙሉ",
   "First_Name": "የመጀመርያ ስም",
   "Last_Name": "የባት ስም",
@@ -83,10 +78,8 @@
   "Woreda": "ወረዳ",
   "Register": "ይመዝገቡ",
   "Already_Have_Account": "አካውንት አለዎት?",
-
   "Welcome_Message": "እንኳን ወደ አቢ-ዘር ማህበር አባልነት በደህና መጡ!",
   "Join_Community_Description": "የአቢ-ዘር ማህበርን ይቀላቀሉ እና የሚሆኑ አዝማድ፣ መገናኛ እና የተሻሻሉ ዕድሎችን ይደርሱ።",
-
   "Welcome_Back": "እንኳን ደህና መጡ",
   "Login_Message": "እንደገና ይግቡ እና ይቀጥሉ",
   "Email_Username": "ኢሜል አድራሻ / የተጠቃሚ ስም",
@@ -96,18 +89,14 @@
   "Sign_In": "ግባ",
   "No_Account": "መለያ የሎትም?",
   "Sign_Up_Member": "አባል ሆነው ይመዝገቡ!",
-
   "Join_Fans_Association": "የደጋፊዎችን ማህበር ይቀላቀሉ",
   "Fans_Association_Benefits": "የኢትዮጵያ ፕሪሚየር ሊግ የእግር ኳስ ደጋፊዎች ማህበረሰብ አባል በመሆን ልዩ ጥቅሞችን ይበሉ።",
   "Easy_Registration": "ቀላል የመመዝገቢያ ሂደት",
   "Access_Tickets_And_Merch": "የጨዋታ ቲኬትና የኦፊሺያል እቃዎችን ያግኙ",
   "Support_Your_Club": "የሚወዷችሁን ክለብ ደግፉ",
   "Be_Part_Of_Coalition": "የብሔራዊ ደጋፊዎች ማህበረሰብ አካል ይሁኑ",
-
   "Login_Message2": "የአባልነት መታወቂያዎን እንደገና ይሙሉ",
   "Membership_ID": "የአባልነት መታወቂያ",
-
   "Register_Now": "አሁን ይመዝገቡ!",
-
   "Membership_Benefits": "አባል መሆን ለሚስማሙ ሰዎች ልዩ ጥቅሞችን ያቀርባል፡"
 }
