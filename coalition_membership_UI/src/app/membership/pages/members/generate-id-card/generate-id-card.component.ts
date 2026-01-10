@@ -555,13 +555,15 @@ export class GenerateIdCardComponent implements OnInit {
 
   // Scroll to top functionality
   scrollToTop() {
-    const container = document.querySelector('.id-card-container');
-    if (container) {
-      container.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    // Fallback for some layouts
+    document.documentElement.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   // Get member ID with Ethiopian year

@@ -7,7 +7,7 @@
       </small>
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" (click)="addRow()" [disabled]="loading">
+      <button class="btn btn-primary" (click)="addRow()" [disabled]="loading || codes.length > 0">
         Add
       </button>
     </div>
@@ -33,11 +33,7 @@
       <tbody>
         <tr *ngFor="let row of codes; let i = index">
           <td>
-            <select
-              class="form-select"
-              [(ngModel)]="row.generalCodeType"
-              (change)="onTypeChange(row)"
-            >
+            <select class="form-select" [(ngModel)]="row.generalCodeType" (change)="onTypeChange(row)">
               <option *ngFor="let t of generalCodeTypes" [ngValue]="t.value">
                 {{ t.label }}
               </option>
@@ -75,5 +71,3 @@
     </table>
   </div>
 </div>
-
-

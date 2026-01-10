@@ -23,6 +23,7 @@ export class AdminComponent {
   navCollapsed: boolean;
   navCollapsedMob = false;
   windowWidth: number;
+  currentYear: number = new Date().getFullYear();
 
   // Constructor
   constructor(
