@@ -28,18 +28,15 @@ export class AddAssociationUsersComponent implements OnInit {
   ngOnInit(): void {
     this.associationUserForm = this.fb.group({
       associationId: [this.associationId, Validators.required],
-      email: ["", Validators.required],
-      userName: ["", Validators.required],
-      password: [null, Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      userName: ["", [Validators.required, Validators.minLength(3)]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
       rowStatus: ["ACTIVE", Validators.required],
     });
-
-
 
     if (this.userData) {
       this.isEditMode = true;
       this.associationUserForm.patchValue({
-        //associationId: this.userData.associationId,
         email: this.userData.email,
         userName: this.userData.userName,
         rowStatus: this.userData.rowStatus || "ACTIVE",
@@ -54,36 +51,46 @@ export class AddAssociationUsersComponent implements OnInit {
   }
 
   onSubmit() {
-
-
     if (this.associationUserForm.valid) {
       const formValue = this.associationUserForm.value;
 
       if (this.isEditMode) {
-        // If update
         this.associationService.updateUser(this.userData.id, formValue).subscribe({
-          next: (res) => {
-            successToast("Association user updated successfully!");
-            this.closeModal();
+          next: (res: any) => {
+            // Check if backend returns a success property
+            if (res && res.success === false) {
+              errorToast(res.message || "Failed to update association user.");
+            } else {
+              successToast("Association user updated successfully!");
+              this.activeModal.close('updated');
+            }
           },
           error: (err) => {
-            errorToast("Failed to update association user.");
+            const errorMsg = err.error?.message || err.message || "Failed to update association user.";
+            errorToast(errorMsg);
             console.error("Update Error:", err);
           },
         });
       } else {
-        // If create
         this.associationService.createUser(formValue).subscribe({
-          next: (res) => {
-            successToast("Association user created successfully!");
-            this.closeModal();
+          next: (res: any) => {
+            // Check if backend returns a success property (common for this codebase)
+            if (res && res.success === false) {
+              errorToast(res.message || "User already exists or creation failed.");
+            } else {
+              successToast("Association user created successfully!");
+              this.activeModal.close('created');
+            }
           },
           error: (err) => {
-            errorToast("Failed to create association user.");
+            const errorMsg = err.error?.message || err.message || "Failed to create association user.";
+            errorToast(errorMsg);
             console.error("Create Error:", err);
           },
         });
       }
+    } else {
+      errorToast("Please fill all required fields correctly. Password must be at least 6 characters.");
     }
   }
 }

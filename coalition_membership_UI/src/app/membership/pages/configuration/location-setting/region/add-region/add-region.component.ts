@@ -27,7 +27,7 @@ export class AddRegionComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.userService.getCurrentUser();
 
-   
+
 
     if (this.Region) {
       this.RegionForm.controls["regionName"].setValue(this.Region.regionName);
@@ -60,21 +60,24 @@ export class AddRegionComponent implements OnInit {
       var RegionPost: IRegionPostDto = {
         regionName: this.RegionForm.value.regionName,
         countryType: this.RegionForm.value.countryType,
-        createdById: this.user.userId,
+        createdById: this.user.loginId, // Use loginId (associationId) for Association admins
       };
 
       this.configService.addRegion(RegionPost).subscribe({
         next: (res) => {
           if (res.success) {
-            //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
             successToast(res.message);
-
             this.closeModal();
           } else {
-            errorToast(res.errorCode! || res.message, res.message);
+            errorToast(res.message || "Failed to add region");
           }
         },
+        error: (err) => {
+          errorToast(err.error?.message || "Failed to add region");
+        }
       });
+    } else {
+      errorToast("Please fill all required fields");
     }
   }
 
@@ -92,15 +95,17 @@ export class AddRegionComponent implements OnInit {
         next: (res) => {
           if (res.success) {
             successToast(res.message);
-            //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
-
             this.closeModal();
           } else {
-            errorToast(res.errorCode! || res.message, res.message);
-            //this.messageService.add({ severity: 'error', summary: 'Something went Wrong', detail: res.message });
+            errorToast(res.message || "Failed to update region");
           }
         },
+        error: (err) => {
+          errorToast(err.error?.message || "Failed to update region");
+        }
       });
+    } else {
+      errorToast("Please fill all required fields");
     }
   }
 }

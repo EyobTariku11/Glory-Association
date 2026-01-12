@@ -12,6 +12,7 @@ namespace MembershipImplementation.Interfaces.Configuration
     {
         Task<ResponseMessage<string>> AddRegion(RegionPostDto regionPost);
         Task<ResponseMessage<List<RegionGetDto>>> GetRegionList();
- 
+        Task<ResponseMessage<string>> UpdateRegion(RegionPostDto regionPost);
+        Task<ResponseMessage<string>> DeleteRegion(Guid regionId);
     }
 }

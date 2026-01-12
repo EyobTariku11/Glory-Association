@@ -230,11 +230,7 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
   onFileSelected2(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.signiture = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => (this.previewUrl1 = reader.result as string);
-      reader.readAsDataURL(this.signiture);
+      this.processImageAndMakeTransparent(input.files[0], 'signature');
     }
   }
 
@@ -292,8 +288,8 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
           const g = data[i + 1];
           const b = data[i + 2];
 
-          // If the pixel is close to white, make it transparent
-          if (r > 230 && g > 230 && b > 230) {
+          // If the pixel is close to white (light grey or white), make it transparent
+          if (r > 200 && g > 200 && b > 200) {
             data[i + 3] = 0;
           }
         }
@@ -311,6 +307,9 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
             } else if (type === 'photoStamp') {
               this.photoStamp = processedFile;
               this.previewUrl5 = canvas.toDataURL();
+            } else if (type === 'signature') {
+              this.signiture = processedFile;
+              this.previewUrl1 = canvas.toDataURL();
             }
           }
         }, 'image/png');

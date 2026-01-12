@@ -17,18 +17,14 @@
                     <tr>
                         <th>Region Name</th>
                         <th>Country Type</th>
-                        <!-- <th *ngIf="userView.role.includes('Coalition')">User Name</th>
-                        <th *ngIf="userView.role.includes('Coalition')">Password</th>
-                        <th *ngIf="userView.role.includes('Coalition')">Actions</th> -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of paginatedRegion; let i = index" class="text-center align-middle">
                         <td>{{ item.regionName }}</td>
                         <td>{{ item.countryType }}</td>
-                        <td *ngIf="userView.role.includes('SuperAdmin')">{{ item.userName }}</td>
-                        <td *ngIf="userView.role.includes('SuperAdmin')">******</td>
-                        <td *ngIf="userView.role.includes('SuperAdmin')">
+                        <td>
                             <button type="button" class="btn btn-outline-warning btn-sm me-1"
                                 (click)="updateRegion(item)">
                                 <i class="ti ti-pencil"></i>

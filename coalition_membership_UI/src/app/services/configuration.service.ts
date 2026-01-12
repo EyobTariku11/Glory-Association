@@ -41,7 +41,7 @@ export class ConfigurationService {
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   //region
 
@@ -71,7 +71,7 @@ export class ConfigurationService {
   }
   deleteRegion(RegionId: string) {
     return this.http.delete<ResponseMessageData<string>>(
-      this.baseUrl + `/Region?RegionId=${RegionId}`
+      this.baseUrl + `/Region/DeleteRegion?RegionId=${RegionId}`
     );
   }
 
@@ -82,7 +82,7 @@ export class ConfigurationService {
       this.baseUrl + `/MembershipType/GetMembershipTypeList`
     );
   }
-  getMembershipTypes(associationId:string) {
+  getMembershipTypes(associationId: string) {
     return this.http.get<IMembershipTypeGetDto[]>(
       this.baseUrl + `/MembershipType/GetMembershipTypeList?associationId=${associationId}`
     );
@@ -103,7 +103,7 @@ export class ConfigurationService {
   deleteMembershipType(MembershipTypeId: string) {
     return this.http.delete<ResponseMessage>(
       this.baseUrl +
-        `/MembershipType/DeleteMembershipType?MembershipTypeId=${MembershipTypeId}`
+      `/MembershipType/DeleteMembershipType?MembershipTypeId=${MembershipTypeId}`
     );
   }
   // generalcode s
@@ -125,7 +125,7 @@ export class ConfigurationService {
   getCourses(membershipTypeId: string) {
     return this.http.get<ICourseGetDto[]>(
       this.baseUrl +
-        `/Course/GetCourseList?membershipTypeId=${membershipTypeId}`
+      `/Course/GetCourseList?membershipTypeId=${membershipTypeId}`
     );
   }
   addCourse(fromData: FormData) {
@@ -181,7 +181,7 @@ export class ConfigurationService {
   deleteAnnouncment(AnnouncmentId: string) {
     return this.http.delete<ResponseMessage>(
       this.baseUrl +
-        `/Announcment/DeleteAnnouncment?AnnouncmentId=${AnnouncmentId}`
+      `/Announcment/DeleteAnnouncment?AnnouncmentId=${AnnouncmentId}`
     );
   }
 

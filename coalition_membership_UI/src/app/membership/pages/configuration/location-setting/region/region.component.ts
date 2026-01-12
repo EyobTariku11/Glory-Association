@@ -4,6 +4,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ConfigurationService } from "src/app/services/configuration.service";
 
 import { AddRegionComponent } from "./add-region/add-region.component";
+import { DeleteConfirmationComponent } from "../../../delete-confirmation/delete-confirmation.component";
 
 import { UserService } from "src/app/services/user.service";
 import { UserView } from "src/app/models/auth/userDto";
@@ -37,7 +38,7 @@ export class RegionComponent implements OnInit {
     private modalService: NgbModal,
     private userService: UserService,
     private controlService: ConfigurationService
-  ) {}
+  ) { }
 
   getRegions() {
     this.controlService.getRegions().subscribe({
@@ -65,15 +66,16 @@ export class RegionComponent implements OnInit {
   }
 
   removeRegion(regionId: string) {
-    this.controlService.deleteRegion(regionId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          successToast(res.message);
-          this.getRegions();
-        } else {
-          errorToast(res.errorCode! || res.message, res.message);
-        }
-      },
+    let modalRef = this.modalService.open(DeleteConfirmationComponent, {
+      backdrop: "static",
+    });
+    modalRef.componentInstance.memberIdToDelete = regionId;
+    modalRef.componentInstance.deleteType = "region";
+
+    modalRef.result.then((result) => {
+      if (result === 'deleted') {
+        this.getRegions();
+      }
     });
   }
 

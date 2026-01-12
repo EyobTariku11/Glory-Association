@@ -42,8 +42,25 @@ namespace MembershipDigitalAPI.Controllers.Configuration
             }
         }
 
-        
-       
+        [HttpPut]
+        [ProducesResponseType(typeof(ResponseMessage<string>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> UpdateRegion([FromBody] RegionPostDto RegionDto)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(await _regionService.UpdateRegion(RegionDto));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
 
+        [HttpDelete("DeleteRegion")]
+        [ProducesResponseType(typeof(ResponseMessage<string>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteRegion(Guid RegionId)
+        {
+            return Ok(await _regionService.DeleteRegion(RegionId));
+        }
     }
 }

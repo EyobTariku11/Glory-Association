@@ -93,5 +93,53 @@ namespace MembershipImplementation.Services.Configuration
         }
 
         
+        public async Task<ResponseMessage<string>> UpdateRegion(RegionPostDto regionPost)
+        {
+            try
+            {
+                var region = await _dbContext.Regions.FindAsync(regionPost.Id);
+                if (region == null)
+                    return new ResponseMessage<string> { Success = false, Message = "Region not found" };
+
+                region.RegionName = regionPost.RegionName;
+                region.CountryType = regionPost.CountryType;
+
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponseMessage<string>
+                {
+                    Data = region.Id.ToString(),
+                    Message = "Updated Successfully",
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return ExceptionHandler.HandleException<string>(ex);
+            }
+        }
+
+        public async Task<ResponseMessage<string>> DeleteRegion(Guid regionId)
+        {
+            try
+            {
+                var region = await _dbContext.Regions.FindAsync(regionId);
+                if (region == null)
+                    return new ResponseMessage<string> { Success = false, Message = "Region not found" };
+
+                _dbContext.Regions.Remove(region);
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponseMessage<string>
+                {
+                    Message = "Deleted Successfully",
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return ExceptionHandler.HandleException<string>(ex);
+            }
+        }
     }
 }

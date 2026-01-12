@@ -40,6 +40,8 @@ export class DeleteConfirmationComponent {
       this.deleteBoardMember();
     } else if (this.deleteType == "association-user") {
       this.closeWithResult();
+    } else if (this.deleteType == "region") {
+      this.deleteRegion();
     }
   }
 
@@ -117,6 +119,22 @@ export class DeleteConfirmationComponent {
       error: (err) => {
         console.error('Error deleting board member:', err);
         errorToast('Failed to delete board member');
+      }
+    });
+  }
+
+  deleteRegion() {
+    this.configurationService.deleteRegion(this.memberIdToDelete).subscribe({
+      next: (res) => {
+        if (res.success) {
+          successToast(res.message);
+          this.closeModal();
+        } else {
+          errorToast(res.message || "Failed to delete region");
+        }
+      },
+      error: (err) => {
+        errorToast(err.error?.message || "Failed to delete region");
       }
     });
   }

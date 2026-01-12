@@ -15,22 +15,38 @@
 
             <form [formGroup]="associationUserForm" (ngSubmit)="onSubmit()">
                 <div class="row g-3">
-                    <!-- Name (English) -->
+                    <!-- User Name -->
                     <div class="col-md-6">
                         <label for="userName" class="form-label">User Name</label>
-                        <input id="userName" formControlName="userName" class="form-control" required />
+                        <input id="userName" formControlName="userName" class="form-control"
+                            [ngClass]="{'is-invalid': associationUserForm.get('userName')?.touched && associationUserForm.get('userName')?.invalid}"
+                            required />
+                        <div class="invalid-feedback"
+                            *ngIf="associationUserForm.get('userName')?.hasError('minlength')">
+                            Username must be at least 3 characters.
+                        </div>
                     </div>
 
-                    <!-- Name (Amharic) -->
+                    <!-- Email -->
                     <div class="col-md-6">
-                        <label for="amharicemailName" class="form-label">Email</label>
-                        <input id="email" formControlName="email" type="email" class="form-control" required />
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" formControlName="email" type="email" class="form-control"
+                            [ngClass]="{'is-invalid': associationUserForm.get('email')?.touched && associationUserForm.get('email')?.invalid}"
+                            required />
+                        <div class="invalid-feedback" *ngIf="associationUserForm.get('email')?.hasError('email')">
+                            Please enter a valid email address.
+                        </div>
                     </div>
 
-                    <!-- ArifPay Key -->
+                    <!-- Password -->
                     <div class="col-md-6">
-                        <label for="password" class="form-label">Password</label>
-                        <input id="password" formControlName="password" type="password" class="form-control" />
+                        <label for="password" class="form-label">Password {{isEditMode ? '(Optional)' : ''}}</label>
+                        <input id="password" formControlName="password" type="password" class="form-control"
+                            [ngClass]="{'is-invalid': associationUserForm.get('password')?.touched && associationUserForm.get('password')?.invalid}" />
+                        <div class="invalid-feedback"
+                            *ngIf="associationUserForm.get('password')?.hasError('minlength')">
+                            Password must be at least 6 characters.
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -43,7 +59,7 @@
 
                     <div class="text-end mt-4">
                         <button type="submit" class="btn btn-success px-4" [disabled]="associationUserForm.invalid">
-                            {{userData?"Update":"Register"}} User
+                            {{isEditMode ?"Update":"Register"}} User
                         </button>
                     </div>
                 </div>

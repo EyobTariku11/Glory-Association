@@ -103,6 +103,16 @@ const NavigationItems = [
       },
 
       {
+        id: "regions",
+        title: "Regions",
+        type: "item",
+        role: ["Coalition"],
+        icon: "ti ti-map-pin",
+        url: "/admin/configuration/location-setting",
+        breadcrumbs: false,
+      },
+
+      {
         id: "data",
         title: "Members",
         type: "item",
@@ -256,14 +266,14 @@ const NavigationItems = [
         id: "Authentication",
         title: "Configuration",
         type: "collapse",
-        role: ["Coalition"],
+        role: ["Association"],
         icon: "ti ti-settings",
         children: [
           {
             id: "membership-types",
             title: "Membership Types",
             type: "item",
-            role: ["Coalition"],
+            role: ["Association"],
             url: "/admin/configuration/membership-types",
             breadcrumbs: false,
           },
@@ -275,14 +285,7 @@ const NavigationItems = [
             url: "/admin/configuration/general-codes",
             breadcrumbs: false,
           },
-          {
-            id: "data",
-            title: "Regions",
-            type: "item",
-            role: ["Coalition"],
-            url: "/admin/configuration/location-setting",
-            breadcrumbs: false,
-          },
+
         ],
       },
 
