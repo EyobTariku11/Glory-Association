@@ -3,7 +3,7 @@
   <div class="hero-section">
     <div class="hero-content">
       <div class="logo-section">
-        <img src="assets/images/eplffc-logo.png" alt="EPLFFC Logo" class="hero-logo" onerror="this.style.display='none'">
+        <img src="assets/images/LOGO.png" alt="EPLFFC Logo" class="hero-logo" onerror="this.style.display='none'">
         <h1 class="hero-title">EPLFFC</h1>
       </div>
       <p class="hero-subtitle">Ethiopian Premier League Football Federation Coalition</p>
@@ -18,26 +18,16 @@
         <h2>Member Verification</h2>
         <p>Enter member ID to verify membership status</p>
       </div>
-      
+
       <form [formGroup]="verificationForm" (ngSubmit)="verifyMember()" class="verification-form">
         <div class="form-group">
           <label for="memberId" class="form-label">Member ID</label>
           <div class="input-group">
             <span class="input-prefix">ID:</span>
-            <input 
-              type="text" 
-              id="memberId"
-              formControlName="memberId"
-              class="form-control"
-              placeholder="Enter member ID (e.g., COALITION-FTW-96902673)"
-              (keypress)="onKeyPress($event)"
-              [class.is-invalid]="verificationForm.get('memberId')?.invalid && verificationForm.get('memberId')?.touched"
-            >
-            <button 
-              type="submit" 
-              class="btn btn-verify"
-              [disabled]="verificationForm.invalid || isLoading"
-            >
+            <input type="text" id="memberId" formControlName="memberId" class="form-control"
+              placeholder="Enter member ID (e.g., COALITION-FTW-96902673)" (keypress)="onKeyPress($event)"
+              [class.is-invalid]="verificationForm.get('memberId')?.invalid && verificationForm.get('memberId')?.touched">
+            <button type="submit" class="btn btn-verify" [disabled]="verificationForm.invalid || isLoading">
               <span *ngIf="!isLoading">
                 <i class="fas fa-search me-2"></i>Verify
               </span>
@@ -46,8 +36,8 @@
               </span>
             </button>
           </div>
-          <div *ngIf="verificationForm.get('memberId')?.invalid && verificationForm.get('memberId')?.touched" 
-               class="invalid-feedback">
+          <div *ngIf="verificationForm.get('memberId')?.invalid && verificationForm.get('memberId')?.touched"
+            class="invalid-feedback">
             {{ getErrorMessage() }}
           </div>
         </div>
@@ -57,7 +47,8 @@
       <div class="quick-actions">
         <h3>Quick Actions</h3>
         <div class="action-buttons">
-          <button class="btn btn-outline-primary" (click)="verificationForm.patchValue({memberId: 'COALITION-FTW-96902673'})">
+          <button class="btn btn-outline-primary"
+            (click)="verificationForm.patchValue({memberId: 'COALITION-FTW-96902673'})">
             <i class="fas fa-user me-2"></i>Sample Member
           </button>
           <button class="btn btn-outline-secondary" (click)="verificationForm.reset()">
@@ -79,7 +70,7 @@
         <h3>Secure Verification</h3>
         <p>Verify member authenticity with secure API endpoints</p>
       </div>
-      
+
       <div class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-mobile-alt"></i>
@@ -87,7 +78,7 @@
         <h3>Mobile Friendly</h3>
         <p>Access verification from any device, anywhere</p>
       </div>
-      
+
       <div class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-clock"></i>
@@ -95,7 +86,7 @@
         <h3>Real-time Data</h3>
         <p>Get instant access to current membership status</p>
       </div>
-      
+
       <div class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-qrcode"></i>
@@ -120,4 +111,4 @@
       </div>
     </div>
   </div>
-</div> 
+</div>

@@ -44,13 +44,13 @@ export class RenewMemberComponent implements OnInit {
     private userService: UserService,
     private commonService: CommonService,
     private dropdownService: DropDownService,
- private associationService: AssociationService,
+    private associationService: AssociationService,
     private memberService: MemberService,
     private activeModal: NgbActiveModal,
 
     private authGuard: AuthGuard,
     private paymentService: PaymentService
-  ) {}
+  ) { }
 
   educationalFields: SelectList[];
   educationalLelvels: SelectList[];
@@ -86,19 +86,19 @@ export class RenewMemberComponent implements OnInit {
   }
 
   getAssociationDropDown() {
-      this.associationService.getAssociationDropDown().subscribe({
-        next: (res) => {
-          if (res.success) {
-            this.associations = res.data;
-          } else {
-            errorToast(res.message);
-          }
-        },
-        error: (err) => {
-          errorToast(err);
-        },
-      });
-    }
+    this.associationService.getAssociationDropDown().subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.associations = res.data;
+        } else {
+          errorToast(res.message);
+        }
+      },
+      error: (err) => {
+        errorToast(err);
+      },
+    });
+  }
   onMembershipSelcted(item: string) {
     var k = item.split("/");
     this.selectedAmount = Number.parseInt(k[1]);
@@ -205,7 +205,7 @@ export class RenewMemberComponent implements OnInit {
   // Use ArifPay payment methods instead
   MakePaymentConfirmation(text_rn: string) {
     this.paymentService.MakePaymentConfirmation(text_rn).subscribe({
-      next: (res) => {},
+      next: (res) => { },
     });
   }
 
@@ -247,7 +247,7 @@ export class RenewMemberComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://eplffc.et/assets/images/LOGO.png",
               name: "Payment for Membership " + (member.membershipTypeName || member.membershipType || "Membership") + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,

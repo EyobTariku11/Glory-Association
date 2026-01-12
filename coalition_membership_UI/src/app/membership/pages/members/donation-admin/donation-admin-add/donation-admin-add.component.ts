@@ -135,7 +135,7 @@ export class DonationAdminAddComponent implements OnInit {
     ) {
       return this.getImage(this.donationEvent.imagePath!);
     } else {
-      return "../../../../../../assets/logo-transparent.png";
+      return "../../../../../../assets/images/LOGO.png";
     }
   }
 

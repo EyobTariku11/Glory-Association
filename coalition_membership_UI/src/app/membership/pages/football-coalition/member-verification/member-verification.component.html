@@ -2,7 +2,7 @@
   <!-- Header -->
   <div class="verification-header">
     <div class="logo-section">
-      <img src="assets/images/eplffc-logo.png" alt="EPLFFC Logo" class="logo" onerror="this.style.display='none'">
+      <img src="assets/images/LOGO.png" alt="EPLFFC Logo" class="logo" onerror="this.style.display='none'">
       <h1>EPLFFC Member Verification</h1>
     </div>
     <p class="subtitle">Verify membership status and details</p>
@@ -30,7 +30,8 @@
   <!-- Verification Result -->
   <div *ngIf="verificationResult && !isLoading" class="verification-result">
     <!-- Success/Status Banner -->
-    <div class="status-banner" [ngClass]="{'success': verificationResult.isVerified, 'error': !verificationResult.isVerified}">
+    <div class="status-banner"
+      [ngClass]="{'success': verificationResult.isVerified, 'error': !verificationResult.isVerified}">
       <div class="status-icon">
         <i *ngIf="verificationResult.isVerified" class="fas fa-check-circle"></i>
         <i *ngIf="!verificationResult.isVerified" class="fas fa-times-circle"></i>
@@ -49,87 +50,86 @@
       <div class="card-header">
         <h4>Member Information</h4>
       </div>
-      
+
       <div class="card-body">
         <div class="member-photo-section">
-          <img [src]="getMemberImageUrl(verificationResult.data.imagePath)" 
-               [alt]="verificationResult.data.fullName + ' photo'"
-               class="member-photo"
-               onerror="this.src='assets/images/default-avatar.png'">
+          <img [src]="getMemberImageUrl(verificationResult.data.imagePath)"
+            [alt]="verificationResult.data.fullName + ' photo'" class="member-photo"
+            onerror="this.src='assets/images/default-avatar.png'">
         </div>
-        
+
         <div class="member-info-section">
           <div class="info-grid">
             <div class="info-item">
               <span class="label">Member ID:</span>
               <span class="value">{{ verificationResult.data.memberId }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Full Name:</span>
               <span class="value">{{ verificationResult.data.fullName }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Membership Type:</span>
               <span class="value">{{ verificationResult.data.membershipTypeName }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Association:</span>
               <span class="value">{{ verificationResult.data.associationName }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Coalition:</span>
               <span class="value">{{ verificationResult.data.coalitionName }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Zone:</span>
               <span class="value">{{ verificationResult.data.zone }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Woreda:</span>
               <span class="value">{{ verificationResult.data.woreda }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Email:</span>
               <span class="value">{{ verificationResult.data.email }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Phone:</span>
               <span class="value">{{ verificationResult.data.phoneNumber }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Birth Date:</span>
               <span class="value">{{ formatDate(verificationResult.data.birthDate) }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Issued Date:</span>
               <span class="value">{{ formatDate(verificationResult.data.createdDate) }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Expiry Date:</span>
               <span class="value" [ngClass]="{'expired': isExpired}">
                 {{ formatDate(verificationResult.data.expiryDate) }}
               </span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Payment Status:</span>
-              <span class="value status-badge" 
-                    [ngStyle]="{'background-color': getStatusColor(verificationResult.data.paymentStatus)}">
+              <span class="value status-badge"
+                [ngStyle]="{'background-color': getStatusColor(verificationResult.data.paymentStatus)}">
                 {{ verificationResult.data.paymentStatus }}
               </span>
             </div>
-            
+
             <div class="info-item">
               <span class="label">Profile Complete:</span>
               <span class="value">
@@ -148,7 +148,7 @@
       <button class="btn btn-secondary" (click)="goBack()">
         <i class="fas fa-arrow-left me-2"></i>Go Back
       </button>
-      
+
       <button class="btn btn-primary" (click)="verifyMember(memberId)">
         <i class="fas fa-redo me-2"></i>Verify Again
       </button>
@@ -163,4 +163,4 @@
       <p class="text-muted">Please provide a valid member ID to verify membership.</p>
     </div>
   </div>
-</div> 
+</div>

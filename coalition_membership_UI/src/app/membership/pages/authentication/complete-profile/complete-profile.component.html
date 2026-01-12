@@ -68,13 +68,13 @@
         </div>
         <div class="col-md-4">
             <div class="member-info text-center">
-                <img src="assets/logo-remove.png" alt="Member Image" style="max-height: 300px;"
+                <img src="assets/images/LOGO.png" alt="Member Image" style="max-height: 300px;"
                     class="img-fluid bounce-image" appImageError>
-                <h2 class=" mt-2" style="color: rgb(9 101 58)!important;"><b>EPLFFC  Coalition
+                <h2 class=" mt-2" style="color: rgb(9 101 58)!important;"><b>EPLFFC Coalition
                     </b></h2>
 
                 <span style="font-size: 20px;font-weight: bold;">{{paymentStatus}}</span>
-                
+
                 <div class="partner-logo mt-4 text-end me-2">
                     <img src="assets/arifpay.svg" alt="Partner Logo" class="w-32 h-auto" appImageError>
                 </div>
@@ -93,7 +93,8 @@
                     </div>
                     <div *ngIf="memberVar.paymentStatus=='EXPIRED'">
                         <div class="d-grid mt-4">
-                            <button (click)="renewMembershipArifPay()" class="btn btn-primary">Renew with ArifPay</button>
+                            <button (click)="renewMembershipArifPay()" class="btn btn-primary">Renew with
+                                ArifPay</button>
                         </div>
                     </div>
                 </div>

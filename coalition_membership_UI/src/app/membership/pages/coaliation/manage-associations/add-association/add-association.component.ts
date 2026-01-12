@@ -241,22 +241,14 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
   onFileSelected3(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.stamp = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => (this.previewUrl2 = reader.result as string);
-      reader.readAsDataURL(this.stamp);
+      this.processImageAndMakeTransparent(input.files[0], 'stamp');
     }
   }
 
   onFileSelected4(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.stamp2 = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => (this.previewUrl3 = reader.result as string);
-      reader.readAsDataURL(this.stamp2);
+      this.processImageAndMakeTransparent(input.files[0], 'stamp2');
     }
   }
 
@@ -274,12 +266,58 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
   onFileSelected6(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.photoStamp = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => (this.previewUrl5 = reader.result as string);
-      reader.readAsDataURL(this.photoStamp);
+      this.processImageAndMakeTransparent(input.files[0], 'photoStamp');
     }
+  }
+
+  processImageAndMakeTransparent(file: File, type: string): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        // Simple background removal (e.g., white to transparent)
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+
+          // If the pixel is close to white, make it transparent
+          if (r > 230 && g > 230 && b > 230) {
+            data[i + 3] = 0;
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const processedFile = new File([blob], file.name, { type: 'image/png' });
+            if (type === 'stamp') {
+              this.stamp = processedFile;
+              this.previewUrl2 = canvas.toDataURL();
+            } else if (type === 'stamp2') {
+              this.stamp2 = processedFile;
+              this.previewUrl3 = canvas.toDataURL();
+            } else if (type === 'photoStamp') {
+              this.photoStamp = processedFile;
+              this.previewUrl5 = canvas.toDataURL();
+            }
+          }
+        }, 'image/png');
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   getPhoneControl(index: number): FormControl {

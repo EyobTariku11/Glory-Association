@@ -112,7 +112,7 @@ export class NavRightComponent implements OnInit {
 
   getProfileImage(): string {
     // Use relative path for assets in Angular
-    return 'assets/logo-remove.png';
+    return 'assets/images/LOGO.png';
   }
 
   getDisplayName(fullName: string, maxLength: number = 20): string {

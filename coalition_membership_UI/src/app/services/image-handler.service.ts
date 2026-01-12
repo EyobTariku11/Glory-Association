@@ -6,10 +6,10 @@ import { CommonService } from './common.service';
 })
 export class ImageHandlerService {
 
-  private readonly DEFAULT_FALLBACK = 'assets/logo-remove.png';
-  private readonly LOGO_FALLBACK = 'assets/logo-transparent.png';
+  private readonly DEFAULT_FALLBACK = 'assets/images/LOGO.png';
+  private readonly LOGO_FALLBACK = 'assets/images/LOGO.png';
 
-  constructor(private commonService: CommonService) {}
+  constructor(private commonService: CommonService) { }
 
   /**
    * Get image URL with fallback handling
@@ -18,7 +18,7 @@ export class ImageHandlerService {
     if (!url || url.trim() === '') {
       return this.getFallbackImage(fallbackType);
     }
-    
+
     try {
       return this.commonService.createImgPath(url);
     } catch (error) {
@@ -35,12 +35,12 @@ export class ImageHandlerService {
     if (localImagePath && localImagePath !== '') {
       return localImagePath;
     }
-    
+
     // Then check member image path
     if (imagePath && imagePath !== '') {
       return this.getImage(imagePath, 'default');
     }
-    
+
     // Return default fallback
     return this.getFallbackImage('default');
   }
@@ -83,7 +83,7 @@ export class ImageHandlerService {
     if (!this.isValidImageUrl(url)) {
       return customFallback;
     }
-    
+
     try {
       return this.commonService.createImgPath(url);
     } catch (error) {

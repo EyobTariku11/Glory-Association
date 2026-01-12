@@ -5,12 +5,12 @@ import { Directive, ElementRef, Input, HostListener } from '@angular/core';
   standalone: true
 })
 export class ImageErrorDirective {
-  @Input() fallbackImage: string = 'assets/logo-remove.png';
+  @Input() fallbackImage: string = 'assets/images/LOGO.png';
   @Input() originalSrc: string = '';
 
   private hasError = false;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   @HostListener('error')
   onError() {

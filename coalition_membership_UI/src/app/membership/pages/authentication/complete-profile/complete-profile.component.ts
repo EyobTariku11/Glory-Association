@@ -121,7 +121,7 @@ export class CompleteProfileComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://gloryfoundation.et/assets/images/logos/logo-remove.jpg",
+              image: "https://gloryfoundation.et/assets/images/LOGO.png",
               name: "Payment for Membership " + (this.memberVar.membershipTypeName || this.memberVar.membershipType || "Membership") + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -196,7 +196,7 @@ export class CompleteProfileComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://gloryfoundation.et/assets/images/logos/logo-remove.jpg",
+              image: "https://gloryfoundation.et/assets/images/LOGO.png",
               name: "Payment for Membership " + (this.memberVar.membershipTypeName || this.memberVar.membershipType || "Membership") + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -405,7 +405,7 @@ export class CompleteProfileComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://gloryfoundation.et/assets/images/logos/logo-remove.jpg",
+              image: "https://gloryfoundation.et/assets/images/LOGO.png",
               name: "Payment for Membership " + member.membershipTypeName + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,

@@ -25,7 +25,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 // Simple auth interceptor function
 function authInterceptor(req: any, next: any) {
   const token = sessionStorage.getItem('token');
-  
+
   if (token && token !== '') {
     console.log('Adding Bearer token to request:', req.url);
     console.log('Token (first 20 chars):', token.substring(0, 20) + '...');
@@ -34,7 +34,7 @@ function authInterceptor(req: any, next: any) {
     });
     return next(authReq);
   }
-  
+
   console.log('No token found for request:', req.url);
   return next(req);
 }
@@ -56,4 +56,4 @@ bootstrapApplication(AppComponent, {
     )
   ]
 })
-.catch((err) => console.error(err));
+  .catch((err) => console.error(err));

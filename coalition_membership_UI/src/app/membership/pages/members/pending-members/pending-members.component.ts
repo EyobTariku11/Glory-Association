@@ -52,7 +52,7 @@ export class PendingMembersComponent implements OnInit {
     private authGuard: AuthGuard,
     private paymentService: PaymentService,
     private associationService: AssociationService
-  ) {}
+  ) { }
 
   educationalFields: SelectList[];
   educationalLelvels: SelectList[];
@@ -282,7 +282,7 @@ export class PendingMembersComponent implements OnInit {
     this.associationService.getArifPayKey(this.member.associationId).subscribe({
       next: (arifPayKey) => {
         const phoneNumber = this.getPhoneNumberWithDefault(payment.phone_number);
-        
+
         const paymentPayload: IPaymentDataArifPay = {
           cancelUrl: "https://eplffc.et/admin/members/pending-members",
           phone: phoneNumber,
@@ -294,7 +294,7 @@ export class PendingMembersComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://eplffc.et/assets/images/LOGO.png",
               name: "Payment for Membership " + this.memberTelegram.member.membershipType + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -358,7 +358,7 @@ export class PendingMembersComponent implements OnInit {
     this.associationService.getArifPayKey(this.member.associationId).subscribe({
       next: (arifPayKey) => {
         const phoneNumber = this.getPhoneNumberWithDefault(payment.phone_number);
-        
+
         const paymentPayload: IPaymentDataArifPay = {
           cancelUrl: "https://eplffc.et/admin/members/pending-members",
           phone: phoneNumber,
@@ -370,7 +370,7 @@ export class PendingMembersComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://eplffc.et/assets/images/LOGO.png",
               name: "Payment for Membership " + this.memberTelegram.member.membershipType + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -420,7 +420,7 @@ export class PendingMembersComponent implements OnInit {
     this.associationService.getArifPayKey(member.associationId).subscribe({
       next: (arifPayKey) => {
         const phoneNumber = this.getPhoneNumberWithDefault(payment.phone_number);
-        
+
         const paymentPayload: IPaymentDataArifPay = {
           cancelUrl: "https://eplffc.et/admin/members/pending-members",
           phone: phoneNumber,
@@ -432,7 +432,7 @@ export class PendingMembersComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://eplffc.et/assets/images/LOGO.png",
               name: "Payment for Membership " + (member.membershipTypeName || member.membershipType || "Membership") + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -482,7 +482,7 @@ export class PendingMembersComponent implements OnInit {
     this.associationService.getArifPayKey(member.associationId).subscribe({
       next: (arifPayKey) => {
         const phoneNumber = this.getPhoneNumberWithDefault(payment.phone_number);
-        
+
         const paymentPayload: IPaymentDataArifPay = {
           cancelUrl: "https://eplffc.et/admin/members/pending-members",
           phone: phoneNumber,
@@ -494,7 +494,7 @@ export class PendingMembersComponent implements OnInit {
           apikey: arifPayKey,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://eplffc.et/assets/images/LOGO.png",
               name: "Payment for Membership " + member.membershipTypeName + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -528,7 +528,7 @@ export class PendingMembersComponent implements OnInit {
               errorToast("Arif pay Error", res.response.msg);
             }
           },
-          error: (err) => {},
+          error: (err) => { },
         });
       },
       error: (err) => {

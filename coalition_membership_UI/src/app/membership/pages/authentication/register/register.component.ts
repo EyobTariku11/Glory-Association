@@ -369,7 +369,7 @@ export default class RegisterComponent implements OnInit {
           apikey: cleanApiKeyValue,
           items: [
             {
-              image: "https://eplffc.et/assets/images/logos/logo-remove.jpg",
+              image: "https://eplffc.et/assets/images/LOGO.png",
               name: "Payment for Membership " + member.membershipTypeName + " - " + payment.first_name,
               quantity: 1,
               price: payment.amount,
@@ -436,7 +436,7 @@ export default class RegisterComponent implements OnInit {
   }
 
   getCurrentLogoPath(): string {
-    return this.commonService.createImgPath(this.selectedAssociationImagePath) || 'assets/logo-remove.png';
+    return this.commonService.createImgPath(this.selectedAssociationImagePath) || 'assets/images/LOGO.png';
   }
 
   // Helper function to check if phone number is Ethiopian

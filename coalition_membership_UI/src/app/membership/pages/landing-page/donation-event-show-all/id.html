@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -116,60 +117,63 @@
         }
     </style>
 </head>
+
 <body>
 
-<!-- Front Side -->
-<div class="id-card">
-    <div class="header">
-        <img src="logo.jpg" alt="Organization Logo" appImageError>
-        <h2>EPLFFC Development Organization<br><span>አቢ-ዝዕር የማህበረሰብ ልማት ድርጅት</span></h2>
+    <!-- Front Side -->
+    <div class="id-card">
+        <div class="header">
+            <img src="assets/images/LOGO.png" alt="Organization Logo" appImageError>
+            <h2>EPLFFC Development Organization<br><span>አቢ-ዝዕር የማህበረሰብ ልማት ድርጅት</span></h2>
+        </div>
+
+        <div class="id-card__details">
+            <div class="details-right">
+                <img src="profile.jpg" alt="Member Photo" class="profile-pic" appImageError>
+            </div>
+            <div class="details-left">
+                <div class="id-card__detail">
+                    <span class="id-card__detail-label">ID Number</span>
+                    <span class="id-card__detail-value" id="id-card-ID">{{member.memberId}}</span>
+                </div>
+                <div class="id-card__detail">
+                    <span class="id-card__detail-label">Name</span>
+                    <span class="id-card__detail-value" id="id-card-name">{{member.fullName}}</span>
+                </div>
+                <div class="id-card__detail">
+                    <span class="id-card__detail-label">Membership Type</span>
+                    <span class="id-card__detail-value" id="id-card-membership-type">{{member.membershipType}}</span>
+                </div>
+                <div class="id-card__detail">
+                    <span class="id-card__detail-label">Mobile Number</span>
+                    <span class="id-card__detail-value">{{member.phoneNumber}}</span>
+                </div>
+                <div class="id-card__detail">
+                    <span class="id-card__detail-label">Issued Date</span>
+                    <span class="id-card__detail-value">{{member.lastPaid|date:"dd MMM yyyy"}}</span>
+                </div>
+                <div class="id-card__detail">
+                    <span class="id-card__detail-label">Expired Date</span>
+                    <span class="id-card__detail-value">{{expiryDate|date:"dd MMM yyyy"}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="watermark">EPLFFC</div>
+        <div class="footer">Authorized by EPLFFC Development Organization</div>
     </div>
 
-    <div class="id-card__details">
-        <div class="details-right">
-            <img src="profile.jpg" alt="Member Photo" class="profile-pic" appImageError>
-        </div>
-        <div class="details-left">
-            <div class="id-card__detail">
-                <span class="id-card__detail-label">ID Number</span>
-                <span class="id-card__detail-value" id="id-card-ID">{{member.memberId}}</span>
-            </div>
-            <div class="id-card__detail">
-                <span class="id-card__detail-label">Name</span>
-                <span class="id-card__detail-value" id="id-card-name">{{member.fullName}}</span>
-            </div>
-            <div class="id-card__detail">
-                <span class="id-card__detail-label">Membership Type</span>
-                <span class="id-card__detail-value" id="id-card-membership-type">{{member.membershipType}}</span>
-            </div>
-            <div class="id-card__detail">
-                <span class="id-card__detail-label">Mobile Number</span>
-                <span class="id-card__detail-value">{{member.phoneNumber}}</span>
-            </div>
-            <div class="id-card__detail">
-                <span class="id-card__detail-label">Issued Date</span>
-                <span class="id-card__detail-value">{{member.lastPaid|date:"dd MMM yyyy"}}</span>
-            </div>
-            <div class="id-card__detail">
-                <span class="id-card__detail-label">Expired Date</span>
-                <span class="id-card__detail-value">{{expiryDate|date:"dd MMM yyyy"}}</span>
-            </div>
-        </div>
+    <!-- Back Side -->
+    <div class="id-card"
+        style="margin-left: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <img src="qr-code.png" alt="QR Code" style="width: 150px; height: 150px; margin-bottom: 20px;" appImageError>
+        <p><strong>Address:</strong> Bisrate Gebriel, in front of Zambia Embassy</p>
+        <p><strong>Email:</strong> abizeerfamily&#64;gmail.com</p>
+        <p><strong>Authorized Signature:</strong></p>
+        <img src="signature.png" alt="Signature" style="width: 150px;" appImageError>
+        <img src="stamp.png" alt="Stamp" style="width: 120px; margin-top: 10px;" appImageError>
     </div>
-
-    <div class="watermark">EPLFFC</div>
-    <div class="footer">Authorized by EPLFFC Development Organization</div>
-</div>
-
-<!-- Back Side -->
-<div class="id-card" style="margin-left: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <img src="qr-code.png" alt="QR Code" style="width: 150px; height: 150px; margin-bottom: 20px;" appImageError>
-    <p><strong>Address:</strong> Bisrate Gebriel, in front of Zambia Embassy</p>
-    <p><strong>Email:</strong> abizeerfamily&#64;gmail.com</p>
-    <p><strong>Authorized Signature:</strong></p>
-    <img src="signature.png" alt="Signature" style="width: 150px;" appImageError>
-    <img src="stamp.png" alt="Stamp" style="width: 120px; margin-top: 10px;" appImageError>
-</div>
 
 </body>
+
 </html>
