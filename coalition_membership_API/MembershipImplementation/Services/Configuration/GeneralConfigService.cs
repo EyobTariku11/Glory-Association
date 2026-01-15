@@ -329,11 +329,14 @@ private int GetEthiopianYear(DateTime date)
 
                 HttpClient httpClient = _httpClientFactory.CreateClient();
 
-                // Create a new FormData object and add the required parameters.
-                var formData = new MultipartFormDataContent();
-                formData.Add(new StringContent(messageRequest.PhoneNumber), "phone");
-                formData.Add(new StringContent(messageRequest.Message), "msg");
-                formData.Add(new StringContent(token), "token");
+                // Create a new FormUrlEncodedContent object and add the required parameters.
+                var keyValues = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("phone", messageRequest.PhoneNumber),
+                    new KeyValuePair<string, string>("msg", messageRequest.Message),
+                    new KeyValuePair<string, string>("token", token)
+                };
+                var formData = new FormUrlEncodedContent(keyValues);
 
                 // Send the POST request to the SMS API.
                 HttpResponseMessage response = await httpClient.PostAsync(apiUrl, formData);

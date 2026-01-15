@@ -10,7 +10,7 @@ export interface NavigationItem {
   external?: boolean;
   target?: boolean;
   breadcrumbs?: boolean;
-  role: string;
+  role: any;
   children?: Navigation[];
 }
 
@@ -60,31 +60,32 @@ const NavigationItems = [
     id: "page2",
     title: "Membership",
     type: "group",
+    role: ["Coalition", "Association"],
     icon: "icon-navigation",
     children: [
-      {
-        id: "profile",
-        title: "Profile",
-        type: "item",
-        role: ["Member"],
-        icon: "ti ti-user-check",
-        url: "/admin/members/member-profile",
-        breadcrumbs: false,
-      },
+      // {
+      //   id: "profile",
+      //   title: "Profile",
+      //   type: "item",
+      //   role: ["Member"],
+      //   icon: "ti ti-user-check",
+      //   url: "/admin/members/member-profile",
+      //   breadcrumbs: false,
+      // },
 
-      {
-        id: "Events",
-        title: "Events & News",
-        type: "item",
-        role: ["Member"],
-        icon: "ti ti-link",
-        url: "/admin/members/member-event",
-        breadcrumbs: false,
-      },
+      // {
+      //   id: "Events",
+      //   title: "Events & News",
+      //   type: "item",
+      //   role: ["Member"],
+      //   icon: "ti ti-link",
+      //   url: "/admin/members/member-event",
+      //   breadcrumbs: false,
+      // },
 
       {
         id: "manage-association",
-        title: "Manage Association",
+        title: "Manage Foundation",
         type: "item",
         role: ["Coalition"],
         icon: "ti ti-building",

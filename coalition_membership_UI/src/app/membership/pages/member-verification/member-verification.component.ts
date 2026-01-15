@@ -45,7 +45,7 @@ export class MemberVerificationComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Get member ID from route parameter
@@ -62,14 +62,14 @@ export class MemberVerificationComponent implements OnInit {
     this.error = '';
     this.verificationResult = null;
 
-    // Make API request to EPLFFC verification endpoint
-    const apiUrl = `https://eplffc.et/api/api/Member/VerifyMember?memberId=${memberId}`;
-    
+    // Make API request to verification endpoint
+    const apiUrl = `${environment.baseUrl}/Member/VerifyMember?memberId=${memberId}`;
+
     this.http.get<MemberVerificationResponse>(apiUrl).subscribe({
       next: (response) => {
         this.verificationResult = response;
         this.isLoading = false;
-        
+
         // Check if membership is expired
         if (response.data && response.data.expiryDate) {
           const expiryDate = new Date(response.data.expiryDate);
@@ -86,7 +86,7 @@ export class MemberVerificationComponent implements OnInit {
   }
 
   getMemberImageUrl(imagePath: string): string {
-   
+
     return `${environment.assetUrl}/${imagePath}`;
   }
 

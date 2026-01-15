@@ -5,6 +5,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NavigationItem } from '../navigation';
 import { Location, LocationStrategy } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-nav-content',
@@ -21,13 +22,21 @@ export class NavContentComponent implements OnInit {
   navigation: any;
   windowWidth = window.innerWidth;
 
+  userRole: string = '';
+
   // Constructor
   constructor(
     public nav: NavigationItem,
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    private userService: UserService
   ) {
     this.navigation = this.nav.get();
+    try {
+      this.userRole = this.userService.getCurrentUser().role;
+    } catch (e) {
+      console.error('Error getting user role', e);
+    }
   }
 
   // Life cycle events
