@@ -29,21 +29,11 @@
     <!-- Enhanced Filtering Section -->
     <div class="row mb-3">
       <div class="col-xl-3 mb-2">
-        <input
-          type="text"
-          placeholder="Search..."
-          class="form-control"
-          style="font-size: 18px"
-          [(ngModel)]="searchTerm"
-          (input)="applyFilter()"
-        />
+        <input type="text" placeholder="Search..." class="form-control" style="font-size: 18px" [(ngModel)]="searchTerm"
+          (input)="applyFilter()" />
       </div>
       <div class="col-xl-2 mb-2">
-        <select
-          class="form-control"
-          [(ngModel)]="selectedType"
-          (change)="applyFilter()"
-        >
+        <select class="form-control" [(ngModel)]="selectedType" (change)="applyFilter()">
           <option value="">All Types</option>
           <option *ngFor="let type of types" [value]="type.value">
             {{ type.label }}
@@ -51,11 +41,7 @@
         </select>
       </div>
       <div class="col-xl-2 mb-2">
-        <select
-          class="form-control"
-          [(ngModel)]="selectedRegion"
-          (change)="applyFilter()"
-        >
+        <select class="form-control" [(ngModel)]="selectedRegion" (change)="applyFilter()">
           <option value="">All Regions</option>
           <option *ngFor="let region of regions" [value]="region.value">
             {{ region.label }}
@@ -63,33 +49,22 @@
         </select>
       </div>
       <div class="col-xl-2 mb-2">
-        <select
-          class="form-control"
-          [(ngModel)]="selectedMembershipCategory"
-          (change)="applyFilter()"
-        >
+        <select class="form-control" [(ngModel)]="selectedMembershipCategory" (change)="applyFilter()">
           <option value="">All Categories</option>
-          <option
-            *ngFor="let category of membershipCategories"
-            [value]="category.value"
-          >
+          <option *ngFor="let category of membershipCategories" [value]="category.value">
             {{ category.label }}
           </option>
         </select>
       </div>
       <div class="col-xl-2 mb-2" *ngIf="user.role === 'Coalition'">
-        <button
-          class="btn btn-outline-secondary"
-          (click)="clearFilters()"
-          title="Clear Filters"
-        >
+        <button class="btn btn-outline-secondary" (click)="clearFilters()" title="Clear Filters">
           <i class="bi bi-x-circle"></i> Clear
         </button>
       </div>
     </div>
 
     <!-- Association Filter for Coalition Users -->
-    <div class="row mb-3" *ngIf="user.role === 'Coalition'">
+    <!-- <div class="row mb-3" *ngIf="user.role === 'Coalition'">
       <div class="col-xl-3">
         <select
           class="form-control"
@@ -105,31 +80,19 @@
           </option>
         </select>
       </div>
-    </div>
+    </div> -->
 
     <div class="row mt-2">
       <div class="col-12 text-end" *ngIf="user.role.includes('SuperAdmin')">
-        <button
-          class="btn btn-sm btn-outline-success text-end"
-          (click)="file.click()"
-        >
+        <button class="btn btn-sm btn-outline-success text-end" (click)="file.click()">
           <i class="bi bi-file-excel"></i> Import from Excel
         </button>
 
         &nbsp;
-        <button
-          class="btn btn-sm btn-outline-primary text-end"
-          (click)="RegisterMember()"
-        >
+        <button class="btn btn-sm btn-outline-primary text-end" (click)="RegisterMember()">
           <i class="bi bi-plust"></i> Register
         </button>
-        <input
-          type="file"
-          accept=".xlsx, .xls"
-          #file
-          hidden
-          (change)="onFileSelected($event)"
-        />
+        <input type="file" accept=".xlsx, .xls" #file hidden (change)="onFileSelected($event)" />
       </div>
     </div>
 
@@ -150,22 +113,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let item of paginatedMembers; let i = index"
-            class="align-middle text-center"
-          >
+          <tr *ngFor="let item of paginatedMembers; let i = index" class="align-middle text-center">
             <td class="d-flex align-items-center">
-              <img
-                [src]="item.imagePath && getImagePath(item.imagePath)"
-                alt="Member Photo"
-                style="
+              <img [src]="item.imagePath && getImagePath(item.imagePath)" alt="Member Photo" style="
                   height: 40px;
                   width: 40px;
                   border-radius: 50%;
                   margin-right: 10px;
-                "
-                appImageError
-              />
+                " appImageError />
               {{ item.fullName }}
             </td>
             <td>{{ item.memberId }}</td>
@@ -174,22 +129,13 @@
             <td>{{ item.region }}</td>
             <td>{{ item.gender }}</td>
             <td>
-              <span
-                *ngIf="item.paymentStatus === 'PAID'"
-                class="badge bg-success rounded-pill"
-              >
+              <span *ngIf="item.paymentStatus === 'PAID'" class="badge bg-success rounded-pill">
                 {{ item.paymentStatus }}
               </span>
-              <span
-                *ngIf="item.paymentStatus === 'PENDING'"
-                class="badge bg-warning rounded-pill"
-              >
+              <span *ngIf="item.paymentStatus === 'PENDING'" class="badge bg-warning rounded-pill">
                 {{ item.paymentStatus }}
               </span>
-              <span
-                *ngIf="item.paymentStatus === 'EXPIRED'"
-                class="badge bg-danger rounded-pill"
-              >
+              <span *ngIf="item.paymentStatus === 'EXPIRED'" class="badge bg-danger rounded-pill">
                 {{ item.paymentStatus }}
               </span>
             </td>
@@ -198,18 +144,12 @@
             <td *ngIf="user.role.includes('Association')">
               <div class="row">
                 <div class="col-4">
-                  <button
-                    class="btn btn-outline-primary btn-sm"
-                    (click)="goToDetail(item)"
-                  >
+                  <button class="btn btn-outline-primary btn-sm" (click)="goToDetail(item)">
                     <i class="ti ti-eye"></i>
                   </button>
                 </div>
                 <div class="col-4">
-                  <button
-                    class="btn btn-outline-danger btn-sm ms-2"
-                    (click)="DeleteMember(item.id)"
-                  >
+                  <button class="btn btn-outline-danger btn-sm ms-2" (click)="DeleteMember(item.id)">
                     <i class="ti ti-trash"></i>
                   </button>
                 </div>
@@ -223,37 +163,22 @@
           <ul class="pagination justify-content-center">
             <!-- Previous Button -->
             <li class="page-item" [class.disabled]="currentPage === 1">
-              <a
-                class="page-link"
-                (click)="goToPage(currentPage - 1)"
-                aria-label="Previous"
-              >
+              <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
 
             <!-- Page Numbers -->
-            <li
-              class="page-item"
-              *ngFor="let page of pagesArray"
-              [class.active]="currentPage === page"
-              [class.disabled]="page === -1"
-            >
-              <a
-                class="page-link"
-                (click)="page !== -1 ? goToPage(page) : null"
-                [innerHTML]="page === -1 ? '...' : page"
-              >
+            <li class="page-item" *ngFor="let page of pagesArray" [class.active]="currentPage === page"
+              [class.disabled]="page === -1">
+              <a class="page-link" (click)="page !== -1 ? goToPage(page) : null"
+                [innerHTML]="page === -1 ? '...' : page">
               </a>
             </li>
 
             <!-- Next Button -->
             <li class="page-item" [class.disabled]="currentPage === totalPages">
-              <a
-                class="page-link"
-                (click)="goToPage(currentPage + 1)"
-                aria-label="Next"
-              >
+              <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
