@@ -176,4 +176,50 @@ export class MessageDetailComponent implements OnInit {
       });
     }
   }
+  isEditing: boolean = false;
+  updatedContent: string = '';
+
+  enableEditMode() {
+    this.isEditing = true;
+    this.updatedContent = this.message.content;
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.updatedContent = '';
+  }
+
+  saveUpdate() {
+    if (!this.updatedContent.trim()) {
+      errorToast('Message content cannot be empty');
+      return;
+    }
+
+    const updatedMessage = { ...this.message, content: this.updatedContent };
+
+    // We need to map ImessageGetDto to IMessagePostDto format expected by update endpoint
+    // Assuming update endpoint expects similar structure 
+    const updateDto = {
+      messageId: this.message.messageId,
+      content: this.updatedContent,
+      messageTypes: this.message.messageTypes,
+      isApproved: this.message.isApproved
+    };
+
+    this.eventMessageService.updateMessage(updateDto).subscribe({
+      next: (res) => {
+        if (res.success) {
+          successToast('Message updated successfully');
+          this.message.content = this.updatedContent;
+          this.isEditing = false;
+        } else {
+          errorToast(res.message || 'Error updating message');
+        }
+      },
+      error: (err) => {
+        errorToast('Error updating message');
+        console.error(err);
+      }
+    });
+  }
 }

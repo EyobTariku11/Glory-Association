@@ -156,5 +156,27 @@ namespace MembershipAPI.Controllers.Message
                 return Ok(result);
             return BadRequest(result);
         }
+        [HttpDelete]
+        [Route("~/api/EventMessages/{id}")]
+        [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteEventMessage(Guid id)
+        {
+            // Get association ID from user claims (for Association users)
+            // Permission logic is handled in service, but we pass the assoc ID for verification
+            Guid? associationId = null;
+            var associationIdClaim = User.FindFirstValue("loginId");
+            // Only parse if not Coalition/SuperAdmin - assuming specific roles have these claims
+            // However, typical pattern here is to pass whatever we have.
+            // If the user is coalition, this claim might differ or not exist.
+            if (!string.IsNullOrEmpty(associationIdClaim) && Guid.TryParse(associationIdClaim, out var assocId))
+            {
+                associationId = assocId;
+            }
+
+            var result = await _eventMessageService.DeleteEventMessage(id, associationId);
+            if (result.Success)
+                return Ok(result);
+            return BadRequest(result);
+        }
     }
 }

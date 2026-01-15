@@ -16,7 +16,7 @@ import { ResponseMessageData } from "../models/ResponseMessage.Model";
 export class EventMessageService {
   baseUrl: string = environment.baseUrl;
   baseUrlPdf: string = environment.baseUrl;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   addMessage(fromData: IMessagePostDto) {
     return this.http.post<ResponseMessageData<string>>(
@@ -41,7 +41,7 @@ export class EventMessageService {
 
 
 
-  getUnsentMessages(isSent:boolean) {
+  getUnsentMessages(isSent: boolean) {
     return this.http.get<ResponseMessageData<EventMessageMemberGetDto[]>>(
       this.baseUrl + `/EventMessages/GetUnsentMessages?isSent=${isSent}`
     );
@@ -51,21 +51,21 @@ export class EventMessageService {
   getMessageMembers(messageStatus: number, eventMessageId: string) {
     return this.http.get<ResponseMessageData<EventMessageMemberGetDto[]>>(
       this.baseUrl +
-        `/EventMessages/GetEventMessageMember?messageStatus=${messageStatus}&eventMessageId=${eventMessageId}`
+      `/EventMessages/GetEventMessageMember?messageStatus=${messageStatus}&eventMessageId=${eventMessageId}`
     );
   }
 
-  addMessageMembers(eventMessageMemberPostDto : EventMessageMemberPostDto) {
+  addMessageMembers(eventMessageMemberPostDto: EventMessageMemberPostDto) {
     return this.http.post<ResponseMessageData<string>>(
       this.baseUrl +
-        `/EventMessages/AddEventMessageMember`,eventMessageMemberPostDto
+      `/EventMessages/AddEventMessageMember`, eventMessageMemberPostDto
     );
   }
 
-  changeMessageStatus(memberIds : string[]) {
+  changeMessageStatus(memberIds: string[]) {
     return this.http.put<ResponseMessageData<string>>(
       this.baseUrl +
-        `/EventMessages/ChangeMessageStatus`,memberIds
+      `/EventMessages/ChangeMessageStatus`, memberIds
     );
   }
 
@@ -82,5 +82,11 @@ export class EventMessageService {
       reason || null
     );
   }
-  
+
+  deleteEventMessage(messageId: string) {
+    return this.http.delete<ResponseMessageData<string>>(
+      this.baseUrl + `/EventMessages/${messageId}`
+    );
+  }
+
 }

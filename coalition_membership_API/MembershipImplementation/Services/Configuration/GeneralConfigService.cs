@@ -281,6 +281,39 @@ private int GetEthiopianYear(DateTime date)
             }
         }
 
+        private string CleanPhoneNumber(string phoneNumber)
+        {
+            if (string.IsNullOrEmpty(phoneNumber)) return "";
+            
+            // Remove all non-digit characters
+            var cleaned = new string(phoneNumber.Where(char.IsDigit).ToArray());
+            
+            // For GeezSMS, the number MUST start with 2519 or 2517
+            // If it starts with 09... or 07..., prepend 251
+            if (cleaned.StartsWith("09") && cleaned.Length == 10)
+            {
+                return "251" + cleaned.Substring(1);
+            }
+            if (cleaned.StartsWith("07") && cleaned.Length == 10)
+            {
+                return "251" + cleaned.Substring(1);
+            }
+            
+            // If it starts with 9 or 7 and has 9 digits, prepend 251
+            if ((cleaned.StartsWith("9") || cleaned.StartsWith("7")) && cleaned.Length == 9)
+            {
+                return "251" + cleaned;
+            }
+            
+            // If it already starts with 251 and is 12 digits, return as is
+            if (cleaned.StartsWith("251") && (cleaned.StartsWith("2519") || cleaned.StartsWith("2517")) && cleaned.Length == 12)
+            {
+                return cleaned;
+            }
+            
+            return cleaned;
+        }
+
         public async Task<ResponseMessage> SendMessage(MessageRequest messageRequest)
         {
             try
@@ -317,6 +350,9 @@ private int GetEthiopianYear(DateTime date)
                     };
                 }
 
+                // Standardize phone number for GeezSMS (09... format)
+                string phoneToSend = CleanPhoneNumber(messageRequest.PhoneNumber);
+
                 // Validate message content
                 if (string.IsNullOrEmpty(messageRequest.Message))
                 {
@@ -329,18 +365,22 @@ private int GetEthiopianYear(DateTime date)
 
                 HttpClient httpClient = _httpClientFactory.CreateClient();
 
-                // Create a new FormData object and add the required parameters.
-                var formData = new MultipartFormDataContent();
-                formData.Add(new StringContent(messageRequest.PhoneNumber), "phone");
-                formData.Add(new StringContent(messageRequest.Message), "msg");
-                formData.Add(new StringContent(token), "token");
+                // Create parameters for x-www-form-urlencoded
+                var parameters = new Dictionary<string, string>
+                {
+                    { "phone", phoneToSend },
+                    { "msg", messageRequest.Message },
+                    { "token", token }
+                };
+
+                var content = new FormUrlEncodedContent(parameters);
 
                 // Send the POST request to the SMS API.
-                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, formData);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
+                var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync();
                     return new ResponseMessage
                     {
                         Success = true,
@@ -350,16 +390,19 @@ private int GetEthiopianYear(DateTime date)
                 }
                 else
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
+                    // Log the failure with details for easier debugging
+                    Console.WriteLine($"SMS Gateway Error: [Phone: {phoneToSend}] [Status: {(int)response.StatusCode}] [Response: {responseContent}]");
+                    
                     return new ResponseMessage
                     {
                         Success = false,
-                        Message = $"Failed to send message. Status: {(int)response.StatusCode}, Error: {errorContent}"
+                        Message = $"Failed to send message. Status: {(int)response.StatusCode}, Error: {responseContent}"
                     };
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"SMS Gateway Exception: {ex.Message}");
                 return new ResponseMessage
                 {
                     Success = false,

@@ -43,10 +43,9 @@ builder.Services.AddControllers(options =>
 }).AddJsonOptions(
     options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, true));
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, true));
-
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<ApplicationSetting>(builder.Configuration.GetSection("ApplicationSetting"));
@@ -95,10 +94,9 @@ builder.Services.Configure<KestrelServerOptions>(options =>
 
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-builder.Services.AddMvc().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
 
-// Add Hangfire
-builder.Services.AddHangfire((sp, config) =>
+        // Add Hangfire
+        builder.Services.AddHangfire((sp, config) =>
 {
     var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("SqlConnection");
     config.UseSqlServerStorage(connectionString);

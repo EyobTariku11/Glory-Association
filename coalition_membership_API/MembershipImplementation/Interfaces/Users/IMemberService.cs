@@ -47,6 +47,6 @@ namespace MembershipImplementation.Interfaces.HRM
         Task<ResponseMessage> GetExpiredDate(DateTime lastPaid, Guid membershipTypeId);
 
         Task<MemberVerificationDto> VerifyMemberById(string memberId);
-
+        Task<ResponseMessage> RemoveProfileImage(Guid memberId);
     }
 }

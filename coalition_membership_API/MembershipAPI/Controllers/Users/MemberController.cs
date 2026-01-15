@@ -208,5 +208,16 @@ namespace MembershipAPI.Controllers.Users
         }
         
 
+        [HttpDelete]
+        [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> RemoveProfileImage(Guid memberId)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(await _memberService.RemoveProfileImage(memberId));
+            }
+            return BadRequest();
+        }
+
     }
 }

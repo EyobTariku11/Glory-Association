@@ -35,8 +35,10 @@ namespace MembershipAPI.Filters
                 response.Data = new
                 {
                     ExceptionType = context.Exception.GetType().Name,
+                    Message = context.Exception.Message,
                     StackTrace = context.Exception.StackTrace,
-                    InnerException = context.Exception.InnerException?.Message
+                    InnerException = context.Exception.InnerException?.Message,
+                    FullDetails = context.Exception.ToString()
                 };
             }
 
@@ -51,6 +53,16 @@ namespace MembershipAPI.Filters
 
         private string GetUserFriendlyMessage(Exception exception)
         {
+            if (_env.IsDevelopment())
+            {
+                var msg = exception.Message;
+                if (exception.InnerException != null)
+                {
+                    msg += " | Inner: " + exception.InnerException.Message;
+                }
+                return msg;
+            }
+
             return exception switch
             {
                 ArgumentNullException => "A required parameter is missing.",

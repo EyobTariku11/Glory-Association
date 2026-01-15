@@ -33,7 +33,7 @@ namespace MembershipImplementation.DTOS.Configuration
 
         public Guid Id { get; set; }
         public string FullName { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public string PhoneNumber { get; set; }
       
         public string Gender { get; set; }
@@ -49,9 +49,9 @@ namespace MembershipImplementation.DTOS.Configuration
 
 
 
-        public DateTime LastPaid { get; set; }
-
-        public DateTime ExpiredDate { get; set; }
+        public DateTime? LastPaid { get; set; }
+ 
+        public DateTime? ExpiredDate { get; set; }
 
         public string? PaymentStatus { get; set; }
 
@@ -156,7 +156,7 @@ namespace MembershipImplementation.DTOS.Configuration
         public string Gender { get; set; }
         public string InstituteRole { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public IFormFile? Image { get; set; }
     }

@@ -12,8 +12,22 @@
 
 
         <div class="col-4">
-            <h4>Message Content :</h4>
-            <p>{{message&&message.content}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Message Content :</h4>
+                <button *ngIf="!isEditing" class="btn btn-sm btn-outline-primary" (click)="enableEditMode()">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+            </div>
+
+            <p *ngIf="!isEditing">{{message&&message.content}}</p>
+
+            <div *ngIf="isEditing" class="mb-3">
+                <textarea class="form-control mb-2" rows="4" [(ngModel)]="updatedContent"></textarea>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-success" (click)="saveUpdate()">Save</button>
+                    <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+                </div>
+            </div>
             <h4>Message Type :</h4>
             <p>{{message&&message.messageTypeGet}}</p>
 

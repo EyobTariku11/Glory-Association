@@ -43,7 +43,7 @@ export class MemberProfileComponent implements OnInit {
     private dropdownService: DropDownService,
     private formBuilder: FormBuilder,
     private imageHandlerService: ImageHandlerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.user = this.userService.getCurrentUser();
@@ -53,13 +53,13 @@ export class MemberProfileComponent implements OnInit {
 
     this.updateProfileForm = this.formBuilder.group({
       fullName: [Validators.required],
-  
+
       gender: ["", Validators.required],
-  
+
       woreda: ["", Validators.required],
       email: [""],
       birthDate: ["", Validators.required],
-    
+
     });
   }
 
@@ -68,21 +68,21 @@ export class MemberProfileComponent implements OnInit {
       next: (res) => {
         this.member = res;
 
-      
+
 
         this.updateProfileForm.controls["fullName"].setValue(
           this.member.fullName
         );
-      
+
         this.updateProfileForm.controls["gender"].setValue(this.member.gender);
-    
+
         this.updateProfileForm.controls["woreda"].setValue(this.member.woreda);
         this.updateProfileForm.controls["email"].setValue(this.member.email);
         this.updateProfileForm.controls["birthDate"].setValue(
           this.member.birthDate.split("T")[0]
         );
 
-       
+
       },
     });
   }
@@ -117,7 +117,7 @@ export class MemberProfileComponent implements OnInit {
         fullName: this.updateProfileForm.value.fullName,
         phoneNumber: this.member.phoneNumber,
         email: this.updateProfileForm.value.email,
-    
+
         birthDate: this.updateProfileForm.value.birthDate,
         gender: this.updateProfileForm.value.gender,
         woreda: this.updateProfileForm.value.woreda,
@@ -126,26 +126,30 @@ export class MemberProfileComponent implements OnInit {
     }
     var formData = new FormData();
     for (let key in updateProfile) {
-      if (updateProfile.hasOwnProperty(key)) {
+      if (updateProfile.hasOwnProperty(key) && (updateProfile as any)[key] !== null) {
         formData.append(key, (updateProfile as any)[key]);
       }
     }
 
-    // Append the file to the form data
-    formData.append("image", this.fileGH);
+    if (this.fileGH) {
+      formData.append("image", this.fileGH);
+    }
 
     this.memberService.updateProfile(formData).subscribe({
-      next: (res) => {
-        if (res.success) {
+      next: (res: any) => {
+        const success = res.success !== undefined ? res.success : res.Success;
+        const message = res.message || res.Message || 'Profile updated successfully';
 
-          successToast(res.message)
-          // this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
+        if (success) {
+          successToast(message);
         } else {
-          errorToast(res.errorCode!||res.message,res.message)
-          // this.messageService.add({ severity: 'error', summary: 'Something went wrong!!!.', detail: res.message });
+          errorToast(message, res.errorCode || res.ErrorCode);
         }
       },
-     
+      error: (err) => {
+        console.error('Profile update error:', err);
+        errorToast('An unexpected error occurred while updating your profile');
+      }
     });
   }
 }

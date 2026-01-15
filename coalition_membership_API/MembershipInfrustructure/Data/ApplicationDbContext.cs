@@ -116,6 +116,13 @@ namespace MembershipInfrustructure.Data
 
 
 
+            modelBuilder.Entity<Message>()
+                .Property(m => m.MessageTypes)
+                .HasConversion(
+                    v => string.Join(',', v.Select(t => t.ToString())),
+                    v => v.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => (MessageType)Enum.Parse(typeof(MessageType), s.Trim()))
+                        .ToList());
         }
     }
 }

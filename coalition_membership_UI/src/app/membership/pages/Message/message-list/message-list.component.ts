@@ -54,11 +54,11 @@ export class MessageListComponent implements OnInit {
     private userService: UserService,
     private modalService: NgbModal,
     private messageService: EventMessageService
-  ) {}
+  ) { }
 
   applyFilter() {
     this.filteredMessages = this.eventMessages.filter(message => {
-      const matchesSearch = !this.searchTerm || 
+      const matchesSearch = !this.searchTerm ||
         message.content.toLowerCase().includes(this.searchTerm.toLowerCase());
       return matchesSearch;
     });
@@ -153,6 +153,25 @@ export class MessageListComponent implements OnInit {
         console.error('Error rejecting message:', error);
       }
     });
+  }
+
+  deleteMessage(message: ImessageGetDto): void {
+    if (confirm('Are you sure you want to delete this message? This action cannot be undone.')) {
+      this.messageService.deleteEventMessage(message.messageId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            successToast('Message deleted successfully');
+            this.getMessages();
+          } else {
+            errorToast(response.message || 'Error deleting message');
+          }
+        },
+        error: (error) => {
+          errorToast('Error deleting message');
+          console.error('Error deleting message:', error);
+        }
+      });
+    }
   }
 
   clearFilters(): void {

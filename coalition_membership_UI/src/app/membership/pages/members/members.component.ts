@@ -61,7 +61,7 @@ export class MembersComponent implements OnInit {
     private controlService: MemberService,
     private associationService: AssociationService,
     private configurationService: ConfigurationService
-  ) {}
+  ) { }
 
   loadFilterOptions() {
     // Load types (gender options)
@@ -94,42 +94,40 @@ export class MembersComponent implements OnInit {
     // For Association users, filter by their association
     // For Coalition users, show all categories
     let associationId = this.user?.role === 'Association' ? this.user.loginId : undefined;
-    
+
     this.configurationService.getMembershipTypes(associationId).subscribe({
       next: (res) => {
         this.membershipCategories = res.map((item: any) => ({ value: item.name, label: item.name }));
       }
     });
-  }getMemberss() {
+  } getMemberss() {
     let associationId: string | undefined;
     if (this.user?.role === 'Association') {
       associationId = this.user.loginId;
     }
-  
+
     this.controlService.getMembers(associationId).subscribe({
       next: (res) => {
         // Sort by registration date only on first fetch
         const sortedMembers = res.sort(
           (a, b) => new Date(b.createdByDate).getTime() - new Date(a.createdByDate).getTime()
         );
-  
-        // Only set originalMembers if it's empty (first fetch)
-        if (this.originalMembers.length === 0) {
-          this.originalMembers = [...sortedMembers];
-        }
-  
+
+        // Always update originalMembers with the latest data from server
+        this.originalMembers = [...sortedMembers];
+
         // Update Members array for display (filters will still use originalMembers)
         this.Members = [...sortedMembers];
         this.totalRecords = this.Members.length;
-  
+
         this.calculateTotalPages();
         this.updatePagesArray();
         this.applyFilter(); // filters only, no sorting
       },
     });
   }
-  
-  
+
+
 
   updatePagesArray(): void {
     const maxVisiblePages = 3; // Number of visible pages before the "..." 
@@ -178,7 +176,7 @@ export class MembersComponent implements OnInit {
 
   applyFilter() {
     let filteredMembers = [...this.originalMembers];
-  
+
     // search filter
     if (this.searchTerm) {
       const searchTerm = this.searchTerm.toLowerCase();
@@ -195,45 +193,45 @@ export class MembersComponent implements OnInit {
         );
       });
     }
-  
+
     // type filter
     if (this.selectedType) {
       filteredMembers = filteredMembers.filter(item =>
         item.gender && item.gender.toLowerCase() === this.selectedType.toLowerCase()
       );
     }
-  
+
     // region filter
     if (this.selectedRegion) {
       filteredMembers = filteredMembers.filter(item =>
         item.region && item.region.toLowerCase() === this.selectedRegion.toLowerCase()
       );
     }
-  
+
     // membership category filter
     if (this.selectedMembershipCategory) {
       filteredMembers = filteredMembers.filter(item =>
         item.membershipType && item.membershipType.toLowerCase() === this.selectedMembershipCategory.toLowerCase()
       );
     }
-  
+
     // association filter
     if (this.selectedAssociation && this.user?.role === 'Coalition') {
       filteredMembers = filteredMembers.filter(item =>
         item.associationId === this.selectedAssociation
       );
     }
-  
+
     // DO NOT sort here
     this.Members = filteredMembers;
     this.totalRecords = this.Members.length;
-  
+
     // pagination
     this.calculateTotalPages();
     this.updatePagesArray();
     this.onPageChange();
   }
-  
+
 
   clearFilters() {
     this.searchTerm = "";
@@ -251,8 +249,10 @@ export class MembersComponent implements OnInit {
       windowClass: "custom-modal-width",
     });
     modalRef.componentInstance.member = member;
-    modalRef.result.then(() => {
+    modalRef.result.then((res) => {
       this.getMemberss();
+    }).catch(() => {
+      this.getMemberss(); // Refresh even if dismissed to be sure
     });
   }
 

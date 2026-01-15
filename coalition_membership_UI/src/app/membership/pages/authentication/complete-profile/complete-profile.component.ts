@@ -316,11 +316,17 @@ export class CompleteProfileComponent implements OnInit {
       }
 
       // Append the file to the form data
-      formData.append("image", this.fileGH);
+      if (this.fileGH) {
+        formData.append("image", this.fileGH);
+      }
+
       this.memberService.completeProfile(formData).subscribe({
-        next: (res) => {
-          if (res.success) {
-            //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
+        next: (res: any) => {
+          const success = res.success !== undefined ? res.success : res.Success;
+          const message = res.message || res.Message || 'Profile completed successfully';
+
+          if (success) {
+            successToast(message);
             this.closeModal();
 
             var loginForm = {
@@ -330,20 +336,25 @@ export class CompleteProfileComponent implements OnInit {
             };
 
             this.userService.login(loginForm).subscribe({
-              next: (res) => {
-                if (res.success) {
-                  sessionStorage.setItem("token", res.data);
-                  //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
+              next: (loginRes: any) => {
+                const loginSuccess = loginRes.success !== undefined ? loginRes.success : loginRes.Success;
+                if (loginSuccess) {
+                  sessionStorage.setItem("token", loginRes.data || loginRes.Data);
                   window.location.reload();
                 }
               },
+              error: (loginErr) => {
+                console.error('Login error after profile completion:', loginErr);
+                window.location.reload(); // Still reload to reflect completed profile
+              }
             });
           } else {
-            //this.messageService.add({ severity: 'error', summary: 'Something went wrong!!!.', detail: res.message });
+            errorToast(message);
           }
         },
         error: (err) => {
-          // this.messageService.add({ severity: 'error', summary: 'Something went wrong!!!', detail: err.message });
+          console.error('Complete profile error:', err);
+          errorToast('An unexpected error occurred while completing your profile');
         },
       });
     }

@@ -11,7 +11,7 @@ import { ResponseMessage2, ResponseMessage, ResponseMessageData } from '../model
   providedIn: 'root'
 })
 export class MemberService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   readonly BaseURI = environment.baseUrl;
 
   readonly moodleURI = environment.moodleUrl;
@@ -23,7 +23,7 @@ export class MemberService {
   getMembers(associationId?: string) {
     // If associationId is null/undefined, don't include it in the URL (Coalition access)
     // If associationId has a value, include it (Association access)
-    const url = associationId 
+    const url = associationId
       ? this.BaseURI + `/Member/GetMmebers?associationId=${associationId}`
       : this.BaseURI + `/Member/GetMmebers`;
     return this.http.get<IMembersGetDto[]>(url);
@@ -96,6 +96,11 @@ export class MemberService {
   getExpiredDate(lastPaid: Date, membershipTypeId: string) {
     return this.http.get<ResponseMessage>(
       this.BaseURI + `/Member/GetExpiredDate?lastPaid=${lastPaid}&membershipTypeId=${membershipTypeId}`
+    );
+  }
+  removeProfileImage(memberId: string) {
+    return this.http.delete<ResponseMessage>(
+      this.BaseURI + `/Member/RemoveProfileImage?memberId=${memberId}`
     );
   }
 }

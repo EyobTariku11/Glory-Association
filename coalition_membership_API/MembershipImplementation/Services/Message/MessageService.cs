@@ -561,18 +561,22 @@ public class EventMessageService : IEventMessageService
                 query = query.Where(x => x.Message.AssociationId == associationId.Value);
             }
 
-            var messages = await query
+            var rawMessages = await query
                 .OrderByDescending(x => x.CreatedDate)
-                .Select(x => new EventMessageMemberGetDto
+                .ToListAsync();
+
+            var messages = rawMessages.Select(x => new EventMessageMemberGetDto
                 {
                     EventMessageMemberId = x.Id.ToString(),
                     MemberName = x.Member.FullName,
                     MemberPhoneNumber = x.Member.PhoneNumber,
                     MessageContent = x.Message.Content,
                     MessageStatusGet = x.MessageStatus.ToString(),
-                    MessageTypeGet = string.Join(", ", x.Message.MessageTypes.Select(mt => mt.ToString()))
+                    MessageTypeGet = x.Message.MessageTypes != null 
+                        ? string.Join(", ", x.Message.MessageTypes.Select(mt => mt.ToString()))
+                        : ""
                 })
-                .ToListAsync();
+                .ToList();
 
             return new ResponseMessage<List<EventMessageMemberGetDto>>()
             {
@@ -648,6 +652,42 @@ public class EventMessageService : IEventMessageService
             {
                 Success = false,
                 Message = $"Error rejecting message: {ex.Message}"
+            };
+        }
+    }
+
+    public async Task<ResponseMessage> DeleteEventMessage(Guid messageId, Guid? associationId = null)
+    {
+        try
+        {
+            var message = await _dbContext.Messages.FindAsync(messageId);
+            if (message == null)
+                return new ResponseMessage { Success = false, Message = "Message not found" };
+
+            if (associationId.HasValue && message.AssociationId != associationId.Value)
+            {
+                return new ResponseMessage { Success = false, Message = "Permission denied: You cannot delete this message." };
+            }
+
+            // Remove associated message members first
+            var relatedMembers = _dbContext.MessageMembers.Where(x => x.MessageId == messageId);
+            _dbContext.MessageMembers.RemoveRange(relatedMembers);
+
+            _dbContext.Messages.Remove(message);
+            await _dbContext.SaveChangesAsync();
+
+            return new ResponseMessage
+            {
+                Success = true,
+                Message = "Message deleted successfully"
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseMessage
+            {
+                Success = false,
+                Message = $"Error deleting message: {ex.Message}"
             };
         }
     }

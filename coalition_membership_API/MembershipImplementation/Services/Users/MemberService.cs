@@ -447,9 +447,12 @@ namespace MembershipImplementation.Services.HRM
             if (currentMember != null)
             {
 
-                currentMember.Gender = Enum.Parse<Gender>(Profile.Gender);
+                if (!string.IsNullOrEmpty(Profile.Gender) && Enum.TryParse<Gender>(Profile.Gender, true, out var gender))
+                    currentMember.Gender = gender;
+                    
                 currentMember.IsProfileCompleted = true;
-                currentMember.BirthDate = Profile.BirthDate;
+                if (Profile.BirthDate.HasValue)
+                    currentMember.BirthDate = Profile.BirthDate.Value;
                 if (Profile.Image != null)
                 {
                     imagePath = await _generalConfig.UploadFiles(Profile.Image, currentMember.FullName, "Member");
@@ -626,9 +629,9 @@ namespace MembershipImplementation.Services.HRM
                 };
                 var result = await _authenticationService.AddUser(addUser);
 
-                var message = $"Congratulation {member.FullName}, being EPLFFC Member!!!\n" +
-                    $"We have received your payment and would like to thank you for \n being a member of EPLFFC Association. \n" +
-                    $"Your Membership ID is {member.MemberId} you can login through https://eplffc.et/admin/auth/membership-login/{member.MemberId} using the provided membership Id.";
+                var message = $"Congratulations {member.FullName}, on becoming a Glory Foundation Member!!!\n" +
+                    $"We have received your payment and would like to thank you for \n being a member of Glory Foundation. \n" +
+                    $"Your Membership ID is {member.MemberId}. You can log in through https://gloryfoundation.et/admin/auth/membership-login/{member.MemberId} using the provided membership Id. ";
              
                 var email = new EmailMetadata
                                     (member.Email, "ID Card Status",
@@ -664,9 +667,9 @@ namespace MembershipImplementation.Services.HRM
                         if (payments)
                         {
                             // Renewal message
-                            var message = $"Congratulation {member.FullName} , your EPLFFC Membership has been successfully renewed!\n" +
-                                          $"We have received your payment and would like to thank you for continuing to be a valued member of the EPLFFC  Association.\n" +
-                                          $"Your renewed Membership ID is {member.MemberId}, valid until {currentPayment.ExpiryDate.ToString("MMMM dd, yyyy")}. You can log in through https://eplffc.et using your Membership ID.";
+                            var message = $"Congratulations {member.FullName}, your Glory Foundation Membership has been successfully renewed!\n" +
+                                          $"We have received your payment and would like to thank you for continuing to be a valued member of the Glory Foundation.\n" +
+                                          $"Your renewed Membership ID is {member.MemberId}, valid until {currentPayment.ExpiryDate.ToString("MMMM dd, yyyy")}. You can log in through https://gloryfoundation.et using your Membership ID.";
 
                             var messageReques = new MessageRequest
                             {
@@ -704,8 +707,11 @@ namespace MembershipImplementation.Services.HRM
 
             if (currentMember != null)
             {
-                currentMember.Gender = Enum.Parse<Gender>(memberUpdate.Gender);
-                currentMember.BirthDate = memberUpdate.BirthDate;
+                if (!string.IsNullOrEmpty(memberUpdate.Gender) && Enum.TryParse<Gender>(memberUpdate.Gender, true, out var gender))
+                    currentMember.Gender = gender;
+
+                if (memberUpdate.BirthDate.HasValue)
+                    currentMember.BirthDate = memberUpdate.BirthDate.Value;
                 currentMember.Woreda = memberUpdate.Woreda;
 
                 currentMember.Email = memberUpdate.Email;
@@ -739,11 +745,18 @@ namespace MembershipImplementation.Services.HRM
         currentMember.FullName = memberUpdate.FullName;
         currentMember.PhoneNumber = memberUpdate.PhoneNumber;
         currentMember.Email = memberUpdate.Email;
-        currentMember.Gender = Enum.Parse<Gender>(memberUpdate.Gender);
-        currentMember.BirthDate = memberUpdate.BirthDate;
+        if (!string.IsNullOrEmpty(memberUpdate.Gender))
+        {
+            if (Enum.TryParse<Gender>(memberUpdate.Gender, true, out var gender))
+                currentMember.Gender = gender;
+        }
+        
+        if (memberUpdate.BirthDate.HasValue)
+            currentMember.BirthDate = memberUpdate.BirthDate.Value;
         currentMember.Woreda = memberUpdate.Woreda;
-        if (!string.IsNullOrEmpty(memberUpdate.RegionId))
-            currentMember.RegionId = Guid.Parse(memberUpdate.RegionId);
+
+        if (!string.IsNullOrEmpty(memberUpdate.RegionId) && Guid.TryParse(memberUpdate.RegionId, out var regionId))
+            currentMember.RegionId = regionId;
 
         bool isMembershipTypeChanged = memberUpdate.MembershipTypeId != null &&
                                        currentMember.MembershipTypeId != memberUpdate.MembershipTypeId;
@@ -753,7 +766,17 @@ namespace MembershipImplementation.Services.HRM
 
         // Upload new profile image if provided
         if (memberUpdate.Image != null)
-            currentMember.ImagePath = await _generalConfig.UploadFiles(memberUpdate.Image, currentMember.FullName, "Member");
+        {
+            try
+            {
+                currentMember.ImagePath = await _generalConfig.UploadFiles(memberUpdate.Image, currentMember.FullName, "Member");
+            }
+            catch (Exception ex)
+            {
+                // Log and continue or return error if image is mandatory
+                return new ResponseMessage { Success = false, Message = $"Image upload failed: {ex.Message}" };
+            }
+        }
 
         // Process member payments
         var currentPayments = await _dbContext.MemberPayments
@@ -770,21 +793,38 @@ namespace MembershipImplementation.Services.HRM
             PaymentUrl = ""
         };
 
-        currentPayment.PaymentStatus = Enum.Parse<PaymentStatus>(memberUpdate.PaymentStatus);
-        currentPayment.LastPaidDate = memberUpdate.LastPaid;
-        
-        // If expired date is same as last paid or not provided, calculate it correctly
-        if (memberUpdate.ExpiredDate <= memberUpdate.LastPaid)
+        if (!string.IsNullOrEmpty(memberUpdate.PaymentStatus))
         {
-            var mt = currentMember.MembershipType ?? await _dbContext.MembershipTypes.FindAsync(currentMember.MembershipTypeId);
-            var mtCounter = mt.Counter > 0 ? mt.Counter : 1;
-            currentPayment.ExpiryDate = mt.Category == MemberShipTypeCategory.MONTHLY ?
-                                        memberUpdate.LastPaid.AddMonths(mtCounter) :
-                                        memberUpdate.LastPaid.AddYears(mtCounter);
+            if (Enum.TryParse<PaymentStatus>(memberUpdate.PaymentStatus, true, out var status))
+                currentPayment.PaymentStatus = status;
         }
-        else
+
+        if (memberUpdate.LastPaid.HasValue)
         {
-            currentPayment.ExpiryDate = memberUpdate.ExpiredDate;
+            currentPayment.LastPaidDate = memberUpdate.LastPaid.Value;
+        }
+
+        // Handle Expiry Date calculation or update
+        if (memberUpdate.ExpiredDate.HasValue && (!memberUpdate.LastPaid.HasValue || memberUpdate.ExpiredDate > memberUpdate.LastPaid))
+        {
+            currentPayment.ExpiryDate = memberUpdate.ExpiredDate.Value;
+        }
+        else if (memberUpdate.LastPaid.HasValue)
+        {
+            // Calculate expiry based on LastPaid and MembershipType
+            var mt = currentMember.MembershipType ?? await _dbContext.MembershipTypes.FindAsync(currentMember.MembershipTypeId);
+            if (mt != null)
+            {
+                var mtCounter = mt.Counter > 0 ? mt.Counter : 1;
+                currentPayment.ExpiryDate = mt.Category == MemberShipTypeCategory.MONTHLY ?
+                                            memberUpdate.LastPaid.Value.AddMonths(mtCounter) :
+                                            memberUpdate.LastPaid.Value.AddYears(mtCounter);
+            }
+            else
+            {
+                // Fallback if membership type is missing
+                currentPayment.ExpiryDate = memberUpdate.LastPaid.Value.AddYears(1);
+            }
         }
         currentPayment.CreatedById = currentMember.Id.ToString();
         currentMember.CreatedDate = DateTime.Now;
@@ -798,7 +838,7 @@ namespace MembershipImplementation.Services.HRM
             await _dbContext.MemberPayments.AddAsync(currentPayment);
 
         await _dbContext.SaveChangesAsync();
-        return new ResponseMessage { Data = currentMember, Success = true, Message = "Updated Successfully" };
+        return new ResponseMessage { Data = new { currentMember.Id, currentMember.FullName, currentMember.MemberId }, Success = true, Message = "Member profile updated successfully!" };
     }
     catch (Exception ex)
     {
@@ -809,6 +849,7 @@ namespace MembershipImplementation.Services.HRM
 private async Task HandlePaidMembership(Member currentMember, MemberPayment currentPayment, bool isMembershipTypeChanged)
 {
     var mt = await _dbContext.MembershipTypes.FindAsync(currentMember.MembershipTypeId);
+    if (mt == null) throw new Exception("Membership type not found for the member.");
     currentPayment.IsPaid = true;
 
     if (string.IsNullOrEmpty(currentMember.MemberId) || isMembershipTypeChanged)
@@ -1007,9 +1048,9 @@ private async Task CreateAndNotifyUser(Member member, string memberID)
 
 
 
-                var message = $"Dear EPLFFC Member {payment.Member.FullName},\n\n" +
-                  $"We would like to inform you that your membership with the EPLFFC  Association will expire on {payment.ExpiryDate.ToString("MMMM dd, yyyy")}.\n\n" +
-                  $"Please renew your membership by visiting https://eplffc.et and using your Membership ID: {payment.Member.MemberId}.";
+                var message = $"Dear Glory Foundation Member {payment.Member.FullName},\n\n" +
+                  $"We would like to inform you that your membership with the Glory Foundation will expire on {payment.ExpiryDate.ToString("MMMM dd, yyyy")}.\n\n" +
+                  $"Please renew your membership by visiting https://gloryfoundation.et and using your Membership ID: {payment.Member.MemberId}.";
 
 
 
@@ -1463,5 +1504,25 @@ private async Task CreateAndNotifyUser(Member member, string memberID)
         }
 
 
+        public async Task<ResponseMessage> RemoveProfileImage(Guid memberId)
+        {
+            try
+            {
+                var member = await _dbContext.Members.FindAsync(memberId);
+                if (member == null)
+                {
+                    return new ResponseMessage { Success = false, Message = "Member not found" };
+                }
+
+                member.ImagePath = null;
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponseMessage { Success = true, Message = "Profile image removed successfully" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseMessage { Success = false, Message = $"Error removing profile image: {ex.Message}" };
+            }
+        }
     }
 }

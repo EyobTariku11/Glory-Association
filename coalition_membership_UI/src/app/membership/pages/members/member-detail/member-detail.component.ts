@@ -38,12 +38,12 @@ export class MemberDetailComponent implements OnInit {
     private memberService: MemberService,
     private dropdownService: DropDownService,
     private formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.user = this.userService.getCurrentUser();
 
-    
+
     //this.getEducationalLevels();
     this.getMemberships(this.member && this.member.membershipCategory);
     this.getChapters();
@@ -107,7 +107,7 @@ export class MemberDetailComponent implements OnInit {
           regionId: this.member.regionId.toLowerCase(),
         });
       },
-      error: (err) => {},
+      error: (err) => { },
     });
   }
 
@@ -168,34 +168,56 @@ export class MemberDetailComponent implements OnInit {
 
       const formData = new FormData();
 
-      formData.set("id", updateProfile.id);
-      formData.set("fullName", updateProfile.fullName);
-      formData.set("phoneNumber", updateProfile.phoneNumber);
-      formData.set("email", updateProfile.email);
+      const formatDate = (date: any) => {
+        if (!date) return "";
+        if (date instanceof Date) return date.toISOString();
+        return date.toString();
+      };
 
-      formData.set("birthDate", updateProfile.birthDate.toString());
-      formData.set("gender", updateProfile.gender);
-      formData.set("woreda", updateProfile.woreda);
+      formData.set("id", updateProfile.id?.toString() || "");
+      formData.set("fullName", updateProfile.fullName || "");
+      formData.set("phoneNumber", updateProfile.phoneNumber || "");
+      formData.set("email", updateProfile.email || "");
 
-      formData.set("lastPaid", updateProfile.lastPaid.toString());
-      formData.set("expiredDate", updateProfile.expiredDate.toString());
-      formData.set("paymentStatus", updateProfile.paymentStatus);
-      formData.set("membershipTypeId", updateProfile.membershipTypeId);
-      formData.set("regionId", updateProfile.regionId);
+      formData.set("birthDate", formatDate(updateProfile.birthDate));
+      formData.set("gender", updateProfile.gender || "");
+      formData.set("woreda", updateProfile.woreda || "");
 
-      formData.append("image", this.fileGH);
+      formData.set("lastPaid", formatDate(updateProfile.lastPaid));
+      formData.set("expiredDate", formatDate(updateProfile.expiredDate));
+
+      formData.set("paymentStatus", updateProfile.paymentStatus || "");
+      formData.set("membershipTypeId", updateProfile.membershipTypeId || "");
+      formData.set("regionId", updateProfile.regionId || "");
+
+      if (this.fileGH) {
+        formData.append("image", this.fileGH);
+      }
 
       this.memberService.updateProfileFromAdmin(formData).subscribe({
-        next: (res) => {
-          if (res.success) {
-            successToast(res.message);
-            //this.messageService.add({ severity: 'success', summary: 'Successfull', detail: res.message });
-            this.closeModal();
+        next: (res: any) => {
+          // Handle both success and Success (PascalCase) for robustness
+          const success = res.success !== undefined ? res.success : res.Success;
+          const message = res.message || res.Message || 'Member profile updated successfully';
+
+          if (success) {
+            successToast(message);
+            this.activeModal.close('success');
           } else {
-            errorToast(res.errorCode! || res.message, res.message);
-            //this.messageService.add({ severity: 'error', summary: 'Something went wrong!!!.', detail: res.message });
+            console.error('Member update failed:', res);
+            errorToast(message, res.errorCode || res.ErrorCode);
           }
         },
+        error: (err) => {
+          console.error('Member update network/server error:', err);
+          let detail = '';
+          if (err.error && err.error.data) {
+            detail = err.error.data.message || err.error.data.FullDetails || JSON.stringify(err.error.data);
+          } else if (err.message) {
+            detail = err.message;
+          }
+          errorToast('An unexpected error occurred while updating the member profile', detail);
+        }
       });
     }
   }
@@ -215,14 +237,14 @@ export class MemberDetailComponent implements OnInit {
           this.updateProfileForm.patchValue({
             expiredDate: res.data.split("T")[0],
           });
-       
+
         },
       });
     }
   }
 
   getMembershipCategoryName(category: string): string {
-    switch(category) {
+    switch (category) {
       case '0': return 'WEEKLY';
       case '1': return 'MONTHLY';
       case '2': return 'YEARLY';
@@ -239,5 +261,28 @@ export class MemberDetailComponent implements OnInit {
       }
     }
     return 'Not specified';
+  }
+  removeImage() {
+    if (confirm('Are you sure you want to delete your profile image?')) {
+      this.memberService.removeProfileImage(this.member.id).subscribe({
+        next: (res: any) => {
+          const success = res.success !== undefined ? res.success : res.Success;
+          const message = res.message || res.Message || 'Image removed successfully';
+
+          if (success) {
+            this.member.imagePath = null;
+            this.imagePath = null;
+            this.fileGH = null;
+            successToast(message);
+          } else {
+            errorToast(message);
+          }
+        },
+        error: (err) => {
+          errorToast('Error removing image');
+          console.error('Remove image error:', err);
+        }
+      });
+    }
   }
 }

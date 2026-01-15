@@ -176,15 +176,21 @@ export class RegisterMembersAdminComponent implements OnInit {
     };
 
     this.userService.register(registerFor).subscribe({
-      next: (res) => {
-        if (res.success) {
-          successToast(res.message);
+      next: (res: any) => {
+        const success = res.success !== undefined ? res.success : res.Success;
+        const message = res.message || res.Message || 'Member registered successfully';
 
+        if (success) {
+          successToast(message);
           this.closeModal();
         } else {
-          errorToast(res.errorCode! || res.message, res.message);
+          errorToast(message, res.errorCode || res.ErrorCode);
         }
       },
+      error: (err) => {
+        console.error('Registration error:', err);
+        errorToast('An unexpected error occurred during registration');
+      }
     });
   }
 

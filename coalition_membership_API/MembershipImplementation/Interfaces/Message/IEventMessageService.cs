@@ -19,4 +19,5 @@ public interface IEventMessageService
     
     Task<ResponseMessage> ApproveMessage(Guid messageId, string approvedById);
     Task<ResponseMessage> RejectMessage(Guid messageId, string rejectedById, string? reason = null);
+    Task<ResponseMessage> DeleteEventMessage(Guid messageId, Guid? associationId = null);
 }

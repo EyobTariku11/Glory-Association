@@ -48,8 +48,10 @@ namespace MembershipAPI.Middleware
                 response.Data = new
                 {
                     ExceptionType = exception.GetType().Name,
+                    Message = exception.Message,
                     StackTrace = exception.StackTrace,
                     InnerException = exception.InnerException?.Message,
+                    FullDetails = exception.ToString(),
                     RequestPath = context.Request.Path,
                     RequestMethod = context.Request.Method
                 };
