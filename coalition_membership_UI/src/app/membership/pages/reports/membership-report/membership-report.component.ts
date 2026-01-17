@@ -74,7 +74,7 @@ export class MembershipReportComponent implements OnInit {
     private dropDownService: DropDownService,
     private associationService: AssociationService,
     private configurationService: ConfigurationService
-  ) {}
+  ) { }
 
   getMemberss() {
     // Determine associationId based on user role
@@ -316,7 +316,7 @@ export class MembershipReportComponent implements OnInit {
 
   // Load membership types for selected association
   loadMembershipTypes(associationId: string) {
-    if (!associationId || associationId === 'Select Association') {
+    if (!associationId || associationId === 'Select Foundation') {
       this.membershipTypes = [];
       this.selectedMembership = "";
       return;
@@ -366,7 +366,7 @@ export class MembershipReportComponent implements OnInit {
     });
 
     this.filterdMembers = this.Members;
-    
+
     // Filter by region
     if (this.selectedRegion && this.selectedRegion !== "") {
       console.log('Filtering by region:', this.selectedRegion);
@@ -438,7 +438,7 @@ export class MembershipReportComponent implements OnInit {
     if (this.fromDate && this.toDate && this.fromDate !== "" && this.toDate !== "") {
       const fromDate = new Date(this.fromDate);
       const toDate = new Date(this.toDate);
-      
+
       // Check if dates are valid
       if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
         console.log('Filtering by date range:', fromDate, 'to', toDate);

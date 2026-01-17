@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Association Profile</h4>
+          <h4 class="card-title">Foundation Profile</h4>
           <button class="btn btn-primary" (click)="openUpdateModal()">
             <i class="ti ti-edit"></i> Update Profile
           </button>
@@ -56,7 +56,8 @@
                     {{ phone }}
                   </p>
                 </div>
-                <p *ngIf="!associationData.phoneNumbers || associationData.phoneNumbers.length === 0" class="form-control-plaintext">
+                <p *ngIf="!associationData.phoneNumbers || associationData.phoneNumbers.length === 0"
+                  class="form-control-plaintext">
                   No phone numbers provided
                 </p>
               </div>
@@ -73,7 +74,8 @@
                 <div class="col-md-4">
                   <label class="form-label fw-bold">Facebook:</label>
                   <p class="form-control-plaintext">
-                    <a *ngIf="associationData.facebook" [href]="associationData.facebook" target="_blank" class="text-primary">
+                    <a *ngIf="associationData.facebook" [href]="associationData.facebook" target="_blank"
+                      class="text-primary">
                       <i class="ti ti-brand-facebook me-2"></i>{{ associationData.facebook }}
                     </a>
                     <span *ngIf="!associationData.facebook" class="text-muted">No Facebook link provided</span>
@@ -82,7 +84,8 @@
                 <div class="col-md-4">
                   <label class="form-label fw-bold">Telegram:</label>
                   <p class="form-control-plaintext">
-                    <a *ngIf="associationData.telegram" [href]="associationData.telegram" target="_blank" class="text-primary">
+                    <a *ngIf="associationData.telegram" [href]="associationData.telegram" target="_blank"
+                      class="text-primary">
                       <i class="ti ti-brand-telegram me-2"></i>{{ associationData.telegram }}
                     </a>
                     <span *ngIf="!associationData.telegram" class="text-muted">No Telegram link provided</span>
@@ -91,7 +94,8 @@
                 <div class="col-md-4">
                   <label class="form-label fw-bold">TikTok:</label>
                   <p class="form-control-plaintext">
-                    <a *ngIf="associationData.tikTok" [href]="associationData.tikTok" target="_blank" class="text-primary">
+                    <a *ngIf="associationData.tikTok" [href]="associationData.tikTok" target="_blank"
+                      class="text-primary">
                       <i class="ti ti-brand-tiktok me-2"></i>{{ associationData.tikTok }}
                     </a>
                     <span *ngIf="!associationData.tikTok" class="text-muted">No TikTok link provided</span>
@@ -107,18 +111,17 @@
                 <div class="col-md-3">
                   <label class="form-label fw-bold">Primary Color:</label>
                   <div class="d-flex align-items-center">
-                    <div class="color-preview me-2" 
-                         [style.background-color]="associationData.primaryColor || '#000000'"
-                         style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 4px;"></div>
+                    <div class="color-preview me-2" [style.background-color]="associationData.primaryColor || '#000000'"
+                      style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 4px;"></div>
                     <span>{{ associationData.primaryColor || '#000000' }}</span>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold">Secondary Color:</label>
                   <div class="d-flex align-items-center">
-                    <div class="color-preview me-2" 
-                         [style.background-color]="associationData.secondaryColor || '#ffffff'"
-                         style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 4px;"></div>
+                    <div class="color-preview me-2"
+                      [style.background-color]="associationData.secondaryColor || '#ffffff'"
+                      style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 4px;"></div>
                     <span>{{ associationData.secondaryColor || '#ffffff' }}</span>
                   </div>
                 </div>
@@ -132,44 +135,32 @@
                 <div class="col-md-3">
                   <label class="form-label fw-bold">Logo:</label>
                   <div class="text-center">
-                    <img *ngIf="associationData.logoPath" 
-                         [src]="getImagePath(associationData.logoPath)" 
-                         class="img-fluid rounded" 
-                         style="max-height: 100px;"
-                         appImageError>
+                    <img *ngIf="associationData.logoPath" [src]="getImagePath(associationData.logoPath)"
+                      class="img-fluid rounded" style="max-height: 100px;" appImageError>
                     <p *ngIf="!associationData.logoPath" class="text-muted">No logo uploaded</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold">Signature:</label>
                   <div class="text-center">
-                    <img *ngIf="associationData.signiturePath" 
-                         [src]="getImagePath(associationData.signiturePath)" 
-                         class="img-fluid rounded" 
-                         style="max-height: 100px;"
-                         appImageError>
+                    <img *ngIf="associationData.signiturePath" [src]="getImagePath(associationData.signiturePath)"
+                      class="img-fluid rounded" style="max-height: 100px;" appImageError>
                     <p *ngIf="!associationData.signiturePath" class="text-muted">No signature uploaded</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold">Stamp:</label>
                   <div class="text-center">
-                    <img *ngIf="associationData.stampPath" 
-                         [src]="getImagePath(associationData.stampPath)" 
-                         class="img-fluid rounded" 
-                         style="max-height: 100px;"
-                         appImageError>
+                    <img *ngIf="associationData.stampPath" [src]="getImagePath(associationData.stampPath)"
+                      class="img-fluid rounded" style="max-height: 100px;" appImageError>
                     <p *ngIf="!associationData.stampPath" class="text-muted">No stamp uploaded</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold">Stamp 2:</label>
                   <div class="text-center">
-                    <img *ngIf="associationData.stampPath2" 
-                         [src]="getImagePath(associationData.stampPath2)" 
-                         class="img-fluid rounded" 
-                         style="max-height: 100px;"
-                         appImageError>
+                    <img *ngIf="associationData.stampPath2" [src]="getImagePath(associationData.stampPath2)"
+                      class="img-fluid rounded" style="max-height: 100px;" appImageError>
                     <p *ngIf="!associationData.stampPath2" class="text-muted">No stamp 2 uploaded</p>
                   </div>
                 </div>
@@ -178,10 +169,10 @@
           </div>
 
           <div *ngIf="!loading && !associationData" class="text-center">
-            <p class="text-muted">No association data found.</p>
+            <p class="text-muted">No foundation data found.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div> 
+</div>

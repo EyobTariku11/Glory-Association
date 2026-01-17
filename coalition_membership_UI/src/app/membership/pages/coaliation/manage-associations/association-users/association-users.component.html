@@ -1,7 +1,7 @@
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title"><span class="text-success" style="font-size: 18px;font-weight: bolder;"> Register
-                Association User
+                Foundation User
             </span>
         </h5>
         <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
@@ -49,12 +49,10 @@
                             <td>{{ user.userName }}</td>
                             <td>{{ user.status }}</td>
                             <td>
-                                <button type="button" 
-                                class="btn btn-sm btn-outline-warning rounded-circle" 
-                                (click)="updateUser(user)" 
-                                title="Edit Association">
-                          <i class="ti ti-pencil"></i>
-                        </button>
+                                <button type="button" class="btn btn-sm btn-outline-warning rounded-circle"
+                                    (click)="updateUser(user)" title="Edit Foundation">
+                                    <i class="ti ti-pencil"></i>
+                                </button>
                             </td>
 
                         </tr>

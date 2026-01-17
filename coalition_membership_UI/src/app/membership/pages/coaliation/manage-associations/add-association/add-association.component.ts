@@ -380,12 +380,12 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
       request.subscribe({
         next: (response) => {
           console.log('API Response:', response);
-          successToast(`Association ${this.associationData ? 'updated' : 'registered'} successfully!`);
+          successToast(`Foundation ${this.associationData ? 'updated' : 'registered'} successfully!`);
           this.closeModal();
         },
         error: (err) => {
           // Better error handling with specific messages
-          let errorMessage = `Failed to ${this.associationData ? 'update' : 'register'} association.`;
+          let errorMessage = `Failed to ${this.associationData ? 'update' : 'register'} foundation.`;
 
           if (err.error?.message) {
             errorMessage += ` ${err.error.message}`;
@@ -423,7 +423,7 @@ export class AddAssociationComponent implements OnInit, AfterViewInit, OnChanges
     const errors: string[] = [];
 
     if (this.associationForm.get('name')?.hasError('required')) {
-      errors.push('Association name is required');
+      errors.push('Foundation name is required');
     }
 
     if (this.associationForm.get('amharicName')?.hasError('required')) {

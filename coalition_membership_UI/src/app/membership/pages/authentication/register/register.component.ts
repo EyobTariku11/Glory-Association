@@ -183,7 +183,7 @@ export default class RegisterComponent implements OnInit {
         if (res.success && res.data && res.data.length > 0) {
           this.associations = res.data;
 
-          // Auto-select Glory Foundation or the first available association
+          // Auto-select Glory Foundation or the first available foundation
           let selectedAssoc = this.associations.find(a => a.name.toLowerCase().includes('glory'));
 
           if (!selectedAssoc) {
@@ -205,7 +205,7 @@ export default class RegisterComponent implements OnInit {
         }
       },
       error: (err) => {
-        errorToast("Failed to load organizations");
+        errorToast("Failed to load foundations");
       },
     });
   }
@@ -341,7 +341,7 @@ export default class RegisterComponent implements OnInit {
   }
 
   goTOPayment(payment: IPaymentData, member: any) {
-    // Get the ArifPay key for the selected association
+    // Get the ArifPay key for the selected foundation
     this.associationService.getArifPayKey(this.registerForm.value.associationId).subscribe({
       next: (arifPayKey) => {
 

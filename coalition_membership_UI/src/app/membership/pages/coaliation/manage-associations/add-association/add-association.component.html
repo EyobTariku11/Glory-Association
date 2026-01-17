@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h5 class="modal-title"><span class="text-success" style="font-size: 18px;font-weight: bolder;">
         {{associationData?'Update':'Register'}}
-        Association
+        Foundation
       </span>
     </h5>
     <button type="button" class="btn-close" id="ModalClose" (click)="closeModal()" data-bs-dismiss="modal"
@@ -133,7 +133,7 @@
           <div class="col-12">
             <label for="description" class="form-label">Description</label>
             <quill-editor formControlName="description" [modules]="quillModules"
-              placeholder="Enter association description..." style="height: 200px;">
+              placeholder="Enter foundation description..." style="height: 200px;">
             </quill-editor>
           </div>
 
@@ -141,7 +141,7 @@
           <div class="col-12">
             <label for="about" class="form-label">About</label>
             <quill-editor formControlName="about" [modules]="quillModules"
-              placeholder="Enter detailed information about the association..." style="height: 200px;">
+              placeholder="Enter detailed information about the foundation..." style="height: 200px;">
             </quill-editor>
           </div>
 
@@ -167,7 +167,7 @@
         <!-- Submit Button -->
         <div class="text-end mt-4">
           <button type="submit" class="btn btn-primary px-4" [disabled]="associationForm.invalid">
-            {{associationData?'Update':'Register'}} Association
+            {{associationData?'Update':'Register'}} Foundation
           </button>
         </div>
       </form>
