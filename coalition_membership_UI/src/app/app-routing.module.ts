@@ -141,14 +141,14 @@ export const appRoutes: Routes = [
     ],
   },
 
-  {
-    path: "on-construction",
-    //component: OnConstructionComponent,
-  },
-  {
-    path: "board-member-dashboard",
-    // component: BoardMemberDashbaordComponent,
-  },
+  /*   {
+      path: "on-construction",
+      //component: OnConstructionComponent,
+    }, */
+  /*   {
+      path: "board-member-dashboard",
+      // component: BoardMemberDashbaordComponent,
+    }, */
   {
     path: "",
     component: GuestComponent,
