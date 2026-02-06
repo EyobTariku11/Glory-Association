@@ -11,7 +11,7 @@ import { NavRightComponent } from "./theme/layout/admin/nav-bar/nav-right/nav-ri
 import { ConfigurationComponent } from "./theme/layout/admin/configuration/configuration.component";
 import { GuestComponent } from "./theme/layout/guest/guest.component";
 import { AdminComponent } from "./theme/layout/admin/admin.component";
-import { LandingPageComponent } from "./membership/pages/landing-page/landing-page.component";
+
 import { DonationEventShowAllComponent } from "./membership/pages/landing-page/donation-event-show-all/donation-event-show-all.component";
 import { DonationModalComponent } from "./membership/pages/landing-page/donation-event-show-all/donation-modal/donation-modal.component";
 import { DonationLandingComponent } from "./membership/pages/landing-page/donation-landing/donation-landing.component";
@@ -42,7 +42,7 @@ import { NavigationItem } from "./theme/layout/admin/navigation/navigation";
     ConfigurationComponent,
     GuestComponent,
     AdminComponent,
-    LandingPageComponent,
+
     DonationEventShowAllComponent,
     DonationModalComponent,
     DonationLandingComponent,
@@ -55,4 +55,4 @@ import { NavigationItem } from "./theme/layout/admin/navigation/navigation";
   providers: [NavigationItem],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
