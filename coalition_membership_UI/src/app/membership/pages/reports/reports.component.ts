@@ -6,10 +6,10 @@ import { ReportsService } from 'src/app/services/reports.service';
 import { UserService } from 'src/app/services/user.service';
 import { AssociationService } from 'src/app/services/AssociationService';
 import { successToast, errorToast } from 'src/app/services/toast.service';
-import { 
-  ReportRequestDto, 
-  ReportResponseDto, 
-  ReportTypeDto 
+import {
+  ReportRequestDto,
+  ReportResponseDto,
+  ReportTypeDto
 } from '../admin-dashbord/IDashboardDto';
 import { UserView } from 'src/app/models/auth/userDto';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,10 +27,10 @@ export class ReportsComponent implements OnInit {
   startDate: string;
   endDate: string;
   selectedFormat: 'json' | 'pdf' | 'excel' = 'json';
-  
+
   isLoading: boolean = false;
   generatedReport: ReportResponseDto;
-  
+
   userView: UserView;
   associations: any[] = [];
 
@@ -40,7 +40,7 @@ export class ReportsComponent implements OnInit {
     private associationService: AssociationService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userView = this.userService.getCurrentUser();
@@ -53,7 +53,7 @@ export class ReportsComponent implements OnInit {
   setDefaultDates() {
     const today = new Date();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    
+
     this.startDate = firstDayOfMonth.toISOString().split('T')[0];
     this.endDate = today.toISOString().split('T')[0];
   }
@@ -124,10 +124,10 @@ export class ReportsComponent implements OnInit {
     if (this.canAccessAssociationReports()) {
       // Association users can access association reports
       reportTypes.push(
-        { scope: 'association', type: 'overview', description: 'Association Overview Report' },
-        { scope: 'association', type: 'financial', description: 'Association Financial Report' },
-        { scope: 'association', type: 'membership', description: 'Association Membership Report' },
-        { scope: 'association', type: 'detailed', description: 'Association Detailed Report' }
+        { scope: 'association', type: 'overview', description: 'Foundation Overview Report' },
+        { scope: 'association', type: 'financial', description: 'Foundation Financial Report' },
+        { scope: 'association', type: 'membership', description: 'Foundation Membership Report' },
+        { scope: 'association', type: 'detailed', description: 'Foundation Detailed Report' }
       );
     }
 
@@ -138,10 +138,10 @@ export class ReportsComponent implements OnInit {
     // Reset association selection when scope changes
     this.selectedAssociationId = null;
     this.selectedReportType = null;
-    
+
     // Filter report types based on scope
     this.loadAvailableReportTypes();
-    
+
     // Update URL with new scope
     this.updateUrl();
   }
@@ -154,7 +154,7 @@ export class ReportsComponent implements OnInit {
     if (this.selectedAssociationId) {
       queryParams.associationId = this.selectedAssociationId;
     }
-    
+
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: queryParams,
@@ -176,16 +176,16 @@ export class ReportsComponent implements OnInit {
 
     if (this.selectedScope === 'association') {
       if (!this.canAccessAssociationReports()) {
-        errorToast('You do not have permission to access association reports');
+        errorToast('You do not have permission to access foundation reports');
         return;
       }
-      
+
       // For Coalition users, they need to select an association
       if (this.canAccessCoalitionReports() && !this.selectedAssociationId) {
-        errorToast('Please select an association');
+        errorToast('Please select a foundation');
         return;
       }
-      
+
       // For Association users, use their own association ID
       if (!this.canAccessCoalitionReports()) {
         // Use loginId which contains the AssociationId for Association users

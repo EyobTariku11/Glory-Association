@@ -20,28 +20,13 @@
 <div class="card">
   <div class="row">
     <div class="col-12 col-md-3">
-      <div
-        echarts
-        [options]="chartOptions"
-        [loading]="loading"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions" [loading]="loading" class="demo-chart"></div>
     </div>
     <div class="col-12 col-md-6">
-      <div
-        echarts
-        [options]="chartOptions3"
-        [loading]="loading3"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions3" [loading]="loading3" class="demo-chart"></div>
     </div>
     <div class="col-12 col-md-3">
-      <div
-        echarts
-        [options]="chartOptions2"
-        [loading]="loading2"
-        class="demo-chart"
-      ></div>
+      <div echarts [options]="chartOptions2" [loading]="loading2" class="demo-chart"></div>
     </div>
   </div>
 </div>
@@ -55,9 +40,9 @@
       </button>
       <span style="font-size: 18px; color: #3b2413">
         {{
-          Members && filterdMembers && Members.length == filterdMembers.length
-            ? "Total"
-            : "Filterd"
+        Members && filterdMembers && Members.length == filterdMembers.length
+        ? "Total"
+        : "Filterd"
         }}
         Members: {{ filterdMembers && filterdMembers.length }}
       </span>
@@ -66,12 +51,8 @@
     <div class="row mt-2">
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <select
-            class="form-control"
-            [(ngModel)]="selectedCountryType"
-            (change)="onCountryTypeChange($event)"
-            required
-          >
+          <select class="form-control" [(ngModel)]="selectedCountryType" (change)="onCountryTypeChange($event)"
+            required>
             <option value="">Select Country Type</option>
             <option value="ETHIOPIAN">ETHIOPIAN</option>
             <option value="FOREIGN">FOREIGN</option>
@@ -82,11 +63,7 @@
 
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <select
-            class="form-control"
-            style="font-size: 18px"
-            [(ngModel)]="selectedRegion"
-          >
+          <select class="form-control" style="font-size: 18px" [(ngModel)]="selectedRegion">
             <option value="">Select Region</option>
             <option *ngFor="let item of regions" [value]="item.id">
               {{ item.name }}
@@ -98,29 +75,20 @@
 
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <select
-            class="form-control"
-            style="font-size: 18px"
-            [(ngModel)]="selectedAssociation"
-            (change)="onAssociationChange($event)"
-            [disabled]="userView.role === 'Association'"
-          >
-            <option value="">Select Association</option>
+          <select class="form-control" style="font-size: 18px" [(ngModel)]="selectedAssociation"
+            (change)="onAssociationChange($event)" [disabled]="userView.role === 'Association'">
+            <option value="">Select Foundation</option>
             <option *ngFor="let item of associations" [value]="item.id">
               {{ item.name }}
             </option>
           </select>
-          <label for="floatingInput">Association</label>
+          <label for="floatingInput">Foundation</label>
         </div>
       </div>
 
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <select
-            class="form-control"
-            style="font-size: 18px"
-            [(ngModel)]="selectedGender"
-          >
+          <select class="form-control" style="font-size: 18px" [(ngModel)]="selectedGender">
             <option value="">Select Gender</option>
             <option value="MALE">MALE</option>
             <option value="FEMALE">FEMALE</option>
@@ -130,11 +98,7 @@
       </div>
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <select
-            class="form-control"
-            style="font-size: 18px"
-            [(ngModel)]="selectedStatus"
-          >
+          <select class="form-control" style="font-size: 18px" [(ngModel)]="selectedStatus">
             <option value="">Select Payment Status</option>
             <option value="PENDING">PENDING</option>
             <option value="PAID">PAID</option>
@@ -160,29 +124,16 @@
 
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <input
-            type="date"
-            placeholder="search ..."
-            class="form-control"
-            style="font-size: 18px"
-            [(ngModel)]="fromDate"
-            placeholder="Search"
-          />
+          <input type="date" placeholder="search ..." class="form-control" style="font-size: 18px"
+            [(ngModel)]="fromDate" placeholder="Search" />
           <label for="floatingInput">From Date</label>
         </div>
       </div>
 
       <div class="col-12 col-md-3">
         <div class="form-floating mb-3">
-          <input
-            type="date"
-            placeholder="search ..."
-            class="form-control"
-            style="font-size: 18px"
-            [(ngModel)]="toDate"
-            (input)="applyFilter()"
-            placeholder="Search"
-          />
+          <input type="date" placeholder="search ..." class="form-control" style="font-size: 18px" [(ngModel)]="toDate"
+            (input)="applyFilter()" placeholder="Search" />
           <label for="floatingInput">To Date</label>
         </div>
       </div>
@@ -204,10 +155,7 @@
           <i class="ti ti-search"> </i>
         </button>
         |
-        <button
-          class="btn btn-outline-success text-end"
-          (click)="exportAsExcel('membershipReport')"
-        >
+        <button class="btn btn-outline-success text-end" (click)="exportAsExcel('membershipReport')">
           <i class="bi bi-file-excel"></i> Export Excel
         </button>
       </div>
@@ -252,24 +200,12 @@
             <td style="border: 1px solid black">{{ item.region }}</td>
             <td style="border: 1px solid black">{{ item.gender }}</td>
             <td style="border: 1px solid black">
-              <span
-                *ngIf="item.paymentStatus == 'PAID'"
-                class="badge rounded-pill bg-success"
-              >
-                {{ item.paymentStatus }}</span
-              >
-              <span
-                *ngIf="item.paymentStatus == 'PENDING'"
-                class="badge rounded-pill bg-warning"
-              >
-                {{ item.paymentStatus }}</span
-              >
-              <span
-                *ngIf="item.paymentStatus == 'EXPIRED'"
-                class="badge rounded-pill bg-danger"
-              >
-                {{ item.paymentStatus }}</span
-              >
+              <span *ngIf="item.paymentStatus == 'PAID'" class="badge rounded-pill bg-success">
+                {{ item.paymentStatus }}</span>
+              <span *ngIf="item.paymentStatus == 'PENDING'" class="badge rounded-pill bg-warning">
+                {{ item.paymentStatus }}</span>
+              <span *ngIf="item.paymentStatus == 'EXPIRED'" class="badge rounded-pill bg-danger">
+                {{ item.paymentStatus }}</span>
             </td>
             <td style="border: 1px solid black">{{ item.memberStatus }}</td>
 

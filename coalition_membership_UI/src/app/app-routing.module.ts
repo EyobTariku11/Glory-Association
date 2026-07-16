@@ -6,7 +6,7 @@ import { AuthGuard } from "./auth/auth.guard";
 
 /* import AdminDashbordComponent from "./membership/pages/admin-dashbord/admin-dashbord.component"; */
 import AdminDashbordComponent from "./membership/pages/authentication/login/login.component";
-import { LandingPageComponent } from "./membership/pages/landing-page/landing-page.component";
+
 import { MemberVerificationComponent } from "./membership/pages/member-verification/member-verification.component";
 import { FootballCoalitionLandingComponent } from "./membership/pages/football-coalition-landing/football-coalition-landing.component";
 
@@ -19,7 +19,7 @@ import { DonationTargetsComponent } from "./membership/pages/donation-targets/do
 export const appRoutes: Routes = [
   {
     path: "",
-    component: LandingPageComponent,
+    redirectTo: "auth/membership-login",
     pathMatch: "full",
   },
   {
